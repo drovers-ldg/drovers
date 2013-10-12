@@ -13,7 +13,6 @@ class Thread_Socket extends Thread
 {
 	private Socket socket;
 	private InetAddress client_addres;
-
 	
 	// IO-streams
 	private BufferedReader in;
@@ -24,7 +23,7 @@ class Thread_Socket extends Thread
     	this.socket = in_socket;
     	client_addres = this.socket.getInetAddress();
     	System.out.println(client_addres.toString() + " is connected;");
-    	// Set streams
+    	
     	in = new BufferedReader(new InputStreamReader(in_socket.getInputStream()));
     	out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(in_socket.getOutputStream())), true);
     	
@@ -36,16 +35,23 @@ class Thread_Socket extends Thread
 	{
 		try 
 		{
-			while (true) 
+			long time = System.currentTimeMillis();
+			
+			while(Drovers_Server.server_runing) 
 			{  
 				String str = in.readLine();
 				
-				if(Drovers_Server.event_buffer.event_buff.size() < Event_Buffer.lenght)
+				if(str.equals("END"))
+					break;
+				
+				if( (System.currentTimeMillis() - time < 15) && (Drovers_Server.event_buffer.event_buff.size() < Event_Buffer.lenght))
 				{
 					Drovers_Server.event_buffer.event_buff.add(new Event(client_addres, socket.getPort(), str));
 				}
 				else
 				{
+					//System.out.println("buffer is cleared (" + Drovers_Server.event_buffer.event_buff.size() + ")");
+					time = System.currentTimeMillis();
 					Print_Event_Buff();
 					Clear_Event_Buff();
 				}
@@ -64,19 +70,18 @@ class Thread_Socket extends Thread
 				out.close();
 				
 				System.out.println(client_addres.toString() + ":" + socket.getPort() + " is disconnected;");
-			} 
+			}
 			catch(IOException e)
 			{
-				System.err.println("Socket not closed");
+				System.err.println("Socket is not closed");
 			}
 		}
 	}
 	
 	public void Print_Event_Buff()
 	{
-		for(Event item: Drovers_Server.event_buffer.event_buff)
-			System.out.println("id: " + item.id + ", form: " + item.client_addres.toString() + ":" + item.client_port + ":" + item.data);
-		System.out.println();
+		//for(Event item: Drovers_Server.event_buffer.event_buff)
+			//System.out.println("id: " + item.id + ", form: " + item.client_addres.toString() + ":" + item.client_port + ":" + item.data);
 	}
 	
 	public void Clear_Event_Buff()
@@ -84,3 +89,31 @@ class Thread_Socket extends Thread
 		Drovers_Server.event_buffer.event_buff.clear();
 	}
 }
+
+class Client_Update extends Thread
+{
+	private static PrintWriter out;
+	Client_Update(Socket socket) throws IOException
+	{
+		out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
+		this.start();
+	}
+	
+	@Override
+	public void run()
+	{
+		while(Drovers_Server.server_runing)
+		{
+			out.println(Long.toString(System.currentTimeMillis()));
+			
+			try 
+			{
+				Thread.sleep(10);
+			} 
+			catch (InterruptedException e) 
+			{
+				e.printStackTrace();
+			}
+		}
+	}
+};

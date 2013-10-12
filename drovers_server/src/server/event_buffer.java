@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 class Event_Buffer
 {
-	final static int lenght = 256;
+	final static int lenght = 64;
 	ArrayList<Event> event_buff;
 	
 	Event_Buffer()
