@@ -7,6 +7,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
+import java.io.IOException;
 
 import javax.swing.JFrame;
 
@@ -14,57 +15,76 @@ class Drovers_Client
 {
 	public static void main(String [] args) throws Exception
 	{
-		Thread_Socket socket = new Thread_Socket();
-		Frame client = new Frame();
-		
-		socket.join();
-		client.join();
+		new Frame();
+		Frame.is_runing = false;
 	}
 }
 
 class Frame extends Canvas implements Runnable
 {
 	private static final long serialVersionUID = 1L;
+	
 	// status
-	public static boolean client_runing;
-
-	// thread
-	private Thread render_thread;
+	public static boolean is_runing;
 	
 	// Info
 	public static String server_msg;
+	public static long FPS;
 	
-	Frame()
+	Frame() throws IOException, InterruptedException
 	{
 		this.setPreferredSize(new Dimension(640, 480));
 		JFrame frame = new JFrame("Drovers");
-		
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLayout(new BorderLayout());
 		frame.add(this, BorderLayout.CENTER);
 		frame.pack();
 		frame.setResizable(false);
 		frame.setVisible(true);
-		
-		
-		Frame.client_runing = true;
-		render_thread = new Thread(this);
-		render_thread.run();
+		this.start();
+	}
+	
+	public void start()
+	{
+		Frame.is_runing = true;
+		new Thread(this).run();
 	}
 	
 	public void run()
 	{
-		init();
+		long LastTime = System.currentTimeMillis();
+		long el_FPS = 0;
+		long ElapsedTime = 0;
 		
-		while(Frame.client_runing)
+		// Open socket
+		try 
+		{
+			new Thread_Socket().start();
+		} 
+		catch (IOException e) 
+		{
+			e.printStackTrace();
+		}
+		
+		// Run main Game cycle
+		while(Frame.is_runing)
 		{
 			render();
+			
+			ElapsedTime = System.currentTimeMillis() - LastTime;
+			el_FPS++;
+			if (ElapsedTime >= 1000)
+			{
+				FPS = el_FPS;
+			    el_FPS = 0;
+			    LastTime = System.currentTimeMillis();
+			}
 		}
 	}
 	
-	public void join() throws InterruptedException
+	public void join()
 	{
-		this.render_thread.join();
+		this.join();
 	}
 	
 	protected void init()
@@ -80,6 +100,7 @@ class Frame extends Canvas implements Runnable
 			requestFocus();
 			return;
 		}
+		
 		Graphics g = bs.getDrawGraphics();
 		
 		g.setColor(Color.black);
@@ -88,6 +109,7 @@ class Frame extends Canvas implements Runnable
 		
 		// draw the info
 		g.setColor(Color.white);
+		g.drawString("FPS: " + Long.toString(FPS), 0, 40);
 		g.drawString("Msg: " + server_msg, 0, 50);
 		
 		

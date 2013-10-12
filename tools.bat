@@ -1,2 +1,2 @@
-java -jar tools.jar
+java -jar bin/tools.jar
 pause

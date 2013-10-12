@@ -1,2 +1,2 @@
-java -jar server.jar
+java -jar bin/server.jar
 pause

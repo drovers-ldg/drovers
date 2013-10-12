@@ -12,17 +12,17 @@ class Thread_Socket extends Thread
 {
 	protected BufferedReader in;
 	protected PrintWriter out;
+	protected Socket socket;
 	
 	Thread_Socket() throws IOException
 	{
 		// port 3450
 		// address 127.0.0.1
 		InetAddress server_address = InetAddress.getByName("127.0.0.1");
-		Socket socket = new Socket(server_address, 3450);
-		this.run(socket);
+		socket = new Socket(server_address, 3450);
 	}
-
-	public void run(Socket socket) throws IOException
+	
+	public void run()
 	{	
 		try 
 		{
@@ -30,24 +30,56 @@ class Thread_Socket extends Thread
 			this.out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
 			
 			String msg;
-			while(Frame.client_runing)
+			
+			while(Frame.is_runing)
 			{
 				msg = in.readLine();
-				Frame.server_msg = msg;
+				Frame.server_msg = msg.toString();
 			}
-		} 
+		}
 		catch (IOException e) 
 		{
 			e.printStackTrace();
 		}
-	
-		socket.close();
+		
+		// close socket
+		out.println("END");	
 	}
 	
 	protected void finalize() throws Exception
 	{
-		out.println("END");
+		this.socket.close();
 		this.in.close();
+		this.out.close();
+	}
+}
+
+class Client_Update extends Thread
+{
+	private PrintWriter out;
+	
+	Client_Update(Socket socket) throws IOException
+	{
+		out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
+		this.start();
+	}
+	
+	public void run()
+	{
+		while(Frame.is_runing)
+		{
+			out.println(Long.toString(System.currentTimeMillis()));
+			
+			try 
+			{
+				Thread.sleep(100);
+			} 
+			catch (InterruptedException e)
+			{
+				e.printStackTrace();
+			}
+		}
+		
 		this.out.close();
 	}
 }

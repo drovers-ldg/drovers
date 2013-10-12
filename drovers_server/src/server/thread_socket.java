@@ -99,16 +99,15 @@ class Client_Update extends Thread
 		this.start();
 	}
 	
-	@Override
 	public void run()
 	{
 		while(Drovers_Server.server_runing)
 		{
 			out.println(Long.toString(System.currentTimeMillis()));
-			
+
 			try 
 			{
-				Thread.sleep(10);
+				Thread.sleep(100);
 			} 
 			catch (InterruptedException e) 
 			{
