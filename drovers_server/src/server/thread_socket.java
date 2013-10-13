@@ -17,36 +17,37 @@ class Thread_Socket extends Thread
 	// IO-streams
 	private BufferedReader in;
 	private PrintWriter out;
-	
-	Thread_Socket(Socket in_socket) throws IOException
+
+	Thread_Socket(Socket socket) throws IOException
 	{
-    	this.socket = in_socket;
+    	this.socket = socket;
+    	
     	client_addres = this.socket.getInetAddress();
-    	System.out.println(client_addres.toString() + " is connected;");
+    	System.out.println(client_addres.toString() + ":" + this.socket.getPort() + " is connected;");
     	
-    	in = new BufferedReader(new InputStreamReader(in_socket.getInputStream()));
-    	out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(in_socket.getOutputStream())), true);
-    	
+    	in = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
+    	out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(this.socket.getOutputStream())), true);
+
     	this.start();
 	}
-
-	@Override
-	public void run() 
+	
+	public void run()
 	{
 		try 
 		{
 			long time = System.currentTimeMillis();
 			
-			while(Drovers_Server.server_runing) 
+			while(Server.is_runing) 
 			{  
 				String str = in.readLine();
+				Send_Data();
 				
 				if(str.equals("END"))
 					break;
 				
-				if( (System.currentTimeMillis() - time < 15) && (Drovers_Server.event_buffer.event_buff.size() < Event_Buffer.lenght))
+				if( (System.currentTimeMillis() - time < 15) && (Server.event_buffer.event_buff.size() < Event_Buffer.lenght))
 				{
-					Drovers_Server.event_buffer.event_buff.add(new Event(client_addres, socket.getPort(), str));
+					Server.event_buffer.event_buff.add(new Event(client_addres, this.socket.getPort(), str));
 				}
 				else
 				{
@@ -65,27 +66,29 @@ class Thread_Socket extends Thread
 		{
 			try 
 			{
-				socket.close();
-				in.close();
-				out.close();
-				
-				System.out.println(client_addres.toString() + ":" + socket.getPort() + " is disconnected;");
+				this.socket.close();
+				System.out.println(client_addres.toString() + ":" + this.socket.getPort() + " is disconnected;");
 			}
 			catch(IOException e)
 			{
-				System.err.println("Socket is not closed");
+				System.err.println("Err! Socket is not closed!");
 			}
 		}
 	}
 	
-	public void Print_Event_Buff()
+	private void Print_Event_Buff()
 	{
 		//for(Event item: Drovers_Server.event_buffer.event_buff)
 			//System.out.println("id: " + item.id + ", form: " + item.client_addres.toString() + ":" + item.client_port + ":" + item.data);
 	}
 	
-	public void Clear_Event_Buff()
+	private void Clear_Event_Buff()
 	{
-		Drovers_Server.event_buffer.event_buff.clear();
+		Server.event_buffer.event_buff.clear();
+	}
+	
+	private void Send_Data()
+	{
+		out.println(Long.toString(System.currentTimeMillis()));
 	}
 }

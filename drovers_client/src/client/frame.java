@@ -18,7 +18,7 @@ class Frame extends Canvas implements Runnable
 	public static boolean is_runing;
 	
 	// Info
-	public static String server_msg;
+	public static String server_msg = "0";
 	public static long Ping = 0;
 	public static long FPS = 0;
 	public static long Time = 0;
@@ -63,8 +63,10 @@ class Frame extends Canvas implements Runnable
 		// Run main Game cycle
 		while(Frame.is_runing)
 		{
+			ping();
 			render();
 			
+			// Calculate the FPS
 			ElapsedTime = System.currentTimeMillis() - LastTime;
 			el_FPS++;
 			if (ElapsedTime >= 1000)
@@ -105,15 +107,18 @@ class Frame extends Canvas implements Runnable
 		g.setColor(Color.white);
 		g.drawString("FPS: " + Long.toString(Frame.FPS), 0, 40);
 		g.drawString("Msg: " + Frame.server_msg, 0, 50);
-		g.drawString("Ping: " +Frame.Ping, 0, 60);
-		
-		if(System.currentTimeMillis() - Time > 1000)
-		{
-			Frame.Ping = System.currentTimeMillis() - Long.parseLong(Frame.server_msg);
-			Time = System.currentTimeMillis();
-		}
+		g.drawString("Ping: " + Frame.Ping, 0, 60);
 		
 		g.dispose();
 		bs.show();
+	}
+	
+	protected void ping()
+	{
+		if(System.currentTimeMillis() - Time > 100)
+		{
+			Frame.Ping = System.currentTimeMillis() - Long.parseLong(Frame.server_msg);
+			Frame.Time = System.currentTimeMillis();
+		}
 	}
 }

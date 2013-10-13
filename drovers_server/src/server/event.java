@@ -11,7 +11,7 @@ class Event
 	
 	Event()
 	{
-		this.id = Drovers_Server.event_id++;
+		this.id = Server.event_id++;
 		this.client_addres = null;
 		this.client_port = 0;
 		this.data = null;
@@ -19,7 +19,7 @@ class Event
 	
 	Event(InetAddress client_addres, int client_port, String data)
 	{
-		this.id = Drovers_Server.event_id++;
+		this.id = Server.event_id++;
 		this.client_addres = client_addres;
 		this.client_port = client_port;
 		this.data = data;

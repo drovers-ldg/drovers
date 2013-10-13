@@ -71,7 +71,7 @@ class Client_Update extends Thread
 			
 			try 
 			{
-				Thread.sleep(10);
+				Thread.sleep(100);
 			} 
 			catch (InterruptedException e) 
 			{
