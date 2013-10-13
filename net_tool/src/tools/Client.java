@@ -30,7 +30,6 @@ public class Client
 			is_runing = true;
 			client_update = new Client_Update(socket);
 			
-			BufferedReader in_server = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
 			
 			while(in.hasNextLine())
