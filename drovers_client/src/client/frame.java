@@ -16,6 +16,9 @@ class Frame extends Canvas implements Runnable
 	
 	// status
 	public static boolean is_runing;
+	public static BufferStrategy bs;
+	public static Graphics g;
+	public static State state;
 	
 	// Info
 	public static String server_msg = "0";
@@ -23,8 +26,11 @@ class Frame extends Canvas implements Runnable
 	public static long FPS = 0;
 	public static long Time = 0;
 	
-	Frame() throws IOException, InterruptedException
-	{
+	// Timer
+	public static long Frame_MAX = 60;
+	public static long Frame_Delta = 1000/Frame_MAX;
+	
+	Frame() throws IOException, InterruptedException{
 		this.setPreferredSize(new Dimension(640, 480));
 		JFrame frame = new JFrame("Drovers");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -36,41 +42,38 @@ class Frame extends Canvas implements Runnable
 		this.start();
 	}
 	
-	public void start()
-	{
+	public void start(){
 		Frame.is_runing = true;
 		new Thread(this).run();
 	}
 	
-	public void run()
-	{
+	public void run(){
 		init();
 		
 		long LastTime = System.currentTimeMillis();
 		long el_FPS = 0;
 		long ElapsedTime = 0;
-		
+		long Last_Update = 0;
 		// Open socket
-		try 
-		{
+		try {
 			new Thread_Socket().start();
 		} 
-		catch (IOException e) 
-		{
+		catch (IOException e) {
 			e.printStackTrace();
 		}
 		
 		// Run main Game cycle
-		while(Frame.is_runing)
-		{
-			ping();
-			render();
-			
+		while(Frame.is_runing){
+			if(System.currentTimeMillis() - Last_Update >= Frame.Frame_Delta){
+				ping();
+				render();
+				el_FPS++;
+				Last_Update = System.currentTimeMillis();
+			}
 			// Calculate the FPS
 			ElapsedTime = System.currentTimeMillis() - LastTime;
-			el_FPS++;
-			if (ElapsedTime >= 1000)
-			{
+			
+			if (ElapsedTime >= 1000){
 				FPS = el_FPS;
 			    el_FPS = 0;
 			    LastTime = System.currentTimeMillis();
@@ -86,28 +89,25 @@ class Frame extends Canvas implements Runnable
 	protected void init()
 	{
 		Frame.Time = System.currentTimeMillis();
+		state = new State(this, "menu");
 	}
-	
+
 	protected void render()
-	{
-		BufferStrategy bs = getBufferStrategy();
+	{	
+		bs = getBufferStrategy();
 		if (bs == null){
 			createBufferStrategy(2);
 			requestFocus();
 			return;
 		}
-		
-		Graphics g = bs.getDrawGraphics();
+		g = bs.getDrawGraphics();
 		
 		g.setColor(Color.black);
 		g.fillRect(0, 0, getWidth(), getHeight());
 		
-		
-		// draw the info
-		g.setColor(Color.white);
-		g.drawString("FPS: " + Long.toString(Frame.FPS), 0, 40);
-		g.drawString("Msg: " + Frame.server_msg, 0, 50);
-		g.drawString("Ping: " + Frame.Ping, 0, 60);
+		// draw state
+		state.set_graphic(g);	
+		state.draw();
 		
 		g.dispose();
 		bs.show();
