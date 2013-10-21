@@ -10,7 +10,6 @@ class Client_Update extends Thread
 	
 	Client_Update(Socket socket) throws IOException
 	{
-	
 		this.start();
 	}
 	
@@ -20,11 +19,11 @@ class Client_Update extends Thread
 		{
 			out.println(Long.toString(System.currentTimeMillis()));
 
-			try 
+			try
 			{
 				Thread.sleep(100);
 			} 
-			catch (InterruptedException e) 
+			catch (InterruptedException e)
 			{
 				e.printStackTrace();
 			}
@@ -32,5 +31,11 @@ class Client_Update extends Thread
 		
 		this.out.close();
 		System.out.println("out stream is closed");
+	}
+	
+	public void send(String msg){
+		if(Server.is_runing){
+			out.println(msg);
+		}
 	}
 }

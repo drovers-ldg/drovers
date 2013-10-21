@@ -31,7 +31,13 @@ class Thread_Update extends Thread
 				e.printStackTrace();
 			}
 		}
-		
 		this.out.close();
+	}
+	
+	public void send(String msg)
+	{
+		if(Frame.is_runing){
+			out.println(msg);
+		}
 	}
 }

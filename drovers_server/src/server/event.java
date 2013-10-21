@@ -1,26 +1,21 @@
 package server;
 
-import java.net.InetAddress;
-
-class Event
-{
+class Event{
 	int id;
 	int client_port;
-	InetAddress client_addres;
+	int client_id;
 	String data;
 	
-	Event()
-	{
+	Event(){
 		this.id = Server.event_id++;
-		this.client_addres = null;
+		this.client_id = -1;
 		this.client_port = 0;
 		this.data = null;
 	}
 	
-	Event(InetAddress client_addres, int client_port, String data)
-	{
+	Event(int client_id, int client_port, String data){
 		this.id = Server.event_id++;
-		this.client_addres = client_addres;
+		this.client_id = client_id;
 		this.client_port = client_port;
 		this.data = data;
 	}
