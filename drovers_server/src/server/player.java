@@ -12,7 +12,7 @@ class Client{
 		this.client_id = Server.client_id++;
 		this.thread = new Thread_Socket(socket, this.client_id);
 	}
-	
+		
 	public int get_id(){
 		return this.client_id;
 	}

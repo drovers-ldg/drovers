@@ -41,17 +41,14 @@ class Thread_Socket extends Thread
 			while(Server.is_runing) 
 			{  
 				String str = in.readLine();
-				Send_Data();
 				
 				if(str.equals("END"))
 					break;
 				
-				if( (System.currentTimeMillis() - time < 15) && (Server.event_buffer.size() < Event_Buffer.lenght))
-				{
+				if( (System.currentTimeMillis() - time < 15) && (Server.event_buffer.size() < Event_Buffer.lenght)){
 					Server.event_buffer.add(new Event(client_id, this.socket.getPort(), str));
 				}
-				else
-				{
+				else{
 					time = System.currentTimeMillis();
 					Clear_Event_Buff();
 				}
@@ -79,11 +76,6 @@ class Thread_Socket extends Thread
 	private void Clear_Event_Buff()
 	{
 		Server.event_buffer.clear();
-	}
-	
-	private void Send_Data()
-	{
-		out.println(Long.toString(System.currentTimeMillis()));
 	}
 	
 	public void send(String msg){

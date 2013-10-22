@@ -7,17 +7,24 @@ import java.util.HashMap;
 
 class Server
 {
+	// Debug mode
+	public static boolean debug = true;
+	
+	// Socket settings
 	static final int server_port = 3450;
 	public static boolean is_runing;
+	
 	// Events
 	public static int event_id = 0;
 	public static int client_id = 0;
 	public static Event_Buffer event_buffer;
-	public static HashMap<Integer, Client> player_list;
+	public static HashMap<Integer, Client> player_list; 
+	public static DB server_db;
 	
 	public Server() throws IOException, InterruptedException
 	{
 		// Create data sets and tools
+		server_db = new DB();
 		event_buffer = new Event_Buffer();
 		player_list = new HashMap<Integer, Client>();
 		run_sockets();
@@ -30,6 +37,9 @@ class Server
 		try 
 		{
 			Server.is_runing = true;
+			new Thread_Logic();
+			
+			System.out.println("Server runing.");
 			while(true) 
 			{
 				Socket socket = server_socket.accept();
