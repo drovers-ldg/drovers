@@ -26,7 +26,7 @@ class Thread_Logic extends Thread
 	
 	public void send_time(){
 		for(Client value: Server.player_list.values()){
-			value.send(Long.toString(System.currentTimeMillis()));
+			value.send("TIME:"+Long.toString(System.currentTimeMillis()));
 		}
 	}
 }

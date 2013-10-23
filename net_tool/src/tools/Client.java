@@ -10,7 +10,6 @@ public class Client
 	public static Scanner in;
 	public static BufferedReader in_server;
 	public static PrintWriter out;
-	public static Client_Update client_update;
 	
 	public static void main(String[] args) throws IOException 
 	{
@@ -28,14 +27,16 @@ public class Client
 		{
 			System.out.println("socket = " + socket);
 			is_runing = true;
-			client_update = new Client_Update(socket);
+		
 			
-			PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
-			
+			out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
+			in_server = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			new Client_Update();
+			new Client_Listener();
 			while(in.hasNextLine())
     		{
     			str = in.nextLine();
-				out.println(str);
+    			command_process(str);
 			}
 			
 			// close connection
@@ -50,24 +51,33 @@ public class Client
 			is_runing = false;
 		}
 	}
+	
+	public static void command_process(String str){
+		String [] in_command = str.split(" ");
+		
+		if(in_command[0].compareTo("login") == 0){
+			if(in_command[1] != null && in_command[2] != null){
+				out.println("IN:CONNECT:"+in_command[1]+":"+in_command[2]);
+			}
+			else{
+				System.out.println("Invalid params");
+			}
+		}
+	}
 }
 
 class Client_Update extends Thread
 {
-	private static PrintWriter out;
-	Client_Update(Socket socket) throws IOException
+	Client_Update()
 	{
-		out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
 		this.start();
 	}
-	
-	@Override
+
 	public void run()
-	{
-		
+	{		
 		while(Client.is_runing)
 		{
-			out.println(Long.toString(System.currentTimeMillis()));
+			Client.out.println(Long.toString(System.currentTimeMillis()));
 			
 			try 
 			{
@@ -80,3 +90,28 @@ class Client_Update extends Thread
 		}
 	}
 };
+
+class Client_Listener extends Thread{
+	Client_Listener(){
+		this.start();
+	}
+	
+	public void run(){
+		String str = null;
+		while(Client.is_runing){
+			try 
+			{
+				str = Client.in_server.readLine();
+				String [] msg = str.split(":");
+				
+				if(!(msg[0].compareTo("TIME") == 0)){
+					System.out.println(str);
+				}
+			}
+			catch (IOException e) 
+			{
+				e.printStackTrace();
+			}
+		}
+	}
+}
