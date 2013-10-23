@@ -36,7 +36,7 @@ class Thread_Socket extends Thread
 	{
 		try
 		{
-			long time = System.currentTimeMillis();
+			long last_update_time = System.currentTimeMillis();
 			
 			while(Server.is_runing) 
 			{  
@@ -45,18 +45,18 @@ class Thread_Socket extends Thread
 				if(str.equals("END"))
 					break;
 				
-				if( (System.currentTimeMillis() - time < 15) && (Server.event_buffer.size() < Event_Buffer.lenght)){
+				if( (System.currentTimeMillis() - last_update_time < 15) && (Server.event_buffer.size() < Event_Buffer.lenght)){
 					Server.event_buffer.add(new Event(client_id, this.socket.getPort(), str));
 				}
 				else{
-					time = System.currentTimeMillis();
-					Clear_Event_Buff();
+					last_update_time = System.currentTimeMillis();
+					Thread_Logic.events_process();
 				}
 			}
 		}
 		catch(IOException e) 
 		{
-			//System.err.println("IO Exception");
+			System.err.println("IO Exception");
 		}
 		finally
 		{
@@ -71,11 +71,6 @@ class Thread_Socket extends Thread
 				System.err.println("Err! Socket is not closed!");
 			}
 		}
-	}
-	
-	private void Clear_Event_Buff()
-	{
-		Server.event_buffer.clear();
 	}
 	
 	public void send(String msg){

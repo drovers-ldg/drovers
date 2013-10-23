@@ -1,13 +1,13 @@
 package server;
 
-import java.util.ArrayList;
+import java.util.Vector;
 
 class Event_Buffer{
 	final static int lenght = 64;
-	private ArrayList<Event> event_buff;
+	public Vector<Event> event_buff;
 	
 	Event_Buffer(){
-		event_buff = new ArrayList<Event>();
+		event_buff = new Vector<Event>();
 	}
 	
 	public void clear(){
