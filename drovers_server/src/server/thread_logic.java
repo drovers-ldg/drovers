@@ -35,13 +35,13 @@ class Thread_Logic extends Thread
 	
 	public void send_time(){
 		for(Client value: Server.player_list.values()){
-			value.send("TIME:"+Long.toString(System.currentTimeMillis()));
+			value.send("TIME:" + Long.toString(System.currentTimeMillis()));
 		}
 	}
 	
 	public static void events_process(){
 		for(int i = 0; i < Server.event_buffer.size(); ++i){
-			Event tmp = Server.event_buffer.event_buff.get(i);
+			Event tmp = Server.event_buffer.get(i);
 			
 			if(Server.debug)
 				System.out.println(tmp.client_id + " " + tmp.client_port + " " + tmp.data + " " + tmp.id);
@@ -76,11 +76,9 @@ class Thread_Logic extends Thread
 		
 		if(DB.db_accounts.compare_password(account_id, password) == true){
 			Server.player_list.get(client_id).send("CONNECTION:SUCESS");
-			System.out.println(account + " connection secess");
 		}
 		else{
 			Server.player_list.get(client_id).send("CONNECTION:FAILED");
-			System.out.println(account + " connection failed");
 		}
 	}
 }

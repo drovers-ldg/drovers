@@ -3,7 +3,6 @@ package server;
 import java.util.Vector;
 
 class Event_Buffer{
-	final static int lenght = 64;
 	public Vector<Event> event_buff;
 	
 	Event_Buffer(){
@@ -20,5 +19,8 @@ class Event_Buffer{
 	
 	public void add(Event event){
 		this.event_buff.add(event);
+	}
+	public Event get(int index){
+		return this.event_buff.get(index);
 	}
 }

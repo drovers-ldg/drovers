@@ -35,28 +35,18 @@ class Thread_Socket extends Thread
 	public void run()
 	{
 		try
-		{
-			long last_update_time = System.currentTimeMillis();
-			
+		{		
 			while(Server.is_runing) 
 			{  
 				String str = in.readLine();
-				
 				if(str.equals("END"))
 					break;
-				
-				if( (System.currentTimeMillis() - last_update_time < 15) && (Server.event_buffer.size() < Event_Buffer.lenght)){
-					Server.event_buffer.add(new Event(client_id, this.socket.getPort(), str));
-				}
-				else{
-					last_update_time = System.currentTimeMillis();
-					Thread_Logic.events_process();
-				}
+				Server.event_buffer.add(new Event(client_id, this.socket.getPort(), str));
 			}
 		}
 		catch(IOException e) 
 		{
-			System.err.println("IO Exception");
+			//System.err.println("IO Exception");
 		}
 		finally
 		{
@@ -72,7 +62,7 @@ class Thread_Socket extends Thread
 			}
 		}
 	}
-	
+
 	public void send(String msg){
 		out.println(msg);
 	}

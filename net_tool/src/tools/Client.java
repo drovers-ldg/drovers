@@ -55,9 +55,9 @@ public class Client
 	public static void command_process(String str){
 		String [] in_command = str.split(" ");
 		
-		if(in_command[0].compareTo("login") == 0){
+		if(in_command[0].equals("login")){
 			if(in_command[1] != null && in_command[2] != null){
-				out.println("IN:CONNECT:"+in_command[1]+":"+in_command[2]);
+				out.println("IN:CONNECT:" + in_command[1] + ":" + in_command[2]);
 			}
 			else{
 				System.out.println("Invalid params");
@@ -104,7 +104,7 @@ class Client_Listener extends Thread{
 				str = Client.in_server.readLine();
 				String [] msg = str.split(":");
 				
-				if(!(msg[0].compareTo("TIME") == 0)){
+				if(!msg[0].equals("TIME")){
 					System.out.println(str);
 				}
 			}
