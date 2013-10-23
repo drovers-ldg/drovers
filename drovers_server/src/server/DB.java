@@ -54,7 +54,7 @@ class DB_Accounts{
 		}
 	}
 	
-	private void add_account(String name, String password){
+	public void add_account(String name, String password){
 		int id = this.db_accounts_id++;
 		db_accounts.put(id, new Account(id, name, password));
 	}
@@ -62,8 +62,13 @@ class DB_Accounts{
 	private void commit() throws FileNotFoundException, UnsupportedEncodingException{
 		PrintWriter out = new PrintWriter(DB.db_accounts_address);
 		out.println(db_accounts_id);
+		int size = db_accounts.size();
+		int counter = 0;
 		for(Account value: db_accounts.values()){
-			out.println(value.get_id() + " " + value.get_name() + " " + value.get_password());
+			out.print(value.get_id() + " " + value.get_name() + " " + value.get_password());
+			counter++;
+			if(counter < size)
+				out.println();
 		}
 		out.close();
 		System.out.println("DB:accounts.db saved");

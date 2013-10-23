@@ -8,11 +8,12 @@ import java.util.HashMap;
 class Server
 {
 	// Debug mode
-	public static boolean debug = true;
+	public static boolean debug = false;
 	
 	// Socket settings
 	static final int server_port = 3450;
 	public static boolean is_runing;
+	private static ServerSocket server_socket;
 	
 	// Events
 	public static int event_id = 0;
@@ -32,15 +33,17 @@ class Server
 	
 	public static void run_sockets() throws IOException, InterruptedException
 	{
-		ServerSocket server_socket = new ServerSocket(server_port);
 		// Run socket_thread
 		try 
 		{
+			server_socket = new ServerSocket(server_port);
 			Server.is_runing = true;
 			new Thread_Logic();
 			
 			System.out.println("Server runing.");
-			while(true) 
+			new Server_UI();
+			
+			while(Server.is_runing) 
 			{
 				Socket socket = server_socket.accept();
 				try
@@ -54,18 +57,20 @@ class Server
 				}
 			}
 		}
-		
-		finally 
-		{
-			if(player_list.size() != 0)
-			{
-				System.out.println("Err! not all connections is interupted!");
-				player_list.clear();
-			}
-			
-			Server.is_runing = false;
-			server_socket.close();
-			System.gc();
+		catch(Exception e){
+			System.out.println(e);
 		}
+	}
+	
+	protected void finalize() throws IOException{
+		if(player_list.size() != 0)
+		{
+			System.out.println("Err! not all connections is interupted!");
+			player_list.clear();
+		}
+		
+		Server.is_runing = false;
+		server_socket.close();
+		System.gc();
 	}
 }
