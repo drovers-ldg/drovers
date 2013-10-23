@@ -1,17 +1,20 @@
 package server;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Scanner;
 
 class DB{
-	DB_Accounts db_accounts;
+	public static DB_Accounts db_accounts;
+	final public static String db_accounts_address = "db\\accoutns.db";
 	
 	DB() throws IOException{
 		db_accounts = new DB_Accounts();
 	}
-
 }
 
 class DB_Accounts{
@@ -24,7 +27,7 @@ class DB_Accounts{
 	}
 	
 	private void read_account_table() throws IOException{
-		Scanner in = new Scanner(new File("db\\client.db"));
+		Scanner in = new Scanner(new File(DB.db_accounts_address));
 		
 		if(in.hasNextLine()){
 			this.db_accounts_id = in.nextInt();
@@ -36,11 +39,11 @@ class DB_Accounts{
 		}
 		else{
 			this.db_accounts_id = 0;
-			System.out.println("Loading clead DB:client.db");
+			System.out.println("Loading clead DB:accounts.db");
 		}
 		
 		in.close();
-		System.out.println("Complete loading DB:client.db");
+		System.out.println("Complete loading DB:accounts.db");
 		
 		// Debug
 		if(Server.debug){
@@ -49,6 +52,25 @@ class DB_Accounts{
 			}
 			System.out.println("Next ID: " + this.db_accounts_id);
 		}
+	}
+	
+	private void add_account(String name, String password){
+		int id = this.db_accounts_id++;
+		db_accounts.put(id, new Account(id, name, password));
+	}
+	
+	private void commit() throws FileNotFoundException, UnsupportedEncodingException{
+		PrintWriter out = new PrintWriter(DB.db_accounts_address);
+		out.println(db_accounts_id);
+		for(Account value: db_accounts.values()){
+			out.println(value.get_id() + " " + value.get_name() + " " + value.get_password());
+		}
+		out.close();
+		System.out.println("DB:accounts.db saved");
+	}
+	
+	protected void finalize() throws FileNotFoundException, UnsupportedEncodingException{
+		commit();
 	}
 }
 class Account{
