@@ -62,6 +62,15 @@ class Thread_Logic extends Thread
 					}
 					break;
 				}
+				//-------------------------
+				case "CREATE":{
+						switch(data[1]){
+							case "PLAYER":
+							events_create_player(tmp.client_id, data[2]);
+							break;	
+						}
+					}
+					break;
 				default:
 			}
 		}
@@ -73,6 +82,7 @@ class Thread_Logic extends Thread
 		
 		if(DB.db_accounts.compare_password(account_id, password) == true){
 			Server.player_list.get(client_id).send("CONNECTION:SUCESS");
+			Server.player_list.get(client_id).set_account_id(account_id);
 			if(Server.debug)
 				System.out.println("Connection \""+account+"\" is sucess" );
 		}
@@ -80,6 +90,17 @@ class Thread_Logic extends Thread
 			Server.player_list.get(client_id).send("CONNECTION:FAILED");
 			if(Server.debug)
 				System.out.println("Connection \""+account+"\" is failed" );
+		}
+	}
+	
+	private static void events_create_player(int client_id, String name){
+		if(Server.player_list.get(client_id).get_account_id() != -1){
+			DB.db_players.add_player(Server.player_list.get(client_id).get_account_id(), name);
+			Server.player_list.get(client_id).send("CREATE:SUCESS");
+		}
+		else
+		{
+			Server.player_list.get(client_id).send("CREATE:FAILED");
 		}
 	}
 }

@@ -56,12 +56,21 @@ public class Client
 	public static void command_process(String str){
 		String [] in_command = str.split(" ");
 		
-		if(in_command[0].equals("login")){
-			if(in_command[1] != null && in_command[2] != null){
-				out.println("IN:CONNECT:" + in_command[1] + ":" + in_command[2]);
-			}
-			else{
-				System.out.println("Invalid params");
+		
+		switch(in_command[0]){
+			case "login":
+				if(in_command[1] != null && in_command[2] != null){
+					out.println("IN:CONNECT:" + in_command[1] + ":" + in_command[2]);
+				}
+				break;
+			case "create":
+				if(in_command[1] != null){
+					out.println("CREATE:PLAYER:" + in_command[1]);
+				}
+				break;
+			default:
+			{
+				System.out.println("Unknown command");
 			}
 		}
 	}
