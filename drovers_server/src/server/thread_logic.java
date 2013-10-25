@@ -95,8 +95,11 @@ class Thread_Logic extends Thread
 	
 	private static void events_create_player(int client_id, String name){
 		if(Server.player_list.get(client_id).get_account_id() != -1){
-			DB.db_players.add_player(Server.player_list.get(client_id).get_account_id(), name);
-			Server.player_list.get(client_id).send("CREATE:SUCESS");
+			boolean result = DB.db_players.add_player(Server.player_list.get(client_id).get_account_id(), name);
+			if(result)
+				Server.player_list.get(client_id).send("CREATE:SUCESS");
+			else
+				Server.player_list.get(client_id).send("CREATE:FAILED");
 		}
 		else
 		{

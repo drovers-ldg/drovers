@@ -36,9 +36,14 @@ class DB_Players{
 		System.out.println("Complete loading DB:players.db");
 	}
 	
-	public void add_player(int account_id, String name){
+	public boolean add_player(int account_id, String name){
+		for(Player item: db_players.values()){
+			if(item.compare_name(name))
+				return false;
+		}
 		int id = this.db_players_id++;
 		db_players.put(id,  new Player(id, account_id, name));
+		return true;
 	}
 	
 	public void commit() throws FileNotFoundException{
@@ -82,5 +87,8 @@ class Player{
 	}
 	public String get_name(){
 		return this.player_name;
+	}
+	public boolean compare_name(String name){
+		return this.player_name.equals(name);
 	}
 }

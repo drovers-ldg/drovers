@@ -45,10 +45,12 @@ class Server_UI extends Thread{
 			//-----------------------			
 			case "account":
 				if(in_command[1].compareTo("add") == 0){
-					if(in_command[2] != null && in_command[3] != null && in_command[4] != null
-					&& (in_command[3].compareTo(in_command[4]) == 0)){
-						DB.db_accounts.add_account(in_command[2], in_command[4]);
-						System.out.println("Account \"" + in_command[2] + "\" is secessful created");
+					if(in_command[2] != null && in_command[3] != null && in_command[4] != null && (in_command[3].compareTo(in_command[4]) == 0)){
+						boolean add_result = DB.db_accounts.add_account(in_command[2], in_command[4]);
+						if(add_result)
+							System.out.println("Account \"" + in_command[2] + "\" is secessful created");
+						else
+							System.out.println("Account \"" + in_command[2] + "\" is already used");
 					}
 					else{
 						System.out.println("Error in entering params.");

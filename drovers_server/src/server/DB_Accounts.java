@@ -47,9 +47,14 @@ class DB_Accounts{
 		}
 	}
 	
-	public void add_account(String name, String password){
+	public boolean add_account(String name, String password){
+		for(Account item: db_accounts.values()){
+			if(item.compare_account(name))
+				return false;
+		}
 		int id = this.db_accounts_id++;
 		db_accounts.put(id, new Account(id, name, password));
+		return true;
 	}
 	
 	public void commit() throws FileNotFoundException, UnsupportedEncodingException{
@@ -118,15 +123,9 @@ class Account{
 		this.account_password = new_password;
 	}
 	public boolean compare_account(String account){
-		if(this.account_name.compareTo(account) == 0)
-			return true;
-		else
-			return false;
+		return this.account_name.equals(account);
 	}
 	public boolean compare_password(String password){
-		if(this.account_password.compareTo(password) == 0)
-			return true;
-		else
-			return false;
+		return this.account_password.equals(password);
 	}
 }
