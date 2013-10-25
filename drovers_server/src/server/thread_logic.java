@@ -59,6 +59,10 @@ class Thread_Logic extends Thread
 						case "CONNECT":
 							events_in_connect(tmp.client_id, data[2], data[3]);
 							break;
+						case "LOGOUT":
+							System.out.println("test point");
+							events_in_logout(tmp.client_id);
+							break;
 					}
 					break;
 				}
@@ -80,9 +84,12 @@ class Thread_Logic extends Thread
 	private static void events_in_connect(int client_id, String account, String password){
 		int account_id = DB.db_accounts.search_account(account);
 		
-		if(DB.db_accounts.compare_password(account_id, password) == true){
+		if(DB.db_accounts.compare_password(account_id, password) == true
+			&& DB.db_accounts.check_login(account_id) == false)
+		{	
 			Server.player_list.get(client_id).send("CONNECTION:SUCESS");
 			Server.player_list.get(client_id).set_account_id(account_id);
+			DB.db_accounts.connect(account_id);
 			if(Server.debug)
 				System.out.println("Connection \""+account+"\" is sucess" );
 		}
@@ -105,5 +112,12 @@ class Thread_Logic extends Thread
 		{
 			Server.player_list.get(client_id).send("CREATE:FAILED");
 		}
+	}
+	private static void events_in_logout(int client_id){
+		int account_id = Server.player_list.get(client_id).get_account_id();
+		
+		if(DB.db_accounts.check_login(account_id) == true)
+			DB.db_accounts.disconnect(account_id);
+		System.out.println(DB.db_accounts.get_name(account_id) + " is logout by user");
 	}
 }

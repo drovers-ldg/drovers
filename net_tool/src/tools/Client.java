@@ -63,6 +63,9 @@ public class Client
 					out.println("IN:CONNECT:" + in_command[1] + ":" + in_command[2]);
 				}
 				break;
+			case "logout":
+				out.println("IN:LOGOUT");
+				break;
 			case "create":
 				if(in_command[1] != null){
 					out.println("CREATE:PLAYER:" + in_command[1]);

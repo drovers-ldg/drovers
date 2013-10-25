@@ -95,30 +95,40 @@ class DB_Accounts{
 		else
 			return db_accounts.get(account_id).compare_password(password);
 	}
+	public boolean check_login(int account_id){
+		return this.db_accounts.get(account_id).check_login();
+	}
+	public void connect(int account_id){
+		this.db_accounts.get(account_id).connect();
+	}
+	public void disconnect(int account_id){
+		this.db_accounts.get(account_id).disconnect();
+	}
+	public String get_name(int account_id){
+		return this.db_accounts.get(account_id).get_name();
+	}
 }
 class Account{
+	private boolean login_status;
 	private int account_id;
 	private String account_name;
 	private String account_password;
 	
 	Account(int account_id, String account_name, String account_password){
+		this.login_status = false;
 		this.account_id = account_id;
 		this.account_name = account_name;
 		this.account_password = account_password;
 	}
-	
 	public int get_id() {
 		return this.account_id;
 	}
-	
 	public String get_name(){
 		return this.account_name;
 	}
-	
 	public String get_password(){
 		return this.account_password;
 	}
-	
 	public void set_password(String new_password){
 		this.account_password = new_password;
 	}
@@ -127,5 +137,14 @@ class Account{
 	}
 	public boolean compare_password(String password){
 		return this.account_password.equals(password);
+	}
+	public void connect(){
+		this.login_status = true;
+	}
+	public void disconnect(){
+		this.login_status = false;
+	}
+	public boolean check_login(){
+		return this.login_status;
 	}
 }
