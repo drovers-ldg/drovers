@@ -33,18 +33,19 @@ public class Client
 			in_server = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			new Client_Update();
 			new Client_Listener();
+		
 			while(in.hasNextLine())
     		{
     			str = in.nextLine();
     			command_process(str);
 			}
 			
+			
 			// close connection
 			out.println("END");
 		}
 		finally 
 		{
-			System.out.println("closing...");
 			socket.close();
 			in.close();
 			out.close();
@@ -74,19 +75,19 @@ class Client_Update extends Thread
 	}
 
 	public void run()
-	{		
-		while(Client.is_runing)
+	{	
+
+		try 
 		{
-			Client.out.println(Long.toString(System.currentTimeMillis()));
-			
-			try 
+			while(Client.is_runing)
 			{
+				Client.out.println(Long.toString(System.currentTimeMillis()));
 				Thread.sleep(100);
-			} 
-			catch (InterruptedException e) 
-			{
-				e.printStackTrace();
 			}
+		} 
+		catch (InterruptedException e)
+		{
+			
 		}
 	}
 };
@@ -98,9 +99,9 @@ class Client_Listener extends Thread{
 	
 	public void run(){
 		String str = null;
-		while(Client.is_runing){
-			try 
-			{
+		try 
+		{
+			while(Client.is_runing){
 				str = Client.in_server.readLine();
 				String [] msg = str.split(":");
 				
@@ -108,10 +109,12 @@ class Client_Listener extends Thread{
 					System.out.println(str);
 				}
 			}
-			catch (IOException e) 
-			{
-				e.printStackTrace();
-			}
+			
+		}
+		catch (IOException e)
+		{
+			System.out.println("Disconect by server.");
+			Client.is_runing = false;
 		}
 	}
 }

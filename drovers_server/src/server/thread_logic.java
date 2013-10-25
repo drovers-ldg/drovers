@@ -43,9 +43,6 @@ class Thread_Logic extends Thread
 		for(int i = 0; i < Server.event_buffer.size(); ++i){
 			Event tmp = Server.event_buffer.get(i);
 			
-			if(Server.debug)
-				System.out.println(tmp.client_id + " " + tmp.client_port + " " + tmp.data + " " + tmp.id);
-			
 			String [] data = tmp.data.split(":");
 			
 			switch(data[0])
@@ -76,9 +73,13 @@ class Thread_Logic extends Thread
 		
 		if(DB.db_accounts.compare_password(account_id, password) == true){
 			Server.player_list.get(client_id).send("CONNECTION:SUCESS");
+			if(Server.debug)
+				System.out.println("Connection \""+account+"\" is sucess" );
 		}
 		else{
 			Server.player_list.get(client_id).send("CONNECTION:FAILED");
+			if(Server.debug)
+				System.out.println("Connection \""+account+"\" is failed" );
 		}
 	}
 }
