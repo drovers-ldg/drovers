@@ -39,6 +39,7 @@ class Server_UI extends Thread{
 				System.out.println(">shutdown");
 				System.out.println(">debug [on\\off]");
 				System.out.println(">account add [name] [password] [password]");
+				System.out.println(">save [all\\accounts\\players]");
 				System.out.println("=====================");
 				break;
 			//-----------------------			
@@ -56,18 +57,36 @@ class Server_UI extends Thread{
 				}
 				break;
 			//-----------------------
+			case "save":
+				switch(in_command[1]){
+					case "all":
+						save_world();
+						break;
+					case "accounts":
+						DB.db_accounts.commit();
+						break;
+					case "players":
+						DB.db_players.commit();
+						break;
+					default:
+				}
+						
+				break;
+			//-----------------------
 			case "debug":
-				if(in_command[1].compareTo("on") == 0){
+				if(in_command[1].equals("on")){
 					Server.debug = true;
 				}
-				if(in_command[1].compareTo("off") == 0){
+				if(in_command[1].equals("off")){
 					Server.debug = false;
+				}else{
+					System.out.println(">debug [on\\off]");
 				}
 				break;
 			//-----------------------
 			case "shutdown":
 				Server.is_runing = false;
-				DB.db_accounts.finalize();
+				save_world();
 				System.exit(0);
 				break;
 			//----------------------
@@ -75,5 +94,10 @@ class Server_UI extends Thread{
 				System.out.println("Unknown command");
 			}
 		}
+	}
+	
+	private void save_world() throws FileNotFoundException, UnsupportedEncodingException{
+		DB.db_accounts.commit();
+		DB.db_players.commit();
 	}
 }
