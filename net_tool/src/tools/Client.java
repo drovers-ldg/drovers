@@ -89,7 +89,7 @@ class Client_Update extends Thread
 		{
 			while(Client.is_runing)
 			{
-				Client.out.println(Long.toString(System.currentTimeMillis()));
+				Client.out.println("TIME:" + Long.toString(System.currentTimeMillis()));
 				Thread.sleep(100);
 			}
 		} 

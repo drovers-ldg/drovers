@@ -43,44 +43,19 @@ class Thread_Logic extends Thread
 		for(int i = 0; i < Server.event_buffer.size(); ++i){
 			Event tmp = Server.event_buffer.get(i);
 			
-			String [] data = null;
-			try{
-				data = tmp.data.split(":");
-			}catch(Exception e){
-				System.err.println("Incorrect package");
-				Server.event_buffer.delete(i);
-				break;
+			if(tmp.data.matches("^TIME:[0-9]+$")){
+				
 			}
-			switch(data[0])
-			{
-				// ------------------------
-				case "TIME":{
-					break;
-				}
-				// ------------------------
-				case "IN":{
-					switch(data[1])
-					{
-					case "CONNECT":
-						events_in_connect(tmp.client_id, data[2], data[3]);
-						break;
-					case "LOGOUT":
-						events_in_logout(tmp.client_id);
-						break;
-					}
-					break;
-				}
-				//-------------------------
-				case "CREATE":{
-					switch(data[1]){
-						case "PLAYER":
-							events_create_player(tmp.client_id, data[2]);
-						break;	
-					}
-				}
-				break;
-				default:{	
-				}
+			else if(tmp.data.matches("^IN:CONNECT:[a-zA-Z0-9]+:[a-zA-Z0-9]+$")){
+				String [] data = tmp.data.split(":");
+				events_in_connect(tmp.client_id, data[2], data[3]);
+			}
+			else if(tmp.data.matches("^IN:LOGOUT$")){
+				events_in_logout(tmp.client_id);
+			}
+			else if(tmp.data.matches("^CREATE:PLAYER:[a-zA-Z]+$")){
+				String [] data = tmp.data.split(":");
+				events_create_player(tmp.client_id, data[2]);
 			}
 		}
 		Server.event_buffer.clear();

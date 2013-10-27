@@ -50,7 +50,8 @@ class Thread_Socket extends Thread
 		{
 			try 
 			{
-				Server.event_buffer.add(new Event(client_id, this.socket.getPort(), "IN:LOGOUT"));
+				int account_id = Server.player_list.get(client_id).get_account_id();
+				DB.db_accounts.disconnect(account_id);		
 				System.out.println(client_addres.toString() + ":" + this.socket.getPort()  + " id:" + this.client_id + " is disconnected;");
 				this.socket.close();
 				Server.player_list.remove(this.client_id);
