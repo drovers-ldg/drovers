@@ -36,30 +36,17 @@ class Thread_Socket extends Thread
 	{
 		try
 		{		
-			while(Server.is_runing) 
+			while(this.socket.isConnected() && Server.is_runing) 
 			{  
 				String str = in.readLine();
 				Server.event_buffer.add(new Event(client_id, this.socket.getPort(), str));
 			}
 		}
-		catch(IOException e) 
-		{
-			System.out.println("Socket err: 1 - socket is forcedly closed");
+		catch(IOException e) {
 		}
-		finally
-		{
-			try 
-			{
-				int account_id = Server.player_list.get(client_id).get_account_id();
-				DB.db_accounts.disconnect(account_id);		
-				System.out.println(client_addres.toString() + ":" + this.socket.getPort()  + " id:" + this.client_id + " is disconnected;");
-				this.socket.close();
-				Server.player_list.remove(this.client_id);
-			}
-			catch(IOException e)
-			{
-				System.out.println("Socket err: 2 - socket is not be closed");
-			}
+		finally{
+			Server.event_buffer.add(new Event(client_id, this.socket.getPort(), "IN:LOGOUT"));
+			Server.event_buffer.add(new Event(client_id, this.socket.getPort(), "DISCONNECT"));
 		}
 	}
 

@@ -96,7 +96,12 @@ class DB_Accounts{
 			return db_accounts.get(account_id).compare_password(password);
 	}
 	public boolean check_login(int account_id){
-		return this.db_accounts.get(account_id).check_login();
+		if(this.db_accounts.get(account_id) != null){
+			return this.db_accounts.get(account_id).check_login();
+		}
+		else{
+			return false;
+		}
 	}
 	public void connect(int account_id){
 		this.db_accounts.get(account_id).connect();
@@ -106,6 +111,12 @@ class DB_Accounts{
 	}
 	public String get_name(int account_id){
 		return this.db_accounts.get(account_id).get_name();
+	}
+	public void show_all_accounts(){
+		System.out.println("DB:Accounts");
+		for(Account item: this.db_accounts.values()){
+			System.out.println(item.get_id()+ " " + item.get_name() + " " + item.check_login());
+		}
 	}
 }
 class Account{

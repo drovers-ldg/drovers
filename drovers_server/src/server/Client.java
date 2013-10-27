@@ -30,4 +30,13 @@ class Client{
 	public void set_account_id(int account_id){
 		this.account_id = account_id;
 	}
+	public void disconnect(){
+		if(account_id != -1){
+			DB.db_accounts.disconnect(this.account_id);
+			this.account_id = -1;
+		}
+	}
+	public boolean get_connection(){
+		return DB.db_accounts.check_login(account_id);
+	}
 }

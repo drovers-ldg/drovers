@@ -36,9 +36,10 @@ class Server_UI extends Thread{
 			System.out.println(">account add [name] [password] [password]");
 			System.out.println(">save [all\\accounts\\players]");
 			System.out.println(">connections");
+			System.out.println(">show accounts");
 			System.out.println("=====================");
 		}
-		else if(command.contains("account") && !command.matches("^save accounts$")){
+		else if(command.contains("account") && !command.matches("^save accounts$") && !command.matches("^show accounts$")){
 			if(command.matches("^account add [a-zA-Z0-9]+ [a-zA-Z0-9]+ [a-zA-Z0-9]+$")){
 				String [] new_account = command.split(" ");
 				
@@ -93,6 +94,9 @@ class Server_UI extends Thread{
 		else if(command.matches("^connections$")){
 			show_all_connections();
 		}
+		else if(command.matches("^show accounts$")){
+			show_all_accounts();
+		}
 	}
 	
 	private void save_world() throws FileNotFoundException, UnsupportedEncodingException{
@@ -100,11 +104,14 @@ class Server_UI extends Thread{
 		DB.db_players.commit();
 	}
 	private void show_all_connections(){
-		System.out.println("Connection list:");
+		System.out.println("Connection list: " + Server.player_list.size());
 		System.out.println("client_id | account_id");
 		for(Client client: Server.player_list.values()){
 			System.out.println(client.get_id() + " | " + client.get_account_id());
 		}
 		System.out.println();
+	}
+	private void show_all_accounts(){
+		DB.db_accounts.show_all_accounts();
 	}
 }

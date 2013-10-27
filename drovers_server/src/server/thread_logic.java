@@ -57,6 +57,9 @@ class Thread_Logic extends Thread
 				String [] data = tmp.data.split(":");
 				events_create_player(tmp.client_id, data[2]);
 			}
+			else if(tmp.data.matches("^DISCONNECT$")){
+				close_socket(tmp.client_id);
+			}
 		}
 		Server.event_buffer.clear();
 	}
@@ -94,10 +97,15 @@ class Thread_Logic extends Thread
 		}
 	}
 	private static void events_in_logout(int client_id){
-		int account_id = Server.player_list.get(client_id).get_account_id();
-		
-		if(DB.db_accounts.check_login(account_id) == true)
-			DB.db_accounts.disconnect(account_id);
-		System.out.println(DB.db_accounts.get_name(account_id) + " is logout by user");
+		try{
+			if(Server.player_list.get(client_id) != null)
+				Server.player_list.get(client_id).disconnect();
+		}catch(Exception e){
+			System.out.println("Disconnection err: " + e);
+		}
+	}
+	
+	private static void close_socket(int client_id){
+		Server.player_list.remove(client_id);
 	}
 }
