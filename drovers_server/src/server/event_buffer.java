@@ -23,4 +23,7 @@ class Event_Buffer{
 	public Event get(int index){
 		return this.event_buff.get(index);
 	}
+	public void delete(int index){
+		this.event_buff.remove(index);
+	}
 }

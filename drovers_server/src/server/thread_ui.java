@@ -21,7 +21,7 @@ class Server_UI extends Thread{
 			try {
 				command_process(command);
 			} catch (FileNotFoundException | UnsupportedEncodingException e) {
-				e.printStackTrace();
+				System.out.println("Thread_ui err: 1 - invalid command");
 			}
 		}
 		
@@ -29,77 +29,82 @@ class Server_UI extends Thread{
 	}
 	
 	private void command_process(String command) throws FileNotFoundException, UnsupportedEncodingException{
-		String [] in_command = command.split(" ");
-		
-		switch(in_command[0])
-		{
-			//-----------------------
-			case "help":
-				System.out.println("========HELP=========");
-				System.out.println(">shutdown");
-				System.out.println(">debug [on\\off]");
-				System.out.println(">account add [name] [password] [password]");
-				System.out.println(">save [all\\accounts\\players]");
-				System.out.println("=====================");
-				break;
-			//-----------------------			
-			case "account":
-				if(in_command[1].compareTo("add") == 0){
-					if(in_command[2] != null && in_command[3] != null && in_command[4] != null && (in_command[3].compareTo(in_command[4]) == 0)){
-						boolean add_result = DB.db_accounts.add_account(in_command[2], in_command[4]);
-						if(add_result)
-							System.out.println("Account \"" + in_command[2] + "\" is secessful created");
-						else
-							System.out.println("Account \"" + in_command[2] + "\" is already used");
-					}
-					else{
-						System.out.println("Error in entering params.");
-						System.out.println(">account add [name] [password] [password]");
-					}
+		if(command.matches("^help$")){
+			System.out.println("========HELP=========");
+			System.out.println(">shutdown");
+			System.out.println(">debug [on\\off]");
+			System.out.println(">account add [name] [password] [password]");
+			System.out.println(">save [all\\accounts\\players]");
+			System.out.println(">connections");
+			System.out.println("=====================");
+		}
+		else if(command.contains("account") && !command.matches("^save accounts$")){
+			if(command.matches("^account add [a-zA-Z0-9]+ [a-zA-Z0-9]+ [a-zA-Z0-9]+$")){
+				String [] new_account = command.split(" ");
+				
+				// check password identity
+				if(new_account[3].equals(new_account[4])){
+					boolean add_result = DB.db_accounts.add_account(new_account[2], new_account[4]);
+					if(add_result)
+						System.out.println("Account \"" + new_account[2] + "\" is secessful created");
+					else
+						System.out.println("Account \"" + new_account[2] + "\" is already used");
 				}
-				break;
-			//-----------------------
-			case "save":
-				switch(in_command[1]){
-					case "all":
-						save_world();
-						break;
-					case "accounts":
-						DB.db_accounts.commit();
-						break;
-					case "players":
-						DB.db_players.commit();
-						break;
-					default:
+				else{
+					System.out.println("passwords are different");
 				}
-						
-				break;
-			//-----------------------
-			case "debug":
-				if(in_command[1].equals("on")){
-					Server.debug = true;
-				}
-				if(in_command[1].equals("off")){
-					Server.debug = false;
-				}else{
-					System.out.println(">debug [on\\off]");
-				}
-				break;
-			//-----------------------
-			case "shutdown":
-				Server.is_runing = false;
-				save_world();
-				System.exit(0);
-				break;
-			//----------------------
-			default:{
-				System.out.println("Unknown command");
 			}
+			else{
+				System.out.println(">account add [name] [password] [password]");
+			}
+		}
+		else if(command.contains("save")){
+			if(command.matches("^save all$")){
+				save_world();
+			}
+			else if(command.matches("^save accounts$")){
+				DB.db_accounts.commit();
+			}
+			else if(command.matches("^save players$")){
+				DB.db_players.commit();
+			}
+			else{
+				System.out.println(">save [all\\accounts\\players]");
+			}
+		}
+		else if(command.contains("debug")){
+			if(command.matches("^debug on$")){
+				Server.debug = true;
+				System.out.println(">debug mode on");
+			}
+			else if(command.matches("^debug off$")){
+				Server.debug = false;
+				System.out.println(">debug mode off");
+			}
+			else{
+				System.out.println(">debug [on\\off]");
+			}
+		}
+		else if(command.matches("^shutdown$")){
+			Server.is_runing = false;
+			save_world();
+			System.exit(0);
+		}
+		else if(command.matches("^connections$")){
+			show_all_connections();
 		}
 	}
 	
 	private void save_world() throws FileNotFoundException, UnsupportedEncodingException{
 		DB.db_accounts.commit();
 		DB.db_players.commit();
+	}
+	private void show_all_connections(){
+		System.out.println("Connection list:");
+		System.out.println("client_id | account_id");
+		for(Client client: Server.player_list.values()){
+			System.out.println(client.get_id() + " | " + client.get_account_id());
+		}
+		System.out.println();
 	}
 }

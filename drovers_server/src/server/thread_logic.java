@@ -43,39 +43,44 @@ class Thread_Logic extends Thread
 		for(int i = 0; i < Server.event_buffer.size(); ++i){
 			Event tmp = Server.event_buffer.get(i);
 			
-			String [] data = tmp.data.split(":");
-			
+			String [] data = null;
+			try{
+				data = tmp.data.split(":");
+			}catch(Exception e){
+				System.err.println("Incorrect package");
+				Server.event_buffer.delete(i);
+				break;
+			}
 			switch(data[0])
 			{
 				// ------------------------
 				case "TIME":{
-					
 					break;
 				}
 				// ------------------------
 				case "IN":{
 					switch(data[1])
 					{
-						case "CONNECT":
-							events_in_connect(tmp.client_id, data[2], data[3]);
-							break;
-						case "LOGOUT":
-							System.out.println("test point");
-							events_in_logout(tmp.client_id);
-							break;
+					case "CONNECT":
+						events_in_connect(tmp.client_id, data[2], data[3]);
+						break;
+					case "LOGOUT":
+						events_in_logout(tmp.client_id);
+						break;
 					}
 					break;
 				}
 				//-------------------------
 				case "CREATE":{
-						switch(data[1]){
-							case "PLAYER":
+					switch(data[1]){
+						case "PLAYER":
 							events_create_player(tmp.client_id, data[2]);
-							break;	
-						}
+						break;	
 					}
-					break;
-				default:
+				}
+				break;
+				default:{	
+				}
 			}
 		}
 		Server.event_buffer.clear();

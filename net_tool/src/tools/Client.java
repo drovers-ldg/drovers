@@ -39,13 +39,10 @@ public class Client
     			str = in.nextLine();
     			command_process(str);
 			}
-			
-			
-			// close connection
-			out.println("END");
 		}
 		finally 
 		{
+			out.println("IN:LOGOUT");
 			socket.close();
 			in.close();
 			out.close();
@@ -54,26 +51,25 @@ public class Client
 	}
 	
 	public static void command_process(String str){
-		String [] in_command = str.split(" ");
-		
-		
-		switch(in_command[0]){
-			case "login":
-				if(in_command[1] != null && in_command[2] != null){
-					out.println("IN:CONNECT:" + in_command[1] + ":" + in_command[2]);
-				}
-				break;
-			case "logout":
-				out.println("IN:LOGOUT");
-				break;
-			case "create":
-				if(in_command[1] != null){
-					out.println("CREATE:PLAYER:" + in_command[1]);
-				}
-				break;
-			default:
-			{
-				System.out.println("Unknown command");
+		if(str.contains("login")){
+			if(str.matches("^login [a-zA-Z0-9]+ [a-zA-Z0-9]+$")){
+				String [] login = str.split(" ");
+				out.println("IN:CONNECT:"+login[1]+":"+login[2]);
+			}
+			else{
+				System.out.println(">login [account] [password]");
+			}		
+		}
+		if(str.matches("^logout$")){
+			out.println("IN:LOGOUT");
+		}
+		else if(str.contains("create")){
+			if(str.matches("^create [a-zA-Z]+$")){
+				String [] create = str.split(" ");
+				out.println("CREATE:PLAYER:" + create[1]);
+			}
+			else{
+				System.out.println(">create [player_name]");
 			}
 		}
 	}
@@ -99,7 +95,7 @@ class Client_Update extends Thread
 		} 
 		catch (InterruptedException e)
 		{
-			
+			System.out.println("Err 2");
 		}
 	}
 };
