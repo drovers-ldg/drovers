@@ -32,25 +32,35 @@ class Thread_Socket extends Thread
 			
 			String msg;
 			
-			while(Frame.is_runing)
+			while(Game.is_runing)
 			{
 				msg = in.readLine();
-				Frame.server_msg = msg.toString();
+				process_msg(msg);
 			}
 		}
 		catch (IOException e) 
 		{
-			e.printStackTrace();
+			
 		}
-		
-		// close socket
-		out.println("END");	
+		finally{
+			out.println("IN:LOGOUT");
+			try {
+				in.close();
+				out.close();
+				socket.close();
+			}catch (IOException e){
+				e.printStackTrace();
+			}
+		}	
 	}
 	
-	protected void finalize() throws Exception
-	{
-		this.socket.close();
-		this.in.close();
-		this.out.close();
+	public void process_msg(String msg){
+		if(msg.matches("^TIME:[0-9]+$")){
+			String [] tmp = msg.split(":");
+			Game.server_time = Long.parseLong(tmp[1]);
+		}
+	}
+	public void send_msg(String msg){
+		out.println(msg);
 	}
 }

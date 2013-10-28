@@ -5,7 +5,7 @@ class Drovers_Client
 {
 	public static void main(String [] args) throws Exception
 	{
-		new Frame();
-		Frame.is_runing = false;
+		new Game();
+		Game.is_runing = false;
 	}
 }

@@ -7,7 +7,7 @@ class State
 {	
 	private Graphics g;
 	private String state;
-	private Frame frame;
+	private Game frame;
 	
 	State()
 	{
@@ -15,7 +15,7 @@ class State
 		this.frame = null;
 		this.state = "menu";
 	}
-	State(Frame frame, String state)
+	State(Game frame, String state)
 	{
 		this.g = null;
 		this.frame = frame;
@@ -26,7 +26,7 @@ class State
 	{ 
 		this.g = g;
 	}
-	void set_frame(Frame frame)
+	void set_frame(Game frame)
 	{
 		this.frame = frame;
 	}
@@ -64,8 +64,8 @@ class State
 		// draw info
 		g.setColor(Color.white);
 		g.drawString("Window: " + state, 0, 10);
-		g.drawString("FPS: " + Long.toString(Frame.FPS), 0, 40);
-		g.drawString("Msg: " + Frame.server_msg, 0, 50);
-		g.drawString("Ping: " + Frame.Ping, 0, 60);
+		g.drawString("FPS: " + Long.toString(Game.FPS), 0, 40);
+		g.drawString("Msg: " + Game.server_msg, 0, 50);
+		g.drawString("Ping: " + Game.Ping, 0, 60);
 	}
 }

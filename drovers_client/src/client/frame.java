@@ -10,7 +10,7 @@ import java.io.IOException;
 
 import javax.swing.JFrame;
 
-class Frame extends Canvas implements Runnable
+class Game extends Canvas implements Runnable
 {
 	private static final long serialVersionUID = 1L;
 	
@@ -21,7 +21,8 @@ class Frame extends Canvas implements Runnable
 	public static State state;
 	
 	// Info
-	public static String server_msg = "0";
+	public static String server_msg = "";
+	public static long server_time = 0;
 	public static long Ping = 0;
 	public static long FPS = 0;
 	public static long Time = 0;
@@ -30,7 +31,7 @@ class Frame extends Canvas implements Runnable
 	public static long Frame_MAX = 60;
 	public static long Frame_Delta = 1000/Frame_MAX;
 	
-	Frame() throws IOException, InterruptedException{
+	Game() throws IOException, InterruptedException{
 		this.setPreferredSize(new Dimension(640, 480));
 		JFrame frame = new JFrame("Drovers");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -43,7 +44,7 @@ class Frame extends Canvas implements Runnable
 	}
 	
 	public void start(){
-		Frame.is_runing = true;
+		Game.is_runing = true;
 		new Thread(this).run();
 	}
 	
@@ -63,8 +64,8 @@ class Frame extends Canvas implements Runnable
 		}
 		
 		// Run main Game cycle
-		while(Frame.is_runing){
-			if(System.currentTimeMillis() - Last_Update >= Frame.Frame_Delta){
+		while(Game.is_runing){
+			if(System.currentTimeMillis() - Last_Update >= Game.Frame_Delta){
 				ping();
 				render();
 				el_FPS++;
@@ -88,7 +89,7 @@ class Frame extends Canvas implements Runnable
 	
 	protected void init()
 	{
-		Frame.Time = System.currentTimeMillis();
+		Game.Time = System.currentTimeMillis();
 		state = new State(this, "menu");
 	}
 
@@ -117,8 +118,8 @@ class Frame extends Canvas implements Runnable
 	{
 		if(System.currentTimeMillis() - Time > 100)
 		{
-			Frame.Ping = System.currentTimeMillis() - Long.parseLong(Frame.server_msg);
-			Frame.Time = System.currentTimeMillis();
+			Game.Ping = System.currentTimeMillis() - Game.server_time;
+			Game.Time = System.currentTimeMillis();
 		}
 	}
 }

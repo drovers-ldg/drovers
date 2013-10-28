@@ -18,9 +18,9 @@ class Thread_Update extends Thread
 	
 	public void run()
 	{
-		while(Frame.is_runing)
+		while(Game.is_runing)
 		{
-			out.println(Long.toString(System.currentTimeMillis()));
+			out.println("TIME:"+System.currentTimeMillis());
 			
 			try 
 			{
@@ -36,7 +36,7 @@ class Thread_Update extends Thread
 	
 	public void send(String msg)
 	{
-		if(Frame.is_runing){
+		if(Game.is_runing){
 			out.println(msg);
 		}
 	}
