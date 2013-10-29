@@ -46,6 +46,9 @@ class Thread_Logic extends Thread
 			if(tmp.data.matches("^TIME:[0-9]+$")){
 				
 			}
+			else if(tmp.data.matches("^UPDATE$")){
+				update(tmp.client_id);
+			}
 			else if(tmp.data.matches("^IN:CONNECT:[a-zA-Z0-9]+:[a-zA-Z0-9]+$")){
 				String [] data = tmp.data.split(":");
 				events_in_connect(tmp.client_id, data[2], data[3]);
@@ -107,5 +110,9 @@ class Thread_Logic extends Thread
 	
 	private static void close_socket(int client_id){
 		Server.player_list.remove(client_id);
+	}
+	
+	private static void update(int client_id){
+		Server.player_list.get(client_id).send("test text " + client_id);
 	}
 }

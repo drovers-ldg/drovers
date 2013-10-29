@@ -1,7 +1,6 @@
 package client;
 
 import java.awt.BorderLayout;
-import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -10,10 +9,10 @@ import java.io.IOException;
 
 import javax.swing.JFrame;
 
-class Game extends Canvas implements Runnable
-{
-	private static final long serialVersionUID = 1L;
-	
+
+@SuppressWarnings("serial")
+class Game extends JFrame implements Runnable
+{	
 	// status
 	public static boolean is_runing;
 	public static BufferStrategy bs;
@@ -31,15 +30,22 @@ class Game extends Canvas implements Runnable
 	public static long Frame_MAX = 60;
 	public static long Frame_Delta = 1000/Frame_MAX;
 	
-	Game() throws IOException, InterruptedException{
+	// Login options
+	public static String addres;
+	public static String login;
+	public static String password;
+	
+	Game(String addres, String login, String password) throws IOException, InterruptedException{
+		Game.addres = addres;
+		Game.login = login;
+		Game.password = password;
+		
 		this.setPreferredSize(new Dimension(640, 480));
-		JFrame frame = new JFrame("Drovers");
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setLayout(new BorderLayout());
-		frame.add(this, BorderLayout.CENTER);
-		frame.pack();
-		frame.setResizable(false);
-		frame.setVisible(true);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setLayout(new BorderLayout());
+		this.pack();
+		this.setResizable(false);
+		this.setVisible(true);
 		this.start();
 	}
 	

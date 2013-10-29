@@ -9,7 +9,7 @@ import java.net.Socket;
 
 class Thread_Update extends Thread
 {
-	private PrintWriter out;
+	private static PrintWriter out;
 	
 	Thread_Update(Socket socket) throws IOException
 	{
@@ -21,6 +21,7 @@ class Thread_Update extends Thread
 		while(Game.is_runing)
 		{
 			out.println("TIME:"+System.currentTimeMillis());
+			out.println("UPDATE");
 			
 			try 
 			{
@@ -31,13 +32,20 @@ class Thread_Update extends Thread
 				e.printStackTrace();
 			}
 		}
-		this.out.close();
 	}
 	
-	public void send(String msg)
+	public static void send(String msg)
 	{
 		if(Game.is_runing){
-			out.println(msg);
+			if(msg.contains("login")){
+				if(msg.matches("^login [a-zA-Z0-9]+ [a-zA-Z0-9]+$")){
+					String [] login = msg.split(" ");
+					out.println("IN:CONNECT:"+login[1]+":"+login[2]);
+				}
+			}
+			else if(msg.matches("^logout$")){
+				out.println("IN:LOGOUT");
+			}
 		}
 	}
 }
