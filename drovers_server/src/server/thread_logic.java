@@ -1,12 +1,18 @@
 package server;
 
+import World.*;
+
 class Thread_Logic extends Thread
 {
 	// Timer
 	private final long Logic_Update = 10;
 	private final long Logic_Delta = 1000/Logic_Update;
 	
+	// World
+	private static World world_data;
+	
 	Thread_Logic(){
+		world_data = new World();
 		this.start();
 	}
 	
@@ -46,8 +52,8 @@ class Thread_Logic extends Thread
 			if(tmp.data.matches("^TIME:[0-9]+$")){
 				
 			}
-			else if(tmp.data.matches("^UPDATE$")){
-				update(tmp.client_id);
+			else if(tmp.data.matches("^UPDATE:AREA$")){
+				update_map(tmp.client_id);
 			}
 			else if(tmp.data.matches("^IN:CONNECT:[a-zA-Z0-9]+:[a-zA-Z0-9]+$")){
 				String [] data = tmp.data.split(":");
@@ -112,7 +118,7 @@ class Thread_Logic extends Thread
 		Server.player_list.remove(client_id);
 	}
 	
-	private static void update(int client_id){
-		Server.player_list.get(client_id).send("test text " + client_id);
+	private static void update_map(int client_id){
+		world_data.world_map.get("null").Send_Map(Server.player_list.get(client_id).get_socket().get_out_stream());
 	}
 }

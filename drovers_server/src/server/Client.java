@@ -39,4 +39,7 @@ class Client{
 	public boolean get_connection(){
 		return DB.db_accounts.check_login(account_id);
 	}
+	public Thread_Socket get_socket(){
+		return this.thread;
+	}
 }

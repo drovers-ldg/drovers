@@ -49,8 +49,11 @@ class Thread_Socket extends Thread
 			Server.event_buffer.add(new Event(client_id, this.socket.getPort(), "DISCONNECT"));
 		}
 	}
-
 	public void send(String msg){
 		out.println(msg);
+	}
+	
+	public PrintWriter get_out_stream(){
+		return this.out;
 	}
 }
