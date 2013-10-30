@@ -64,16 +64,17 @@ class Thread_Socket extends Thread
 		}
 		else if(msg.matches("^LOAD:MAP:SIZE:[0-9]+:[0-9]+$")){
 			String [] tmp = msg.split(":");
-			//System.out.println(tmp[3] + "  " + tmp[4]);
+			Game.game_data.map.rebuild_size(Integer.parseInt(tmp[3]), Integer.parseInt(tmp[4]));
 		}
 		else if(msg.contains("LOAD:MAP:LINE:")){
-			String [] tmp = msg.split(":");
-			// Realize params to map_builder
-			int line_index = Integer.parseInt(tmp[3]);
 			
-			for(int i = 4; i < tmp.length; ++i){
-				int node_type = Integer.parseInt(tmp[i]);
+			String [] tmp = msg.split(":");			
+			int line_index = Integer.parseInt(tmp[3]);
+			int [] line_data = new int[Integer.parseInt(tmp[4])];
+			for(int i = 5; i < tmp.length; ++i){
+				line_data[i-5] = Integer.parseInt(tmp[i]);
 			}
+			Game.game_data.map.rebuild_line(line_index, line_data);
 		}
 		else{
 			Game.server_msg = msg;

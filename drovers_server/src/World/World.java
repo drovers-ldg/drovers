@@ -7,6 +7,6 @@ public class World {
 	
 	public World(){
 		world_map = new HashMap<String, Area_Map>();
-		world_map.put("null", new Area_Map(3, 3));
+		world_map.put("null", new Area_Map(5, 5));
 	}
 }

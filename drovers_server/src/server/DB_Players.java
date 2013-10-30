@@ -90,6 +90,7 @@ class Player{
 		this.player_id = player_id;
 		this.account_id = account_id;
 		this.player_name = player_name;
+		this.player_map_name = "null";
 	}
 	public int get_account_id(){
 		return this.account_id;

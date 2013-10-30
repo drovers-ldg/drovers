@@ -1,6 +1,7 @@
 package client;
 
 import java.awt.BorderLayout;
+import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -9,9 +10,11 @@ import java.io.IOException;
 
 import javax.swing.JFrame;
 
+import player_data.World;
+
 
 @SuppressWarnings("serial")
-class Game extends JFrame implements Runnable
+class Game extends Canvas implements Runnable
 {	
 	// status
 	public static boolean is_runing;
@@ -35,17 +38,18 @@ class Game extends JFrame implements Runnable
 	public static String login;
 	public static String password;
 	
-	Game(String addres, String login, String password) throws IOException, InterruptedException{
-		Game.addres = addres;
-		Game.login = login;
-		Game.password = password;
-		
+	// Game data
+	public static World game_data;
+	
+	Game() throws IOException, InterruptedException{
 		this.setPreferredSize(new Dimension(640, 480));
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setLayout(new BorderLayout());
-		this.pack();
-		this.setResizable(false);
-		this.setVisible(true);
+		JFrame frame = new JFrame("Drovers");
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setLayout(new BorderLayout());
+		frame.add(this, BorderLayout.CENTER);
+		frame.pack();
+		frame.setResizable(false);
+		frame.setVisible(true);
 		this.start();
 	}
 	
@@ -61,9 +65,10 @@ class Game extends JFrame implements Runnable
 		long el_FPS = 0;
 		long ElapsedTime = 0;
 		long Last_Update = 0;
+	
 		// Open socket
 		try {
-			new Thread_Socket().start();
+			new Thread_Socket().start();;
 		} 
 		catch (IOException e) {
 			e.printStackTrace();
@@ -95,7 +100,8 @@ class Game extends JFrame implements Runnable
 	protected void init()
 	{
 		Game.Time = System.currentTimeMillis();
-		state = new State(this, "menu");
+		Game.game_data = new World();
+		state = new State("menu");
 	}
 
 	protected void render()

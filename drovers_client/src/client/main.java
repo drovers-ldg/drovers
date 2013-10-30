@@ -9,14 +9,13 @@ class Drovers_Client
 	{
 		Scanner in = new Scanner(System.in);
 		System.out.print("Server addres: ");
-		String addres = in.nextLine();
+		Game.addres = in.nextLine();
 		System.out.print("Login: ");
-		String login = in.nextLine();
+		Game.login = in.nextLine();
 		System.out.print("Password: ");
-		String password = in.nextLine();
+		Game.password = in.nextLine();
 		in.close();
-		
-		new Game(addres, login, password);
-		Game.is_runing = false;
+
+		new Game();
 	}
 }

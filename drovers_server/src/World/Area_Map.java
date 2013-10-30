@@ -28,7 +28,7 @@ public class Area_Map{
 			out.println("LOAD:MAP:SIZE:"+size_x+":"+size_y);
 		
 			for(int i = 0; i < size_x; ++i){
-				String line = "LOAD:MAP:LINE:"+i+":";
+				String line = "LOAD:MAP:LINE:"+i+":"+size_y+":";
 				for(int j = 0; j < size_y; ++j)
 					line += map[i][j].type + ":";
 				out.println(line);
