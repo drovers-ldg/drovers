@@ -60,10 +60,11 @@ class Thread_Socket extends Thread
 		if(msg.matches("^TIME:[0-9]+$")){
 			String [] tmp = msg.split(":");
 			Game.server_time = Long.parseLong(tmp[1]);
+			Game.ping();
 		}
 		else if(msg.matches("^LOAD:MAP:SIZE:[0-9]+:[0-9]+$")){
 			String [] tmp = msg.split(":");
-			System.out.println(tmp[3] + "  " + tmp[4]);
+			//System.out.println(tmp[3] + "  " + tmp[4]);
 		}
 		else if(msg.contains("LOAD:MAP:LINE:")){
 			String [] tmp = msg.split(":");

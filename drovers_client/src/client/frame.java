@@ -72,7 +72,6 @@ class Game extends JFrame implements Runnable
 		// Run main Game cycle
 		while(Game.is_runing){
 			if(System.currentTimeMillis() - Last_Update >= Game.Frame_Delta){
-				ping();
 				render();
 				el_FPS++;
 				Last_Update = System.currentTimeMillis();
@@ -120,7 +119,7 @@ class Game extends JFrame implements Runnable
 		bs.show();
 	}
 	
-	protected void ping()
+	public static void ping()
 	{
 		if(System.currentTimeMillis() - Time > 100)
 		{

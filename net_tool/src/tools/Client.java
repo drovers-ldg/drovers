@@ -31,7 +31,6 @@ public class Client
 			
 			out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
 			in_server = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-			new Client_Update();
 			new Client_Listener();
 		
 			while(in.hasNextLine())
@@ -72,33 +71,12 @@ public class Client
 				System.out.println(">create [player_name]");
 			}
 		}
-	}
-}
-
-class Client_Update extends Thread
-{
-	Client_Update()
-	{
-		this.start();
-	}
-
-	public void run()
-	{	
-
-		try 
-		{
-			while(Client.is_runing)
-			{
-				Client.out.println("TIME:" + Long.toString(System.currentTimeMillis()));
-				Thread.sleep(100);
-			}
-		} 
-		catch (InterruptedException e)
-		{
-			System.out.println("Err 2");
+		else if(str.matches("^chose player [a-zA-Z]+$")){
+			String [] player = str.split(" ");
+			out.println("IN:CHOSE:PLAYER:"+player[2]);
 		}
 	}
-};
+}
 
 class Client_Listener extends Thread{
 	Client_Listener(){

@@ -17,8 +17,7 @@ class Thread_Logic extends Thread
 	}
 	
 	public void run(){
-		long Last_Update = System.currentTimeMillis();
-		
+		long Last_Update = System.currentTimeMillis();		
 		while(Server.is_runing){
 			if(System.currentTimeMillis() - Last_Update >= Logic_Delta){
 				if(Server.client_list.size() == 0){
@@ -31,7 +30,6 @@ class Thread_Logic extends Thread
 				}
 				else{
 					Thread_Logic.events_process();
-					send_time();
 				}
 				
 				Last_Update = System.currentTimeMillis();
@@ -58,6 +56,10 @@ class Thread_Logic extends Thread
 			else if(tmp.data.matches("^IN:CONNECT:[a-zA-Z0-9]+:[a-zA-Z0-9]+$")){
 				String [] data = tmp.data.split(":");
 				events_in_connect(tmp.client_id, data[2], data[3]);
+			}
+			else if(tmp.data.matches("^IN:CHOSE:PLAYER:[a-zA-Z]+$")){
+				String [] data = tmp.data.split(":");
+				events_chose_player(tmp.client_id, data[3]);
 			}
 			else if(tmp.data.matches("^IN:LOGOUT$")){
 				events_in_logout(tmp.client_id);
@@ -113,13 +115,15 @@ class Thread_Logic extends Thread
 			System.out.println("Disconnection err: " + e);
 		}
 	}
-	
 	private static void close_socket(int client_id){
 		Server.client_list.remove(client_id);
 	}
 	
 	private static void update_map(int client_id){
-		System.out.println("Map sending: " + client_id);
 		world_data.world_map.get("null").Send_Map(Server.client_list.get(client_id).get_socket().get_out_stream());
+		System.out.println("Map sending: " + client_id);
+	}
+	private static void events_chose_player(int client_id, String player_name){
+		Server.client_list.get(client_id).set_player_id(DB.db_players.search_player(Server.client_list.get(client_id).get_account_id(), player_name));
 	}
 }

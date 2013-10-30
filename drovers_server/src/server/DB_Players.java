@@ -63,7 +63,18 @@ class DB_Players{
 		out.close();
 		System.out.println("DB:players.db saved");
 	}
-	
+	public int search_player(int account_id, String player_name){
+		if(account_id != -1){
+			for(Player item: this.db_players.values()){
+				if(item.compare_name(player_name) && item.get_account_id() == account_id){
+					return item.get_id();
+				}
+			}
+			return -1;
+		}
+		else
+			return -1;
+	}
 	protected void finalize() throws FileNotFoundException{
 		commit();
 	}
@@ -73,6 +84,7 @@ class Player{
 	private int player_id;
 	private int account_id;
 	private String player_name;
+	private String player_map_name;
 	
 	Player(int player_id, int account_id, String player_name){
 		this.player_id = player_id;
@@ -87,6 +99,9 @@ class Player{
 	}
 	public String get_name(){
 		return this.player_name;
+	}
+	public String get_map(){
+		return this.player_map_name;
 	}
 	public boolean compare_name(String name){
 		return this.player_name.equals(name);
