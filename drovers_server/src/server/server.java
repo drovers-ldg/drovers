@@ -19,7 +19,7 @@ class Server
 	public static int event_id = 0;
 	public static int client_id = 0;
 	public static Event_Buffer event_buffer;
-	public static HashMap<Integer, Client> player_list; 
+	public static HashMap<Integer, Client> client_list; 
 	public static DB server_db;
 	
 	public Server() throws IOException, InterruptedException
@@ -27,7 +27,7 @@ class Server
 		// Create data sets and tools
 		server_db = new DB();
 		event_buffer = new Event_Buffer();
-		player_list = new HashMap<Integer, Client>();
+		client_list = new HashMap<Integer, Client>();
 		run_sockets();
 	}
 	
@@ -48,7 +48,7 @@ class Server
 				Socket socket = server_socket.accept();
 				try
 				{
-					player_list.put(client_id, new Client(socket));
+					client_list.put(client_id, new Client(socket));
 				}
 				catch(IOException e) 
 				{
@@ -63,10 +63,10 @@ class Server
 	}
 	
 	protected void finalize() throws IOException{
-		if(player_list.size() != 0)
+		if(client_list.size() != 0)
 		{
 			System.out.println("Err! not all connections is interupted!");
-			player_list.clear();
+			client_list.clear();
 		}
 		
 		Server.is_runing = false;

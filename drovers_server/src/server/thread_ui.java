@@ -104,9 +104,9 @@ class Server_UI extends Thread{
 		DB.db_players.commit();
 	}
 	private void show_all_connections(){
-		System.out.println("Connection list: " + Server.player_list.size());
+		System.out.println("Connection list: " + Server.client_list.size());
 		System.out.println("client_id | account_id");
-		for(Client client: Server.player_list.values()){
+		for(Client client: Server.client_list.values()){
 			System.out.println(client.get_id() + " | " + client.get_account_id());
 		}
 		System.out.println();

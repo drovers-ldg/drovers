@@ -21,7 +21,7 @@ class Thread_Logic extends Thread
 		
 		while(Server.is_runing){
 			if(System.currentTimeMillis() - Last_Update >= Logic_Delta){
-				if(Server.player_list.size() == 0){
+				if(Server.client_list.size() == 0){
 					try{
 						Thread.sleep(1000);
 					}
@@ -40,7 +40,7 @@ class Thread_Logic extends Thread
 	}
 	
 	public void send_time(){
-		for(Client value: Server.player_list.values()){
+		for(Client value: Server.client_list.values()){
 			value.send("TIME:" + Long.toString(System.currentTimeMillis()));
 		}
 	}
@@ -79,47 +79,47 @@ class Thread_Logic extends Thread
 		if(DB.db_accounts.compare_password(account_id, password) == true
 			&& DB.db_accounts.check_login(account_id) == false)
 		{	
-			Server.player_list.get(client_id).send("CONNECTION:SUCESS");
-			Server.player_list.get(client_id).set_account_id(account_id);
+			Server.client_list.get(client_id).send("CONNECTION:SUCESS");
+			Server.client_list.get(client_id).set_account_id(account_id);
 			DB.db_accounts.connect(account_id);
 			if(Server.debug)
 				System.out.println("Connection \""+account+"\" is sucess" );
 		}
 		else{
-			Server.player_list.get(client_id).send("CONNECTION:FAILED");
+			Server.client_list.get(client_id).send("CONNECTION:FAILED");
 			if(Server.debug)
 				System.out.println("Connection \""+account+"\" is failed" );
 		}
 	}
 	
 	private static void events_create_player(int client_id, String name){
-		if(Server.player_list.get(client_id).get_account_id() != -1){
-			boolean result = DB.db_players.add_player(Server.player_list.get(client_id).get_account_id(), name);
+		if(Server.client_list.get(client_id).get_account_id() != -1){
+			boolean result = DB.db_players.add_player(Server.client_list.get(client_id).get_account_id(), name);
 			if(result)
-				Server.player_list.get(client_id).send("CREATE:SUCESS");
+				Server.client_list.get(client_id).send("CREATE:SUCESS");
 			else
-				Server.player_list.get(client_id).send("CREATE:FAILED");
+				Server.client_list.get(client_id).send("CREATE:FAILED");
 		}
 		else
 		{
-			Server.player_list.get(client_id).send("CREATE:FAILED");
+			Server.client_list.get(client_id).send("CREATE:FAILED");
 		}
 	}
 	private static void events_in_logout(int client_id){
 		try{
-			if(Server.player_list.get(client_id) != null)
-				Server.player_list.get(client_id).disconnect();
+			if(Server.client_list.get(client_id) != null)
+				Server.client_list.get(client_id).disconnect();
 		}catch(Exception e){
 			System.out.println("Disconnection err: " + e);
 		}
 	}
 	
 	private static void close_socket(int client_id){
-		Server.player_list.remove(client_id);
+		Server.client_list.remove(client_id);
 	}
 	
 	private static void update_map(int client_id){
 		System.out.println("Map sending: " + client_id);
-		world_data.world_map.get("null").Send_Map(Server.player_list.get(client_id).get_socket().get_out_stream());
+		world_data.world_map.get("null").Send_Map(Server.client_list.get(client_id).get_socket().get_out_stream());
 	}
 }
