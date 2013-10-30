@@ -32,6 +32,7 @@ class Thread_Socket extends Thread
 			
 			String msg;
 			Thread_Update.send("login " + Game.login + " " + Game.password);
+			Thread_Update.send("UPDATE:AREA");
 			
 			while(Game.is_runing)
 			{
@@ -60,10 +61,24 @@ class Thread_Socket extends Thread
 			String [] tmp = msg.split(":");
 			Game.server_time = Long.parseLong(tmp[1]);
 		}
+		else if(msg.matches("^LOAD:MAP:SIZE:[0-9]+:[0-9]+$")){
+			String [] tmp = msg.split(":");
+			System.out.println(tmp[3] + "  " + tmp[4]);
+		}
+		else if(msg.contains("LOAD:MAP:LINE:")){
+			String [] tmp = msg.split(":");
+			// Realize params to map_builder
+			int line_index = Integer.parseInt(tmp[3]);
+			
+			for(int i = 4; i < tmp.length; ++i){
+				int node_type = Integer.parseInt(tmp[i]);
+			}
+		}
 		else{
 			Game.server_msg = msg;
 		}
 	}
+	
 	public void send_msg(String msg){
 		out.println(msg);
 	}

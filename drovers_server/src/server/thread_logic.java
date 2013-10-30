@@ -119,6 +119,7 @@ class Thread_Logic extends Thread
 	}
 	
 	private static void update_map(int client_id){
+		System.out.println("Map sending: " + client_id);
 		world_data.world_map.get("null").Send_Map(Server.player_list.get(client_id).get_socket().get_out_stream());
 	}
 }

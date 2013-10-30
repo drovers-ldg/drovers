@@ -31,7 +31,7 @@ public class Area_Map{
 				String line = "LOAD:MAP:LINE:"+i+":";
 				for(int j = 0; j < size_y; ++j)
 					line += map[i][j].type + ":";
-				out.print(line);
+				out.println(line);
 			}
 		}
 	}

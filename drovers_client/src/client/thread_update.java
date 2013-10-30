@@ -18,20 +18,7 @@ class Thread_Update extends Thread
 	
 	public void run()
 	{
-		while(Game.is_runing)
-		{
-			out.println("TIME:"+System.currentTimeMillis());
-			out.println("UPDATE");
-			
-			try 
-			{
-				Thread.sleep(100);
-			} 
-			catch (InterruptedException e)
-			{
-				e.printStackTrace();
-			}
-		}
+
 	}
 	
 	public static void send(String msg)
@@ -45,6 +32,9 @@ class Thread_Update extends Thread
 			}
 			else if(msg.matches("^logout$")){
 				out.println("IN:LOGOUT");
+			}
+			else{
+				out.println(msg);
 			}
 		}
 	}
