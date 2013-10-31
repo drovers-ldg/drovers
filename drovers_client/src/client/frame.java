@@ -1,25 +1,21 @@
 package client;
 
-import java.awt.BorderLayout;
 import java.awt.Canvas;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Toolkit;
 import java.awt.image.BufferStrategy;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
-
-import javax.imageio.ImageIO;
 import javax.swing.JFrame;
-
-import player_data.Sprite;
 import player_data.World;
 
 
-@SuppressWarnings("serial")
-class Game extends Canvas implements Runnable
+class Game
 {	
+	// Frame
+	private static final int FRAME_DELAY = 17;
+    public static int WIDTH = 1024;
+    public static int HEIGHT = WIDTH / 16 * 9;
+	
 	// status
 	public static boolean is_runing;
 	public static BufferStrategy bs;
@@ -33,10 +29,6 @@ class Game extends Canvas implements Runnable
 	public static long FPS = 0;
 	public static long Time = 0;
 	
-	// Timer
-	public static long Frame_MAX = 60;
-	public static long Frame_Delta = 1000/Frame_MAX;
-	
 	// Login options
 	public static String addres;
 	public static String login;
@@ -46,88 +38,19 @@ class Game extends Canvas implements Runnable
 	public static World game_data;
 	
 	Game() throws IOException, InterruptedException{
-		this.setPreferredSize(new Dimension(640, 480));
 		JFrame frame = new JFrame("Drovers");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setLayout(new BorderLayout());
-		frame.add(this, BorderLayout.CENTER);
-		frame.pack();
+		frame.setSize(WIDTH, HEIGHT);
+		
+		Canvas gui = new Canvas();
+		frame.getContentPane().add(gui);
+
 		frame.setResizable(false);
 		frame.setVisible(true);
-		this.start();
-	}
-	
-	public void start(){
-		Game.is_runing = true;
-		new Thread(this).run();
-	}
-	
-	public void run(){
-		init();
 		
-		long LastTime = System.currentTimeMillis();
-		long el_FPS = 0;
-		long ElapsedTime = 0;
-		long Last_Update = 0;
-	
-		// Open socket
-		try {
-			new Thread_Socket().start();;
-		} 
-		catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		// Run main Game cycle
-		while(Game.is_runing){
-			if(System.currentTimeMillis() - Last_Update >= Game.Frame_Delta){
-				render();
-				el_FPS++;
-				Last_Update = System.currentTimeMillis();
-			}
-			// Calculate the FPS
-			ElapsedTime = System.currentTimeMillis() - LastTime;
-			
-			if (ElapsedTime >= 1000){
-				FPS = el_FPS;
-			    el_FPS = 0;
-			    LastTime = System.currentTimeMillis();
-			}
-		}
-	}
-	
-	public void join()
-	{
-		this.join();
-	}
-	
-	protected void init()
-	{
-		Game.Time = System.currentTimeMillis();
-		Game.game_data = new World();
-		state = new State("menu");
-		addKeyListener(new key_input());
-	}
-
-	protected void render()
-	{	
-		bs = getBufferStrategy();
-		if (bs == null){
-			createBufferStrategy(2);
-			requestFocus();
-			return;
-		}
-		g = bs.getDrawGraphics();
-		
-		g.setColor(Color.black);
-		g.fillRect(0, 0, getWidth(), getHeight());
-		
-		// draw state
-		state.set_graphic(g);	
-		state.draw();
-		
-		g.dispose();
-		bs.show();
+		Thread Main_Thread = new Thread(new GameLoop(gui));
+		Main_Thread.setPriority(Thread.MIN_PRIORITY);
+		Main_Thread.start();
 	}
 	
 	public static void ping()
@@ -139,23 +62,80 @@ class Game extends Canvas implements Runnable
 		}
 	}
 	
-    
-	public Sprite getSprite(String path)
-	{
-	    BufferedImage sourceImage = null;
-	        
-	    try 
-	    {
-	        java.net.URL url = this.getClass().getClassLoader().getResource(path);
-	        sourceImage = ImageIO.read(url);
-	    } 
-	    catch (IOException e)
-	    {
-	        e.printStackTrace();
-	    }
-
-	    Sprite sprite = new Sprite(Toolkit.getDefaultToolkit().createImage(sourceImage.getSource()));
-	        
-	    return sprite;
+	private static class GameLoop implements Runnable {
+		private Canvas gui;
+		private long cycleTime;
+		
+		// FPS
+		private static long LastTime = System.currentTimeMillis();
+		private static long el_FPS = 0;
+		private static long ElapsedTime = 0;
+		@SuppressWarnings("unused")
+		private static long Last_Update = 0;
+ 
+		public GameLoop(Canvas canvas) {
+			Game.is_runing = true;
+			this.gui = canvas;
+			this.init();
+		}
+ 
+		public void run(){			
+			try{
+				new Thread_Socket().start();
+			}
+			catch (IOException e){
+				e.printStackTrace();
+			}
+			
+			cycleTime = System.currentTimeMillis();
+			gui.createBufferStrategy(2);
+			BufferStrategy strategy = gui.getBufferStrategy();
+ 
+			while (Game.is_runing) {
+				render(strategy);
+				synchFramerate();
+				
+				ElapsedTime = System.currentTimeMillis() - LastTime;
+				if (ElapsedTime >= 1000){
+					FPS = el_FPS;
+				    el_FPS = 0;
+				    LastTime = System.currentTimeMillis();
+				}
+			}
+		}
+		
+		private void init(){
+			Game.Time = System.currentTimeMillis();
+			Game.game_data = new World();
+			state = new State("menu");
+			gui.addKeyListener(new key_input());
+		}
+ 
+		private void render(BufferStrategy strategy) {
+			Graphics g = strategy.getDrawGraphics();
+ 
+			g.setColor(Color.black);
+			g.fillRect(0, 0, gui.getWidth(), gui.getHeight());
+			
+			state.set_graphic(g);	
+			state.draw();
+			
+			g.dispose();
+			strategy.show();
+			
+			el_FPS++;
+			Last_Update = System.currentTimeMillis();
+		}
+ 
+		private void synchFramerate() {
+			cycleTime = cycleTime + FRAME_DELAY;
+			long difference = cycleTime - System.currentTimeMillis();
+			try {
+				Thread.sleep(Math.max(0, difference));
+			}
+			catch(InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 }
