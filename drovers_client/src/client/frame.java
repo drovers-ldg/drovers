@@ -5,11 +5,15 @@ import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Toolkit;
 import java.awt.image.BufferStrategy;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
+import player_data.Sprite;
 import player_data.World;
 
 
@@ -102,6 +106,7 @@ class Game extends Canvas implements Runnable
 		Game.Time = System.currentTimeMillis();
 		Game.game_data = new World();
 		state = new State("menu");
+		addKeyListener(new key_input());
 	}
 
 	protected void render()
@@ -132,5 +137,25 @@ class Game extends Canvas implements Runnable
 			Game.Ping = System.currentTimeMillis() - Game.server_time;
 			Game.Time = System.currentTimeMillis();
 		}
+	}
+	
+    
+	public Sprite getSprite(String path)
+	{
+	    BufferedImage sourceImage = null;
+	        
+	    try 
+	    {
+	        java.net.URL url = this.getClass().getClassLoader().getResource(path);
+	        sourceImage = ImageIO.read(url);
+	    } 
+	    catch (IOException e)
+	    {
+	        e.printStackTrace();
+	    }
+
+	    Sprite sprite = new Sprite(Toolkit.getDefaultToolkit().createImage(sourceImage.getSource()));
+	        
+	    return sprite;
 	}
 }
