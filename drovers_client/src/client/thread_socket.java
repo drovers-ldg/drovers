@@ -9,6 +9,8 @@ import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
 
+import player_data.World;
+
 class Thread_Socket extends Thread
 {
 	protected BufferedReader in;
@@ -64,7 +66,7 @@ class Thread_Socket extends Thread
 		}
 		else if(msg.matches("^LOAD:MAP:SIZE:[0-9]+:[0-9]+$")){
 			String [] tmp = msg.split(":");
-			Game.game_data.map.rebuild_size(Integer.parseInt(tmp[3]), Integer.parseInt(tmp[4]));
+			World.map.rebuild_size(Integer.parseInt(tmp[3]), Integer.parseInt(tmp[4]));
 		}
 		else if(msg.contains("LOAD:MAP:LINE:")){
 			
@@ -74,7 +76,7 @@ class Thread_Socket extends Thread
 			for(int i = 5; i < tmp.length; ++i){
 				line_data[i-5] = Integer.parseInt(tmp[i]);
 			}
-			Game.game_data.map.rebuild_line(line_index, line_data);
+			World.map.rebuild_line(line_index, line_data);
 		}
 		else{
 			Game.server_msg = msg;

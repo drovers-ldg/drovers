@@ -5,15 +5,19 @@ import java.awt.event.KeyEvent;
 
 public class key_input extends KeyAdapter 
 {
-	public void keyPressed(KeyEvent e) {
-		if (e.getKeyCode() == KeyEvent.VK_A){
+	public void keyPressed(KeyEvent e){
 		
+		if(Game.state.get_console() && e.getKeyCode() != KeyEvent.VK_ENTER){
+			Game.state.set_console_type(e);
+		}
+		else{
+			if(e.getKeyCode() == KeyEvent.VK_ENTER){
+				Game.state.console();
+			}
 		}
 	} 	
 	
 	public void keyReleased(KeyEvent e) {	
-		if (e.getKeyCode() == KeyEvent.VK_A){
-			
-	    }
+
 	}
 }

@@ -8,7 +8,6 @@ import java.io.IOException;
 import javax.swing.JFrame;
 import player_data.World;
 
-
 class Game
 {	
 	// Frame
@@ -60,6 +59,10 @@ class Game
 			Game.Ping = System.currentTimeMillis() - Game.server_time;
 			Game.Time = System.currentTimeMillis();
 		}
+	}
+	
+	public static void process_command(String command){
+		Game.server_msg = command;
 	}
 	
 	private static class GameLoop implements Runnable {

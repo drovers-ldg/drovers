@@ -20,7 +20,7 @@ class Thread_Logic extends Thread
 		long Last_Update = System.currentTimeMillis();		
 		while(Server.is_runing){
 			if(System.currentTimeMillis() - Last_Update >= Logic_Delta){
-				if(Server.client_list.size() == 0){
+				if(Server.client_list.size() == 0 || Server.event_buffer.size() == 0){
 					try{
 						Thread.sleep(1000);
 					}
