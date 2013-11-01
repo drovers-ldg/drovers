@@ -3,6 +3,8 @@ package client;
 import java.awt.Color;
 import java.awt.Graphics;
 
+import player_data.World;
+
 class State
 {	
 	private Graphics g;
@@ -55,6 +57,6 @@ class State
 	}
 	
 	void draw_map(){
-		
+		World.map.draw_map(g);
 	}
 }

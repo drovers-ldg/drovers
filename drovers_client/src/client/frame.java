@@ -107,7 +107,7 @@ class Game
 		private void init(){
 			Game.Time = System.currentTimeMillis();
 			Game.game_data = new World();
-			state = new State("menu");
+			state = new State("map");
 			gui.addKeyListener(new key_input());
 		}
  
