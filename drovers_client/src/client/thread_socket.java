@@ -64,6 +64,10 @@ class Thread_Socket extends Thread
 			Game.server_time = Long.parseLong(tmp[1]);
 			Game.ping();
 		}
+		else if(msg.matches("^CHAT:[a-zA-Z0-9]+:[a-zA-Zà-ÿÀ-ß0-9\\s]{1,128}$")){
+			String [] tmp = msg.split(":");
+			Game.add_to_msg_log("["+tmp[1]+"]: " + tmp[2]);
+		}
 		else if(msg.matches("^LOAD:MAP:SIZE:[0-9]+:[0-9]+$")){
 			String [] tmp = msg.split(":");
 			World.map.rebuild_size(Integer.parseInt(tmp[3]), Integer.parseInt(tmp[4]));
@@ -84,6 +88,7 @@ class Thread_Socket extends Thread
 			Game.add_to_msg_log("[SERVER] Connection to \""+ Game.addres  + "\" sucess.");
 		}
 		else if(msg.matches("^CONNECTION:FAILED$")){
+			Game.state.set_state("menu");
 			Game.add_to_msg_log("[SERVER] Failed by connection.");
 		}
 		else{

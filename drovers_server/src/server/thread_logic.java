@@ -53,8 +53,10 @@ class Thread_Logic extends Thread
 			else if(tmp.data.matches("^UPDATE:AREA$")){
 				update_map(tmp.client_id);
 			}
-			else if(tmp.data.contains("^CHAT:[a-zA-Zà-ÿÀ-ß0-9\\s\\.]{1,128}$")){
-				System.out.println("CHAT: " + tmp.data);
+			else if(tmp.data.matches("^CHAT:[a-zA-Zà-ÿÀ-ß0-9\\s]{1,128}$")){
+				String [] data = tmp.data.split("^CHAT:");
+				if(data.length ==  2)
+					event_chat_msg(tmp.client_id, data[1]);
 			}
 			else if(tmp.data.matches("^IN:CONNECT:[a-zA-Z0-9]+:[a-zA-Z0-9]+$")){
 				String [] data = tmp.data.split(":");
@@ -127,5 +129,16 @@ class Thread_Logic extends Thread
 	}
 	private static void events_chose_player(int client_id, String player_name){
 		Server.client_list.get(client_id).set_player_id(DB.db_players.search_player(Server.client_list.get(client_id).get_account_id(), player_name));
+	}
+	private static void event_chat_msg(int client_id, String msg){
+		int account_id = Server.client_list.get(client_id).get_account_id();
+		if(account_id == -1)
+			return;
+		else{
+			String account_name = DB.db_accounts.get_name(account_id);
+			for(Client client: Server.client_list.values()){
+				client.send("CHAT:" + account_name + ":" + msg);
+			}
+		}
 	}
 }

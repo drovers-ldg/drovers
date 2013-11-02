@@ -91,7 +91,6 @@ class Game
 		}
 		else{
 			Thread_Update.send(command);
-			Game.add_to_msg_log(command);
 		}
 		
 	}
