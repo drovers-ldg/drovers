@@ -66,7 +66,7 @@ class Thread_Socket extends Thread
 		}
 		else if(msg.matches("^CHAT:[a-zA-Z0-9]+:[a-zA-Zà-ÿÀ-ß0-9\\s]{1,128}$")){
 			String [] tmp = msg.split(":");
-			Game.add_to_msg_log("["+tmp[1]+"]: " + tmp[2]);
+			Chat.add_to_msg_log("["+tmp[1]+"]: " + tmp[2]);
 		}
 		else if(msg.matches("^LOAD:MAP:SIZE:[0-9]+:[0-9]+$")){
 			String [] tmp = msg.split(":");
@@ -85,11 +85,11 @@ class Thread_Socket extends Thread
 			Game.server_msg = msg;
 			Thread_Update.send("UPDATE:AREA");
 			Game.state.set_state("map");
-			Game.add_to_msg_log("[SERVER] Connection to \""+ Game.addres  + "\" sucess.");
+			Chat.add_to_msg_log("[SERVER] Connection to \""+ Game.addres  + "\" sucess.");
 		}
 		else if(msg.matches("^CONNECTION:FAILED$")){
 			Game.state.set_state("menu");
-			Game.add_to_msg_log("[SERVER] Failed by connection.");
+			Chat.add_to_msg_log("[SERVER] Failed by connection.");
 		}
 		else{
 			Game.server_msg = msg;
