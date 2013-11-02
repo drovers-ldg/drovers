@@ -53,6 +53,9 @@ class Thread_Logic extends Thread
 			else if(tmp.data.matches("^UPDATE:AREA$")){
 				update_map(tmp.client_id);
 			}
+			else if(tmp.data.contains("^CHAT:[a-zA-Zà-ÿÀ-ß0-9\\s\\.]{1,128}$")){
+				System.out.println("CHAT: " + tmp.data);
+			}
 			else if(tmp.data.matches("^IN:CONNECT:[a-zA-Z0-9]+:[a-zA-Z0-9]+$")){
 				String [] data = tmp.data.split(":");
 				events_in_connect(tmp.client_id, data[2], data[3]);
@@ -81,6 +84,7 @@ class Thread_Logic extends Thread
 		if(DB.db_accounts.compare_password(account_id, password) == true
 			&& DB.db_accounts.check_login(account_id) == false)
 		{	
+			update_map(client_id);
 			Server.client_list.get(client_id).send("CONNECTION:SUCESS");
 			Server.client_list.get(client_id).set_account_id(account_id);
 			DB.db_accounts.connect(account_id);
@@ -118,10 +122,8 @@ class Thread_Logic extends Thread
 	private static void close_socket(int client_id){
 		Server.client_list.remove(client_id);
 	}
-	
 	private static void update_map(int client_id){
 		world_data.world_map.get("null").Send_Map(Server.client_list.get(client_id).get_socket().get_out_stream());
-		System.out.println("Map sending: " + client_id);
 	}
 	private static void events_chose_player(int client_id, String player_name){
 		Server.client_list.get(client_id).set_player_id(DB.db_players.search_player(Server.client_list.get(client_id).get_account_id(), player_name));

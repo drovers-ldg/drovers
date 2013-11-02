@@ -33,7 +33,8 @@ class Thread_Update extends Thread
 			else if(msg.matches("^logout$")){
 				out.println("IN:LOGOUT");
 			}
-			else{
+			else if(msg.matches("^CHAT:([a-zA-Z0-9]|\\s)+$")){
+				Game.server_msg = msg;
 				out.println(msg);
 			}
 		}

@@ -33,8 +33,8 @@ class Thread_Socket extends Thread
 			new Thread_Update(this.socket).start();
 			
 			String msg;
-			Thread_Update.send("login " + Game.login + " " + Game.password);
-			Thread_Update.send("UPDATE:AREA");
+			
+			
 			
 			while(Game.is_runing)
 			{
@@ -69,7 +69,6 @@ class Thread_Socket extends Thread
 			World.map.rebuild_size(Integer.parseInt(tmp[3]), Integer.parseInt(tmp[4]));
 		}
 		else if(msg.contains("LOAD:MAP:LINE:")){
-			
 			String [] tmp = msg.split(":");			
 			int line_index = Integer.parseInt(tmp[3]);
 			int [] line_data = new int[Integer.parseInt(tmp[4])];
@@ -77,6 +76,15 @@ class Thread_Socket extends Thread
 				line_data[i-5] = Integer.parseInt(tmp[i]);
 			}
 			World.map.rebuild_line(line_index, line_data);
+		}
+		else if(msg.matches("^CONNECTION:SUCESS$")){
+			Game.server_msg = msg;
+			Thread_Update.send("UPDATE:AREA");
+			Game.state.set_state("map");
+			Game.add_to_msg_log("[SERVER] Connection to \""+ Game.addres  + "\" sucess.");
+		}
+		else if(msg.matches("^CONNECTION:FAILED$")){
+			Game.add_to_msg_log("[SERVER] Failed by connection.");
 		}
 		else{
 			Game.server_msg = msg;

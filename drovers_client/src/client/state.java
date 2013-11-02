@@ -3,6 +3,7 @@ package client;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
 
 import player_data.World;
 
@@ -55,7 +56,7 @@ class State
 	public boolean get_console(){
 		return console_is_open;
 	}
-	void console(){
+	void console() throws IOException{
 		if(console_is_open){
 			Game.process_command(State.console_type);
 			State.console_type = "";
@@ -81,10 +82,16 @@ class State
 				
 			}
 		}
+		draw_msg_log();
 		draw_console();
 		draw_info();
 	}
-	
+	void draw_msg_log(){
+		g.setColor(Color.white);
+		for(int i = 0; i < Game.msg_log.length; ++i){
+			g.drawString(Game.msg_log[i], 0, 120+(i*10));
+		}
+	}
 	void draw_console(){
 		if(console_is_open){
 			g.setColor(Color.white);

@@ -5,7 +5,9 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 import java.io.IOException;
+
 import javax.swing.JFrame;
+
 import player_data.World;
 
 class Game
@@ -22,6 +24,7 @@ class Game
 	public static State state;
 	
 	// Info
+	public static String [] msg_log;
 	public static String server_msg = "";
 	public static long server_time = 0;
 	public static long Ping = 0;
@@ -37,6 +40,8 @@ class Game
 	public static World game_data;
 	
 	Game() throws IOException, InterruptedException{
+		Game.addres = "localhost";
+		
 		JFrame frame = new JFrame("Drovers");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(WIDTH, HEIGHT);
@@ -54,21 +59,51 @@ class Game
 	
 	public static void ping()
 	{
-		if(System.currentTimeMillis() - Time > 100)
-		{
+		if(System.currentTimeMillis() - Time > 100){
 			Game.Ping = System.currentTimeMillis() - Game.server_time;
 			Game.Time = System.currentTimeMillis();
 		}
 	}
 	
-	public static void process_command(String command){
-		Game.server_msg = command;
+	public static void process_command(String command) throws IOException{
+		if(command.contains("/")){
+			if(command.matches("^/state [a-zA-Z0-9]+$")){
+				String [] tmp = command.split(" ");
+				Game.state.set_state(tmp[1]);
+				Game.add_to_msg_log("[GAME] State changed: " + tmp[1]);
+			}
+			else if(command.matches("^/login [a-zA-Z0-9]+ [a-zA-Z0-9]+$")){
+				String [] tmp = command.split(" ");
+				Thread_Update.send("login " +tmp[1]+" "+tmp[2]);
+				Game.server_msg = "IN:CONNECT:"+tmp[1]+":"+tmp[2];
+				Game.add_to_msg_log("[GAME] Try to login.");
+			}
+			else if(command.matches("^/logout$")){
+				Thread_Update.send("IN:LOGOUT");
+				Game.add_to_msg_log("[GAME] Logout.");
+			}
+			else if(command.matches("^/connect (localhost|[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3})$")){
+				String [] tmp = command.split(" ");
+				Game.addres = tmp[1];
+			}
+			else
+				Game.add_to_msg_log("Command is not found.");
+		}
+		else{
+			Thread_Update.send(command);
+			Game.add_to_msg_log(command);
+		}
+		
+	}
+	public static void add_to_msg_log(String command){
+		for(int i = 0; i < Game.msg_log.length-1; ++i)
+			Game.msg_log[i] = Game.msg_log[i+1];
+		Game.msg_log[9] = command;
 	}
 	
-	private static class GameLoop implements Runnable {
-		private Canvas gui;
-		private long cycleTime;
-		
+	public static class GameLoop implements Runnable {
+		private static Canvas gui;
+		private static long cycleTime;
 		// FPS
 		private static long LastTime = System.currentTimeMillis();
 		private static long el_FPS = 0;
@@ -78,7 +113,7 @@ class Game
  
 		public GameLoop(Canvas canvas) {
 			Game.is_runing = true;
-			this.gui = canvas;
+			gui = canvas;
 			this.init();
 		}
  
@@ -110,13 +145,18 @@ class Game
 		private void init(){
 			Game.Time = System.currentTimeMillis();
 			Game.game_data = new World();
-			state = new State("map");
+			Game.msg_log = new String[10];
+			for(int i = 0; i < Game.msg_log.length; ++i){
+				Game.msg_log[i] = "";
+			}
+			
+			state = new State("menu");
 			gui.addKeyListener(new key_input());
 		}
  
 		private void render(BufferStrategy strategy) {
 			Graphics g = strategy.getDrawGraphics();
- 
+
 			g.setColor(Color.black);
 			g.fillRect(0, 0, gui.getWidth(), gui.getHeight());
 			
