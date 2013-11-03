@@ -28,13 +28,13 @@ public class Chat{
 			}
 		}
 		else{
-			if(State.console_type.length() < 128)
+			if(State.console_type.length() < 128 && ((e.getKeyChar() > 31 && e.getKeyChar() < 127) || (e.getKeyChar() > 1039 && e.getKeyChar() < 1120)))
 				State.console_type += e.getKeyChar();
 		}
 	}
 	
 	public static void process_command(String command) throws IOException{
-		if(command.contains("/")){
+		if(command.indexOf("/") == 0){
 			if(command.matches("^/state [a-zA-Z0-9]+$")){
 				String [] tmp = command.split(" ");
 				Game.state.set_state(tmp[1]);

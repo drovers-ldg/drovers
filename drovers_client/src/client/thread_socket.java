@@ -64,7 +64,7 @@ class Thread_Socket extends Thread
 			Game.server_time = Long.parseLong(tmp[1]);
 			Game.ping();
 		}
-		else if(msg.matches("^CHAT:[a-zA-Z0-9]+:[a-zA-Zà-ÿÀ-ß0-9\\s]{1,128}$")){
+		else if(msg.matches("^CHAT:[a-zA-Z0-9]+:[!-~¨-Ÿ\\s]{1,128}$")){
 			String [] tmp = msg.split(":");
 			Chat.add_to_msg_log("["+tmp[1]+"]: " + tmp[2]);
 		}

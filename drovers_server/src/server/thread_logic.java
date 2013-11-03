@@ -53,7 +53,7 @@ class Thread_Logic extends Thread
 			else if(tmp.data.matches("^UPDATE:AREA$")){
 				update_map(tmp.client_id);
 			}
-			else if(tmp.data.matches("^CHAT:[a-zA-Zà-ÿÀ-ß0-9\\s]{1,128}$")){
+			else if(tmp.data.matches("^CHAT:[!-~¨-Ÿ\\s]{1,128}$")){
 				String [] data = tmp.data.split("^CHAT:");
 				if(data.length ==  2)
 					event_chat_msg(tmp.client_id, data[1]);
