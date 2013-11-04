@@ -50,10 +50,6 @@ public class Chat{
 				Thread_Update.send("IN:LOGOUT");
 				Chat.add_to_msg_log("[GAME] Logout.");
 			}
-			else if(command.matches("^/connect (localhost|[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3})$")){
-				String [] tmp = command.split(" ");
-				Game.addres = tmp[1];
-			}
 			else
 				Chat.add_to_msg_log("Command is not found.");
 		}

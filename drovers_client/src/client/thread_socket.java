@@ -20,7 +20,7 @@ class Thread_Socket extends Thread
 	Thread_Socket() throws IOException
 	{
 		// port 3450
-		InetAddress server_address = InetAddress.getByName(Game.addres);
+		InetAddress server_address = InetAddress.getByName(Game.address);
 		this.socket = new Socket(server_address, 3450);
 	}
 	
@@ -85,7 +85,7 @@ class Thread_Socket extends Thread
 			Game.server_msg = msg;
 			Thread_Update.send("UPDATE:AREA");
 			Game.state.set_state("map");
-			Chat.add_to_msg_log("[SERVER] Connection to \""+ Game.addres  + "\" sucess.");
+			Chat.add_to_msg_log("[SERVER] Connection to \""+ Game.address  + "\" sucess.");
 		}
 		else if(msg.matches("^CONNECTION:FAILED$")){
 			Game.state.set_state("menu");

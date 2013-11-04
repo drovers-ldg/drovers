@@ -4,7 +4,10 @@ import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Scanner;
 
 import javax.swing.JFrame;
 
@@ -32,7 +35,7 @@ class Game
 	public static long Time = 0;
 	
 	// Login options
-	public static String addres;
+	public static String address;
 	public static String login;
 	public static String password;
 	
@@ -40,7 +43,7 @@ class Game
 	public static World game_data;
 	
 	Game() throws IOException, InterruptedException{
-		Game.addres = "localhost";
+		Game.address = "localhost";
 		
 		JFrame frame = new JFrame("Drovers");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -55,6 +58,24 @@ class Game
 		Thread Main_Thread = new Thread(new GameLoop(gui));
 		Main_Thread.setPriority(Thread.MIN_PRIORITY);
 		Main_Thread.start();
+	}
+	
+	public static void read_config() throws FileNotFoundException{
+		Scanner in = new Scanner(new File("config\\connection.conf"));
+		
+		while(in.hasNext()){
+			String str = in.nextLine();
+			if(str.contains("#address:")){
+				String [] tmp = str.split(" ");
+				tmp[1] = tmp[1].trim();
+				Game.address = tmp[1];
+			}
+			else if(str.contains("#port:")){
+				
+			}
+		}
+		
+		in.close();
 	}
 	
 	public static void ping()
