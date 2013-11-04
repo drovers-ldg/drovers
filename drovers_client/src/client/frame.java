@@ -36,6 +36,7 @@ class Game
 	
 	// Login options
 	public static String address;
+	public static int port;
 	public static String login;
 	public static String password;
 	
@@ -43,7 +44,7 @@ class Game
 	public static World game_data;
 	
 	Game() throws IOException, InterruptedException{
-		Game.address = "localhost";
+		read_config();
 		
 		JFrame frame = new JFrame("Drovers");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -66,12 +67,14 @@ class Game
 		while(in.hasNext()){
 			String str = in.nextLine();
 			if(str.contains("#address:")){
-				String [] tmp = str.split(" ");
+				String [] tmp = str.split("#address:");
 				tmp[1] = tmp[1].trim();
 				Game.address = tmp[1];
 			}
 			else if(str.contains("#port:")){
-				
+				String [] tmp = str.split("#port:");
+				tmp[1] = tmp[1].trim();
+				Game.port = Integer.parseInt(tmp[1]);
 			}
 		}
 		

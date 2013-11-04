@@ -21,7 +21,7 @@ class Thread_Socket extends Thread
 	{
 		// port 3450
 		InetAddress server_address = InetAddress.getByName(Game.address);
-		this.socket = new Socket(server_address, 3450);
+		this.socket = new Socket(server_address, Game.port);
 	}
 	
 	public void run()
