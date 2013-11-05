@@ -1,6 +1,6 @@
 package server;
 
-class Event{
+public class Event{
 	int id;
 	int client_port;
 	int client_id;
