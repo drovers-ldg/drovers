@@ -5,6 +5,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
 
+import messages.MessagesBuffer;
+
 class Server
 {
 	// Debug mode
@@ -19,6 +21,7 @@ class Server
 	public static int event_id = 0;
 	public static int client_id = 0;
 	public static Event_Buffer event_buffer;
+	public static MessagesBuffer msg_buffer;
 	public static HashMap<Integer, Client> client_list; 
 	public static DB server_db;
 	
@@ -27,6 +30,7 @@ class Server
 		// Create data sets and tools
 		server_db = new DB();
 		event_buffer = new Event_Buffer();
+		msg_buffer = new MessagesBuffer();
 		client_list = new HashMap<Integer, Client>();
 		run_sockets();
 	}

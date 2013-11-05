@@ -6,6 +6,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 import messages.Message;
+import messages.MessageIn;
 
 class Thread_Socket extends Thread
 {
@@ -32,12 +33,12 @@ class Thread_Socket extends Thread
 	{
 		try
 		{		
-			while(this.socket.isConnected() && Server.is_runing){  
+			while(this.socket.isConnected()){  
 				Object pack = in.readObject();
 				
 				if(pack instanceof Message){
 					Message msg = (Message)pack;
-					Server.event_buffer.add(new Event(client_id, this.socket.getPort(), msg.data));
+					Server.msg_buffer.add(new MessageIn(msg, client_id));
 				}
 			}
 		}
