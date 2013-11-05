@@ -63,16 +63,17 @@ class Game
 		Scanner in = new Scanner(new File("config\\connection.conf"));
 		
 		while(in.hasNext()){
-			String str = in.nextLine();
-			if(str.contains("#address:")){
-				String [] tmp = str.split("#address:");
-				tmp[1] = tmp[1].trim();
-				Game.address = tmp[1];
-			}
-			else if(str.contains("#port:")){
-				String [] tmp = str.split("#port:");
-				tmp[1] = tmp[1].trim();
-				Game.port = Integer.parseInt(tmp[1]);
+			String str = in.next();
+			
+			switch(str){
+				case "#address:":
+					Game.address = in.next();
+					break;
+				case "#port:":
+					Game.port = in.nextInt();
+					break;
+				default:
+					break;
 			}
 		}
 		

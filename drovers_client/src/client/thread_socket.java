@@ -1,53 +1,59 @@
 package client;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
 
+import messages.Message;
+import messages.Message.Type;
 import player_data.World;
 
 class Thread_Socket extends Thread
 {
-	protected BufferedReader in;
-	protected PrintWriter out;
-	protected Socket socket;
+	protected static ObjectInputStream in;
+	protected static ObjectOutputStream out;
+	protected static Socket socket;
 	
 	Thread_Socket() throws IOException
 	{
 		// port 3450
 		InetAddress server_address = InetAddress.getByName(Game.address);
-		this.socket = new Socket(server_address, Game.port);
+		socket = new Socket(server_address, Game.port);
 	}
 	
 	public void run()
 	{	
 		try
 		{
-			this.in = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
-			this.out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(this.socket.getOutputStream())), true);
-			new Thread_Update(this.socket).start();
-			
-			String msg;
-			
-			
+			in = new ObjectInputStream(socket.getInputStream());
+			out = new ObjectOutputStream(socket.getOutputStream());
+			new Thread_Update(out);
+
+			Message msg;
 			
 			while(Game.is_runing)
 			{
-				msg = in.readLine();
-				process_msg(msg);
+				msg = Message.read(in);
+				processMsg(msg);
 			}
 		}
 		catch (IOException e) 
 		{
 			
+		} 
+		catch (ClassNotFoundException e) {
+			e.printStackTrace();
 		}
 		finally{
-			out.println("IN:LOGOUT");
+			try {
+				new Message(Type.LOGOUT).send(out);
+			} 
+			catch (IOException e1) {
+				e1.printStackTrace();
+			}
+			
 			try {
 				in.close();
 				out.close();
@@ -58,45 +64,63 @@ class Thread_Socket extends Thread
 		}	
 	}
 	
-	public void process_msg(String msg){
-		if(msg.matches("^TIME:[0-9]+$")){
-			String [] tmp = msg.split(":");
-			Game.server_time = Long.parseLong(tmp[1]);
-			Game.ping();
+	public void processMsg(Message msg) throws IOException{
+		if(msg.type.equals(Message.Type.DEFAULT)){
+			msgDefault(msg.data);
 		}
-		else if(msg.matches("^CHAT:[a-zA-Z0-9]+:[!-~¨-Ÿ\\s]{1,128}$")){
-			String [] tmp = msg.split(":");
-			Chat.add_to_msg_log("["+tmp[1]+"]: " + tmp[2]);
+		else if(msg.type.equals(Message.Type.CHAT)){
+			msgChat(msg.data);
 		}
-		else if(msg.matches("^LOAD:MAP:SIZE:[0-9]+:[0-9]+$")){
-			String [] tmp = msg.split(":");
-			World.map.rebuild_size(Integer.parseInt(tmp[3]), Integer.parseInt(tmp[4]));
+		else if(msg.type.equals(Message.Type.TIME)){
+			msgTime(msg.data);
 		}
-		else if(msg.contains("LOAD:MAP:LINE:")){
-			String [] tmp = msg.split(":");			
-			int line_index = Integer.parseInt(tmp[3]);
-			int [] line_data = new int[Integer.parseInt(tmp[4])];
-			for(int i = 5; i < tmp.length; ++i){
-				line_data[i-5] = Integer.parseInt(tmp[i]);
-			}
-			World.map.rebuild_line(line_index, line_data);
+		else if(msg.type.equals(Message.Type.CONNECTIONSUCESS)){
+			msgConnectionSucess();
 		}
-		else if(msg.matches("^CONNECTION:SUCESS$")){
-			Game.server_msg = msg;
-			Thread_Update.send("UPDATE:AREA");
-			Game.state.set_state("map");
-			Chat.add_to_msg_log("[SERVER] Connection to \""+ Game.address  + "\" sucess.");
+		else if(msg.type.equals(Message.Type.CONNECTIONFAILED)){
+			msgConnectionFailed();
 		}
-		else if(msg.matches("^CONNECTION:FAILED$")){
-			Game.state.set_state("menu");
-			Chat.add_to_msg_log("[SERVER] Failed by connection.");
+		else if(msg.type.equals(Message.Type.AREASIZE)){
+			msgAreaSize(msg.data);
 		}
-		else{
-			Game.server_msg = msg;
+		else if(msg.type.equals(Message.Type.AREALINE)){
+			msgAreaLine(msg.data);
 		}
 	}
+	private void msgDefault(String data){
+		Game.server_msg = data;
+	}
+	private void msgChat(String data){
+		Chat.add_to_msg_log(data);
+	}
+	private void msgTime(String data){
+		Game.server_time = Long.parseLong(data);
+		Game.ping();
+	}
+	private void msgConnectionSucess() throws IOException{
+		new Message(Message.Type.UPDATEAREA).send(out);
+		Game.state.set_state("map");
+		Chat.add_to_msg_log("[SERVER] Connection to \""+ Game.address  + "\" sucess.");
+	}
+	private void msgConnectionFailed(){
+		Game.state.set_state("menu");
+		Chat.add_to_msg_log("[SERVER] Failed by connection.");
+	}
+	private void msgAreaSize(String data){
+		String [] tmp = data.split(":");
+		World.map.rebuild_size(Integer.parseInt(tmp[0]), Integer.parseInt(tmp[1]));
+	}
+	private void msgAreaLine(String data){
+		String [] tmp = data.split(":");			
+		int line_index = Integer.parseInt(tmp[0]);
+		int [] line_data = new int[Integer.parseInt(tmp[1])];
+		for(int i = 2; i < tmp.length; ++i){
+			line_data[i-2] = Integer.parseInt(tmp[i]);
+		}
+		World.map.rebuild_line(line_index, line_data);
+	}
 	
-	public void send_msg(String msg){
-		out.println(msg);
+	public void send(Message.Type type, String msg) throws IOException{
+		new Message(type, msg).send(out);;
 	}
 }
