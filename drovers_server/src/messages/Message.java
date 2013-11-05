@@ -6,28 +6,35 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 public class Message implements Serializable{
-
+	
 	private static final long serialVersionUID = 1L;
 	
-	public int type;
-	public int prefix;
-	public String data;
+	public enum Type {
+		// read Manual\MessageTypes.txt
+		DEFAULT,
+		TIME,
+		CHAT,
+		LOGIN,
+		LOGOUT,
+		DISCONNECT,
+		UPDATEAREA,
+		CREATEPLAYER,
+		CHOSEPLAYER
+	};
 	
-	public Message(){
-		this.type = -1;
-		this.prefix = -1;
-		this.data = null;
-	}
-	public Message(int type){
-		this();
+	public Type type = Type.DEFAULT;
+	public int prefix = -1;
+	public String data = null;
+	
+	public Message(Type type){
 		this.type = type;
 	}
-	public Message(int type, String data){
+	public Message(Type type, String data){
 		this(type);
 		this.data = data;
 	}
 	
-	public Message(int type, String data, int prefix){
+	public Message(Type type, String data, int prefix){
 		this(type, data);
 		this.prefix = prefix;
 	}

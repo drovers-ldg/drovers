@@ -9,4 +9,9 @@ public class MessageIn extends Message{
 		super(msg.type, msg.data, msg.prefix);
 		this.client_id = client_id;
 	}
+	
+	public MessageIn(Message.Type type, int client_id){
+		super(type);
+		this.client_id = client_id;
+	}
 }

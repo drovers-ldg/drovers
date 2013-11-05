@@ -48,12 +48,12 @@ class Thread_Socket extends Thread
 			e.printStackTrace();
 		}
 		finally{
-			Server.event_buffer.add(new Event(client_id, this.socket.getPort(), "IN:LOGOUT"));
-			Server.event_buffer.add(new Event(client_id, this.socket.getPort(), "DISCONNECT"));
+			Server.msg_buffer.add(new MessageIn(Message.Type.LOGOUT, client_id)); // logout
+			Server.msg_buffer.add(new MessageIn(Message.Type.DISCONNECT, client_id)); // disconnect
 		}
 	}
-	public void send(String msg) throws IOException{
-		new Message(0, msg).send(out);
+	public void send(Message.Type type, String msg) throws IOException{
+		new Message(type, msg).send(out);
 	}
 	
 	public ObjectOutputStream get_out_stream(){

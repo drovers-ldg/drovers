@@ -3,6 +3,8 @@ package server;
 import java.io.IOException;
 import java.net.Socket;
 
+import messages.Message;
+
 class Client{
 	private int client_id;
 	private int account_id;
@@ -26,9 +28,9 @@ class Client{
 	public int get_player_id(){
 		return this.player_id;
 	}
-	public void send(String msg) throws IOException{
+	public void send(Message.Type type, String msg) throws IOException{
 		if(Server.is_runing)
-			this.thread.send(msg);
+			this.thread.send(type, msg);
 	}
 	public void set_account_id(int account_id){
 		this.account_id = account_id;

@@ -3,15 +3,21 @@ package messages;
 import java.util.ArrayList;
 
 public class MessagesBuffer{
-	ArrayList<MessageIn> list;
+	private ArrayList<MessageIn> list;
 	
 	public MessagesBuffer(){
-		list = new ArrayList<MessageIn>();
+		this.list = new ArrayList<MessageIn>();
 	}
 	public void add(MessageIn msg){
-		list.add(msg);
+		this.list.add(msg);
 	}
 	public void clear(){
-		list.clear();
+		this.list.clear();
+	}
+	public int size(){
+		return this.list.size();
+	}
+	public MessageIn get(int i){
+		return this.list.get(i);
 	}
 }

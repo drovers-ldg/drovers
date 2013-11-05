@@ -28,7 +28,7 @@ public class Area_Map implements Serializable{
 		}
 	}
 	
-	public void Send_Map(PrintWriter out){
+	public void send(PrintWriter out){
 		if(out != null){
 			out.println("LOAD:MAP:SIZE:"+size_x+":"+size_y);
 		
@@ -41,7 +41,7 @@ public class Area_Map implements Serializable{
 		}
 	}
 	
-	public void Send_Map(ObjectOutputStream out) throws IOException{
+	public void send(ObjectOutputStream out) throws IOException{
 		if(out != null)
 			out.writeObject(this);
 	}

@@ -2,6 +2,8 @@ package server;
 
 import java.io.IOException;
 
+import messages.Message;
+import messages.MessageIn;
 import World.*;
 
 class Thread_Logic extends Thread
@@ -32,7 +34,7 @@ class Thread_Logic extends Thread
 				}
 				else{
 					try {
-						Thread_Logic.events_process();
+						Thread_Logic.process_events();
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
@@ -45,45 +47,45 @@ class Thread_Logic extends Thread
 	
 	public void send_time() throws IOException{
 		for(Client value: Server.client_list.values()){
-			value.send("TIME:" + Long.toString(System.currentTimeMillis()));
+			value.send(Message.Type.TIME, Long.toString(System.currentTimeMillis()));
 		}
 	}
 	
-	public static void events_process() throws IOException{
-		for(int i = 0; i < Server.event_buffer.size(); ++i){
-			Event tmp = Server.event_buffer.get(i);
+	public static void process_events() throws IOException{
+		for(int i = 0; i < Server.msg_buffer.size(); ++i){
+			MessageIn tmp = Server.msg_buffer.get(i);
 			
-			if(tmp.data.matches("^TIME:[0-9]+$")){
+			if(tmp.type.equals(Message.Type.DEFAULT)){
+				System.out.println(tmp.data);
+			}
+			else if(tmp.type.equals(Message.Type.TIME)){
 				
 			}
-			else if(tmp.data.matches("^UPDATE:AREA$")){
-				update_map(tmp.client_id);
+			else if(tmp.type.equals(Message.Type.CHAT)){
+				event_chat_msg(tmp.client_id, tmp.data);
 			}
-			else if(tmp.data.matches("^CHAT:[!-~¨-Ÿ\\s]{1,128}$")){
-				String [] data = tmp.data.split("^CHAT:");
-				if(data.length ==  2)
-					event_chat_msg(tmp.client_id, data[1]);
-			}
-			else if(tmp.data.matches("^IN:CONNECT:[a-zA-Z0-9]+:[a-zA-Z0-9]+$")){
+			else if(tmp.type.equals(Message.Type.LOGIN)){
 				String [] data = tmp.data.split(":");
-				events_in_connect(tmp.client_id, data[2], data[3]);
+				events_in_connect(tmp.client_id, data[1], data[2]);
 			}
-			else if(tmp.data.matches("^IN:CHOSE:PLAYER:[a-zA-Z]+$")){
-				String [] data = tmp.data.split(":");
-				events_chose_player(tmp.client_id, data[3]);
-			}
-			else if(tmp.data.matches("^IN:LOGOUT$")){
+			else if(tmp.type.equals(Message.Type.LOGOUT)){
 				events_in_logout(tmp.client_id);
 			}
-			else if(tmp.data.matches("^CREATE:PLAYER:[a-zA-Z]+$")){
-				String [] data = tmp.data.split(":");
-				events_create_player(tmp.client_id, data[2]);
-			}
-			else if(tmp.data.matches("^DISCONNECT$")){
+			else if(tmp.type.equals(Message.Type.DISCONNECT)){
 				close_socket(tmp.client_id);
 			}
+			else if(tmp.type.equals(Message.Type.UPDATEAREA)){
+				update_map(tmp.client_id);
+			}
+			else if(tmp.type.equals(Message.Type.CREATEPLAYER)){
+				events_create_player(tmp.client_id, tmp.data);
+			}
+			else if(tmp.type.equals(Message.Type.CHOSEPLAYER)){
+				events_chose_player(tmp.client_id, tmp.data);
+			}
+			
 		}
-		Server.event_buffer.clear();
+		Server.msg_buffer.clear();
 	}
 	
 	private static void events_in_connect(int client_id, String account, String password) throws IOException{
@@ -93,14 +95,14 @@ class Thread_Logic extends Thread
 			&& DB.db_accounts.check_login(account_id) == false)
 		{	
 			update_map(client_id);
-			Server.client_list.get(client_id).send("CONNECTION:SUCESS");
+			Server.client_list.get(client_id).send(Message.Type.DEFAULT, "CONNECTION:SUCESS");
 			Server.client_list.get(client_id).set_account_id(account_id);
 			DB.db_accounts.connect(account_id);
 			if(Server.debug)
 				System.out.println("Connection \""+account+"\" is sucess" );
 		}
 		else{
-			Server.client_list.get(client_id).send("CONNECTION:FAILED");
+			Server.client_list.get(client_id).send(Message.Type.DEFAULT, "CONNECTION:FAILED");
 			if(Server.debug)
 				System.out.println("Connection \""+account+"\" is failed" );
 		}
@@ -110,13 +112,13 @@ class Thread_Logic extends Thread
 		if(Server.client_list.get(client_id).get_account_id() != -1){
 			boolean result = DB.db_players.add_player(Server.client_list.get(client_id).get_account_id(), name);
 			if(result)
-				Server.client_list.get(client_id).send("CREATE:SUCESS");
+				Server.client_list.get(client_id).send(Message.Type.DEFAULT, "CREATE:SUCESS");
 			else
-				Server.client_list.get(client_id).send("CREATE:FAILED");
+				Server.client_list.get(client_id).send(Message.Type.DEFAULT, "CREATE:FAILED");
 		}
 		else
 		{
-			Server.client_list.get(client_id).send("CREATE:FAILED");
+			Server.client_list.get(client_id).send(Message.Type.DEFAULT, "CREATE:FAILED");
 		}
 	}
 	private static void events_in_logout(int client_id){
@@ -131,7 +133,7 @@ class Thread_Logic extends Thread
 		Server.client_list.remove(client_id);
 	}
 	private static void update_map(int client_id) throws IOException{
-		world_data.world_map.get("null").Send_Map(Server.client_list.get(client_id).get_socket().get_out_stream());
+		world_data.world_map.get("null").send(Server.client_list.get(client_id).get_socket().get_out_stream());
 	}
 	private static void events_chose_player(int client_id, String player_name){
 		Server.client_list.get(client_id).set_player_id(DB.db_players.search_player(Server.client_list.get(client_id).get_account_id(), player_name));
@@ -143,7 +145,7 @@ class Thread_Logic extends Thread
 		else{
 			String account_name = DB.db_accounts.get_name(account_id);
 			for(Client client: Server.client_list.values()){
-				client.send("CHAT:" + account_name + ":" + msg);
+				client.send(Message.Type.CHAT, account_name + ":" + msg);
 			}
 		}
 	}
