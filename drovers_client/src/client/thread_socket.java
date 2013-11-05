@@ -28,8 +28,7 @@ class Thread_Socket extends Thread
 		try
 		{
 			in = new ObjectInputStream(socket.getInputStream());
-			out = new ObjectOutputStream(socket.getOutputStream());
-			new Thread_Update(out);
+			new Sender(new ObjectOutputStream(socket.getOutputStream()));
 
 			Message msg;
 			
@@ -48,7 +47,7 @@ class Thread_Socket extends Thread
 		}
 		finally{
 			try {
-				new Message(Type.LOGOUT).send(out);
+				Sender.logout();
 			} 
 			catch (IOException e1) {
 				e1.printStackTrace();
@@ -56,7 +55,6 @@ class Thread_Socket extends Thread
 			
 			try {
 				in.close();
-				out.close();
 				socket.close();
 			}catch (IOException e){
 				e.printStackTrace();
@@ -98,7 +96,7 @@ class Thread_Socket extends Thread
 		Game.ping();
 	}
 	private void msgConnectionSucess() throws IOException{
-		new Message(Message.Type.UPDATEAREA).send(out);
+		//new Message(Message.Type.UPDATEAREA).send(out);
 		Game.state.set_state("map");
 		Chat.add_to_msg_log("[SERVER] Connection to \""+ Game.address  + "\" sucess.");
 	}

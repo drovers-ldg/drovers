@@ -2,9 +2,7 @@ package client;
 
 import java.awt.event.KeyEvent;
 import java.io.IOException;
-
 import client.Game;
-import client.Thread_Update;
 
 public class Chat{
 	Chat(){
@@ -42,19 +40,19 @@ public class Chat{
 			}
 			else if(command.matches("^/login [a-zA-Z0-9]+ [a-zA-Z0-9]+$")){
 				String [] tmp = command.split(" ");
-				Thread_Update.send("login " +tmp[1]+" "+tmp[2]);
-				Game.server_msg = "IN:CONNECT:"+tmp[1]+":"+tmp[2];
+				Sender.login(tmp[1], tmp[2]);
+				System.out.println(tmp[1]+":"+tmp[2]);
 				Chat.add_to_msg_log("[GAME] Try to login.");
 			}
 			else if(command.matches("^/logout$")){
-				Thread_Update.send("IN:LOGOUT");
+				Sender.logout();
 				Chat.add_to_msg_log("[GAME] Logout.");
 			}
 			else
 				Chat.add_to_msg_log("Command is not found.");
 		}
 		else{
-			Thread_Update.send(command);
+			Sender.send(command);
 		}
 		
 	}
