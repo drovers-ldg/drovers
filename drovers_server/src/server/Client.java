@@ -26,7 +26,7 @@ class Client{
 	public int get_player_id(){
 		return this.player_id;
 	}
-	public void send(String msg){
+	public void send(String msg) throws IOException{
 		if(Server.is_runing)
 			this.thread.send(msg);
 	}

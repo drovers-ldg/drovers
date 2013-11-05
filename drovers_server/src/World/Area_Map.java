@@ -1,7 +1,12 @@
 package World;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
+import java.io.Serializable;
 
-public class Area_Map{
+public class Area_Map implements Serializable{
+	private static final long serialVersionUID = 1L;
+	
 	public int size_x;
 	public int size_y;
 	public Node [][] map;
@@ -34,5 +39,10 @@ public class Area_Map{
 				out.println(line);
 			}
 		}
+	}
+	
+	public void Send_Map(ObjectOutputStream out) throws IOException{
+		if(out != null)
+			out.writeObject(this);
 	}
 }

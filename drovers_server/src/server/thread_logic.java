@@ -1,5 +1,7 @@
 package server;
 
+import java.io.IOException;
+
 import World.*;
 
 class Thread_Logic extends Thread
@@ -29,7 +31,11 @@ class Thread_Logic extends Thread
 					}
 				}
 				else{
-					Thread_Logic.events_process();
+					try {
+						Thread_Logic.events_process();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
 				}
 				
 				Last_Update = System.currentTimeMillis();
@@ -37,13 +43,13 @@ class Thread_Logic extends Thread
 		}
 	}
 	
-	public void send_time(){
+	public void send_time() throws IOException{
 		for(Client value: Server.client_list.values()){
 			value.send("TIME:" + Long.toString(System.currentTimeMillis()));
 		}
 	}
 	
-	public static void events_process(){
+	public static void events_process() throws IOException{
 		for(int i = 0; i < Server.event_buffer.size(); ++i){
 			Event tmp = Server.event_buffer.get(i);
 			
@@ -80,7 +86,7 @@ class Thread_Logic extends Thread
 		Server.event_buffer.clear();
 	}
 	
-	private static void events_in_connect(int client_id, String account, String password){
+	private static void events_in_connect(int client_id, String account, String password) throws IOException{
 		int account_id = DB.db_accounts.search_account(account);
 		
 		if(DB.db_accounts.compare_password(account_id, password) == true
@@ -100,7 +106,7 @@ class Thread_Logic extends Thread
 		}
 	}
 	
-	private static void events_create_player(int client_id, String name){
+	private static void events_create_player(int client_id, String name) throws IOException{
 		if(Server.client_list.get(client_id).get_account_id() != -1){
 			boolean result = DB.db_players.add_player(Server.client_list.get(client_id).get_account_id(), name);
 			if(result)
@@ -124,13 +130,13 @@ class Thread_Logic extends Thread
 	private static void close_socket(int client_id){
 		Server.client_list.remove(client_id);
 	}
-	private static void update_map(int client_id){
+	private static void update_map(int client_id) throws IOException{
 		world_data.world_map.get("null").Send_Map(Server.client_list.get(client_id).get_socket().get_out_stream());
 	}
 	private static void events_chose_player(int client_id, String player_name){
 		Server.client_list.get(client_id).set_player_id(DB.db_players.search_player(Server.client_list.get(client_id).get_account_id(), player_name));
 	}
-	private static void event_chat_msg(int client_id, String msg){
+	private static void event_chat_msg(int client_id, String msg) throws IOException{
 		int account_id = Server.client_list.get(client_id).get_account_id();
 		if(account_id == -1)
 			return;
