@@ -1,13 +1,13 @@
 package client;
 
 import java.io.IOException;
+
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
-
 import messages.Message;
-import messages.Message.Type;
+import messages.MessageDouble;
 import player_data.World;
 
 class Thread_Socket extends Thread
@@ -29,13 +29,18 @@ class Thread_Socket extends Thread
 		{
 			in = new ObjectInputStream(socket.getInputStream());
 			new Sender(new ObjectOutputStream(socket.getOutputStream()));
-
-			Message msg;
 			
 			while(Game.is_runing)
 			{
-				msg = Message.read(in);
-				processMsg(msg);
+				Object msg = in.readObject();
+				
+				
+				if(msg instanceof MessageDouble){
+					processMsg((MessageDouble)msg);
+				}
+				else if(msg instanceof Message){
+					processMsg((Message)msg);
+				} 
 			}
 		}
 		catch (IOException e) 
@@ -62,12 +67,13 @@ class Thread_Socket extends Thread
 		}	
 	}
 	
+	public void processMsg(MessageDouble msg){
+		msgChat(msg.data, msg.data2);
+	}
+	
 	public void processMsg(Message msg) throws IOException{
 		if(msg.type.equals(Message.Type.DEFAULT)){
 			msgDefault(msg.data);
-		}
-		else if(msg.type.equals(Message.Type.CHAT)){
-			msgChat(msg.data);
 		}
 		else if(msg.type.equals(Message.Type.TIME)){
 			msgTime(msg.data);
@@ -88,8 +94,8 @@ class Thread_Socket extends Thread
 	private void msgDefault(String data){
 		Game.server_msg = data;
 	}
-	private void msgChat(String data){
-		Chat.add_to_msg_log(data);
+	private void msgChat(String player, String data){
+		Chat.add_to_msg_log("["+player+"]: " + data);
 	}
 	private void msgTime(String data){
 		Game.server_time = Long.parseLong(data);

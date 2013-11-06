@@ -127,9 +127,11 @@ class Thread_Logic extends Thread
 	private static void close_socket(int client_id){
 		Server.client_list.remove(client_id);
 	}
+	
 	private static void events_chose_player(int client_id, String player_name){
 		Server.client_list.get(client_id).set_player_id(DB.db_players.search_player(Server.client_list.get(client_id).get_account_id(), player_name));
 	}
+	
 	private static void event_chat_msg(int client_id, String msg) throws IOException{
 		int account_id = Server.client_list.get(client_id).get_account_id();
 		if(account_id == -1)
@@ -137,7 +139,7 @@ class Thread_Logic extends Thread
 		else{
 			String account_name = DB.db_accounts.get_name(account_id);
 			for(Client client: Server.client_list.values()){
-				client.send(Message.Type.CHAT, account_name + ":" + msg);
+				client.send(account_name, msg);
 			}
 		}
 	}

@@ -1,11 +1,12 @@
 package server;
 
 import java.io.IOException;
+
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-
 import messages.Message;
+import messages.MessageDouble;
 import messages.MessageIn;
 
 class Thread_Socket extends Thread
@@ -50,7 +51,9 @@ class Thread_Socket extends Thread
 	public void send(Message.Type type, String msg) throws IOException{
 		new Message(type, msg).send(out);
 	}
-	
+	public void send(String player, String data) throws IOException{
+		new MessageDouble(player, data).send(out);
+	}
 	public ObjectOutputStream get_out_stream(){
 		return this.out;
 	}

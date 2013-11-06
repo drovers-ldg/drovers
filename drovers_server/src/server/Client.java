@@ -29,8 +29,10 @@ class Client{
 		return this.player_id;
 	}
 	public void send(Message.Type type, String msg) throws IOException{
-		if(Server.is_runing)
-			this.thread.send(type, msg);
+		this.thread.send(type, msg);
+	}
+	public void send(String playerName, String data) throws IOException{
+		this.thread.send(playerName, data);
 	}
 	public void set_account_id(int account_id){
 		this.account_id = account_id;
