@@ -38,15 +38,13 @@ class Thread_Socket extends Thread
 					Object msg = in.readObject();
 					
 					if(msg instanceof MessageDouble){
-						Game.server_msg = "ChatMessage";
 						processMsg((MessageDouble)msg);
 					}
 					else if(msg instanceof Message){
-						Game.server_msg = "Message";
 						processMsg((Message)msg);
 					}
 					else{
-						Game.server_msg = "Unexpected Type";
+						Game.server_msg = "Unexpected type of message";
 					}
 				}
 				else {
@@ -87,10 +85,8 @@ class Thread_Socket extends Thread
 		World.map = map;
 		Game.state.set_state("map");
 		waitMapUpdate = false;
-		Game.server_msg = "Let's play";
 	}
 	public void processMsg(Message msg) throws IOException{
-		Game.server_msg = msg.type + " " + msg.data + " " + msg.prefix;
 		if(msg.type.equals(Message.Type.DEFAULT)){
 			msgDefault(msg.data);
 		}
