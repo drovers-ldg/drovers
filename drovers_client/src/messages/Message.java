@@ -1,7 +1,6 @@
 package messages;
 
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
@@ -45,9 +44,6 @@ public class Message implements Serializable{
 	
 	public void send(ObjectOutputStream out) throws IOException{
 		out.writeObject(this);
-	}
-	
-	public static Message read(ObjectInputStream in) throws ClassNotFoundException, IOException{
-		return (Message)in.readObject();
+		out.flush();
 	}
 }

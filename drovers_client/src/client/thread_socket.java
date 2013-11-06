@@ -16,6 +16,7 @@ class Thread_Socket extends Thread
 	protected static ObjectInputStream in;
 	protected static ObjectOutputStream out;
 	protected static Socket socket;
+	protected static boolean waitMapUpdate;
 	
 	Thread_Socket() throws IOException
 	{
@@ -30,23 +31,28 @@ class Thread_Socket extends Thread
 		{
 			in = new ObjectInputStream(socket.getInputStream());
 			new Sender(new ObjectOutputStream(socket.getOutputStream()));
-			
-			Object msg;
+		
 			while(Game.is_runing)
 			{
-				msg = in.readObject();
-				
-				if(msg instanceof Area_Map){
-					Game.server_msg = "Area_Map";
-					processMsg((Area_Map)msg);
+				if(!waitMapUpdate){
+					Object msg = in.readObject();
+					
+					if(msg instanceof MessageDouble){
+						Game.server_msg = "ChatMessage";
+						processMsg((MessageDouble)msg);
+					}
+					else if(msg instanceof Message){
+						Game.server_msg = "Message";
+						processMsg((Message)msg);
+					}
+					else{
+						Game.server_msg = "Unexpected Type";
+					}
 				}
-				else if(msg instanceof MessageDouble){
-					Game.server_msg = "MessageDouble";
-					processMsg((MessageDouble)msg);
-				}
-				else if(msg instanceof Message){
-					Game.server_msg = "Message";
-					processMsg((Message)msg);
+				else {
+					Area_Map map = new Area_Map();
+					map.readExternal(in);
+					processMsg(map);
 				}
 			}
 		}
@@ -80,8 +86,11 @@ class Thread_Socket extends Thread
 	public void processMsg(Area_Map map){
 		World.map = map;
 		Game.state.set_state("map");
+		waitMapUpdate = false;
+		Game.server_msg = "Let's play";
 	}
 	public void processMsg(Message msg) throws IOException{
+		Game.server_msg = msg.type + " " + msg.data + " " + msg.prefix;
 		if(msg.type.equals(Message.Type.DEFAULT)){
 			msgDefault(msg.data);
 		}
@@ -106,6 +115,7 @@ class Thread_Socket extends Thread
 		Game.ping();
 	}
 	private void msgConnectionSucess() throws IOException{
+		waitMapUpdate = true;
 		Sender.updateMap();
 		Chat.add_to_msg_log("[SERVER] Connection to \""+ Game.address  + "\" sucess.");
 	}

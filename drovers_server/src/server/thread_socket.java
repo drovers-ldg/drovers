@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+
 import messages.Message;
 import messages.MessageDouble;
 import messages.MessageIn;
@@ -54,6 +55,6 @@ class Thread_Socket extends Thread
 		new MessageDouble(player, data).send(out);
 	}
 	public void sendMap() throws IOException{
-		Server.world.world_map.get("null").send(out);
+		Server.world.world_map.get("null").writeExternal(out);;
 	}
 }
