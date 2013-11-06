@@ -53,4 +53,7 @@ class Client{
 	public Thread_Socket get_socket(){
 		return this.thread;
 	}
+	public void sendMap() throws IOException{
+		this.thread.sendMap();
+	}
 }

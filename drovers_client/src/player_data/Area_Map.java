@@ -1,15 +1,19 @@
 package player_data;
 
 import java.awt.Graphics;
+import java.io.Serializable;
 
-public class Area_Map{
-	private int [][] map;
-	private int size_x;
-	private int size_y;
+public class Area_Map implements Serializable{
+	private static final long serialVersionUID = 61120131305L;
+	
+	public int size_x;
+	public int size_y;
+	public int [][] map;
 	
 	public Area_Map(){
 		this.size_x = 0;
 		this.size_y = 0;
+		map = null;
 	}
 	
 	public void rebuild_size(int size_x, int size_y){
@@ -17,19 +21,11 @@ public class Area_Map{
 		this.size_y = size_y;
 		this.map = new int[size_x][size_y];
 	}
-	public void rebuild_line(int line_number, int [] line_data){
-		for(int i = 0; i < line_data.length; ++i){
-			map[line_number][i] = line_data[i];
-		}
-	}
-	public int[][] get_map(){
-		return map;
-	}
+
 	public String get_type(int i, int j){
 		switch(map[i][j]){
 			case 0: return "grass";
-			case 1: return "ground";
-			
+			case 1: return "ground";		
 			default: return "null";
 		}
 	}

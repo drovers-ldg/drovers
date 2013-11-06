@@ -4,7 +4,6 @@ import java.io.IOException;
 
 import messages.Message;
 import messages.MessageIn;
-import World.*;
 
 class Thread_Logic extends Thread
 {
@@ -12,11 +11,7 @@ class Thread_Logic extends Thread
 	private final long Logic_Update = 10;
 	private final long Logic_Delta = 1000/Logic_Update;
 	
-	// World
-	private static World world_data;
-	
 	Thread_Logic(){
-		world_data = new World();
 		this.start();
 	}
 	
@@ -75,7 +70,7 @@ class Thread_Logic extends Thread
 				close_socket(tmp.client_id);
 			}
 			else if(tmp.type.equals(Message.Type.UPDATEAREA)){
-				//update_map(tmp.client_id);
+				updateMap(tmp.client_id);
 			}
 			else if(tmp.type.equals(Message.Type.CREATEPLAYER)){
 				events_create_player(tmp.client_id, tmp.data);
@@ -87,6 +82,10 @@ class Thread_Logic extends Thread
 		Server.msg_buffer.clear();
 	}
 	
+	private static void updateMap(int client_id) throws IOException {
+		Server.client_list.get(client_id).sendMap();
+	}  
+
 	private static void events_in_connect(int client_id, String account, String password) throws IOException{
 		int account_id = DB.db_accounts.search_account(account);
 		

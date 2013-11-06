@@ -1,7 +1,6 @@
 package server;
 
 import java.io.IOException;
-
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
@@ -54,7 +53,7 @@ class Thread_Socket extends Thread
 	public void send(String player, String data) throws IOException{
 		new MessageDouble(player, data).send(out);
 	}
-	public ObjectOutputStream get_out_stream(){
-		return this.out;
+	public void sendMap() throws IOException{
+		Server.world.world_map.get("null").send(out);
 	}
 }

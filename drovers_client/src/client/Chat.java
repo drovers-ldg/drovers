@@ -41,7 +41,6 @@ public class Chat{
 			else if(command.matches("^/login [a-zA-Z0-9]+ [a-zA-Z0-9]+$")){
 				String [] tmp = command.split(" ");
 				Sender.login(tmp[1], tmp[2]);
-				System.out.println(tmp[1]+":"+tmp[2]);
 				Chat.add_to_msg_log("[GAME] Try to login.");
 			}
 			else if(command.matches("^/logout$")){
