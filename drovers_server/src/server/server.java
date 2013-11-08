@@ -3,8 +3,10 @@ package server;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.sql.SQLException;
 import java.util.HashMap;
 
+import database.DataBase;
 import World.World;
 import messages.MessagesBuffer;
 
@@ -27,10 +29,12 @@ class Server
 	
 	// World data
 	public static World world;
+	public static DataBase DB;
 	
-	public Server() throws IOException, InterruptedException
+	public Server() throws IOException, InterruptedException, InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException
 	{
 		// Create data sets and tools
+		DB = new DataBase();
 		server_db = new DB();
 		msg_buffer = new MessagesBuffer();
 		client_list = new HashMap<Integer, Client>();
