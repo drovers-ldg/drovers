@@ -3,6 +3,7 @@ package server;
 import java.io.IOException;
 import java.net.Socket;
 
+import database.DBAccounts;
 import messages.Message;
 
 class Client{
@@ -42,13 +43,13 @@ class Client{
 	}
 	public void disconnect(){
 		if(account_id != -1){
-			DB.db_accounts.disconnect(this.account_id);
+			DBAccounts.disconnect(this.account_id);
 			this.account_id = -1;
 			this.player_id = -1;
 		}
 	}
 	public boolean get_connection(){
-		return DB.db_accounts.check_login(account_id);
+		return DBAccounts.map.get(account_id).online;
 	}
 	public Thread_Socket get_socket(){
 		return this.thread;

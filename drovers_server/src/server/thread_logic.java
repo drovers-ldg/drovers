@@ -2,6 +2,8 @@ package server;
 
 import java.io.IOException;
 
+import database.DBAccounts;
+import database.DBPlayers;
 import messages.Message;
 import messages.MessageIn;
 
@@ -87,13 +89,11 @@ class Thread_Logic extends Thread
 	}  
 
 	private static void events_in_connect(int client_id, String account, String password) throws IOException{
-		int account_id = DB.db_accounts.search_account(account);
 		
-		if(DB.db_accounts.compare_password(account_id, password) == true
-			&& DB.db_accounts.check_login(account_id) == false)
-		{	
+		int account_id = DBAccounts.searchId(account);
+		if(DBAccounts.comparePassword(account_id, password) && !DBAccounts.map.get(account_id).online){
 			Server.client_list.get(client_id).set_account_id(account_id);
-			DB.db_accounts.connect(account_id);
+			DBAccounts.connect(account_id);
 			Server.client_list.get(client_id).send(Message.Type.CONNECTIONSUCESS, null);
 		}
 		else{
@@ -103,14 +103,16 @@ class Thread_Logic extends Thread
 	
 	private static void events_create_player(int client_id, String name) throws IOException{
 		if(Server.client_list.get(client_id).get_account_id() != -1){
-			boolean result = DB.db_players.add_player(Server.client_list.get(client_id).get_account_id(), name);
-			if(result)
+			boolean result = DBPlayers.addPlayer(Server.client_list.get(client_id).get_account_id(), name);
+			if(result){
+				events_in_logout(client_id);
 				Server.client_list.get(client_id).send(Message.Type.DEFAULT, "CREATE:SUCESS");
-			else
+			}
+			else{
 				Server.client_list.get(client_id).send(Message.Type.DEFAULT, "CREATE:FAILED");
+			}
 		}
-		else
-		{
+		else{
 			Server.client_list.get(client_id).send(Message.Type.DEFAULT, "CREATE:FAILED");
 		}
 	}
@@ -128,17 +130,18 @@ class Thread_Logic extends Thread
 	}
 	
 	private static void events_chose_player(int client_id, String player_name){
-		Server.client_list.get(client_id).set_player_id(DB.db_players.search_player(Server.client_list.get(client_id).get_account_id(), player_name));
+		//Server.client_list.get(client_id).set_player_id(DB.db_players.search_player(Server.client_list.get(client_id).get_account_id(), player_name));
 	}
 	
 	private static void event_chat_msg(int client_id, String msg) throws IOException{
-		int account_id = Server.client_list.get(client_id).get_account_id();
-		if(account_id == -1)
+		int accountId = Server.client_list.get(client_id).get_account_id();
+		if(accountId == -1){
 			return;
+		}
 		else{
-			String account_name = DB.db_accounts.get_name(account_id);
+			String accountName = DBAccounts.map.get(accountId).accountName;
 			for(Client client: Server.client_list.values()){
-				client.send(account_name, msg);
+				client.send(accountName, msg);
 			}
 		}
 	}

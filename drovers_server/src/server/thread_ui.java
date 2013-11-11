@@ -4,6 +4,8 @@ import java.io.FileNotFoundException;
 import java.io.UnsupportedEncodingException;
 import java.util.Scanner;
 
+import database.DBAccounts;
+
 class Server_UI extends Thread{
 	
 	Server_UI(){
@@ -45,7 +47,7 @@ class Server_UI extends Thread{
 				
 				// check password identity
 				if(new_account[3].equals(new_account[4])){
-					boolean add_result = DB.db_accounts.add_account(new_account[2], new_account[4]);
+					boolean add_result = DBAccounts.addAccount(new_account[2], new_account[4]);
 					if(add_result)
 						System.out.println("Account \"" + new_account[2] + "\" is secessful created");
 					else
@@ -61,13 +63,13 @@ class Server_UI extends Thread{
 		}
 		else if(command.contains("save")){
 			if(command.matches("^save all$")){
-				save_world();
+				//
 			}
 			else if(command.matches("^save accounts$")){
-				DB.db_accounts.commit();
+				//
 			}
 			else if(command.matches("^save players$")){
-				DB.db_players.commit();
+				//
 			}
 			else{
 				System.out.println(">save [all\\accounts\\players]");
@@ -88,7 +90,6 @@ class Server_UI extends Thread{
 		}
 		else if(command.matches("^shutdown$")){
 			Server.is_runing = false;
-			save_world();
 			System.exit(0);
 		}
 		else if(command.matches("^connections$")){
@@ -98,11 +99,7 @@ class Server_UI extends Thread{
 			show_all_accounts();
 		}
 	}
-	
-	private void save_world() throws FileNotFoundException, UnsupportedEncodingException{
-		DB.db_accounts.commit();
-		DB.db_players.commit();
-	}
+
 	private void show_all_connections(){
 		System.out.println("Connection list: " + Server.client_list.size());
 		System.out.println("client_id | account_id");
@@ -112,6 +109,6 @@ class Server_UI extends Thread{
 		System.out.println();
 	}
 	private void show_all_accounts(){
-		DB.db_accounts.show_all_accounts();
+		DBAccounts.showAllAccounts();
 	}
 }
