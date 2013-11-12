@@ -42,11 +42,9 @@ class Client{
 		this.player_id = player_id;
 	}
 	public void disconnect(){
-		if(account_id != -1){
-			DBAccounts.disconnect(this.account_id);
-			this.account_id = -1;
-			this.player_id = -1;
-		}
+		DBAccounts.disconnect(this.account_id);
+		this.account_id = -1;
+		this.player_id = -1;
 	}
 	public boolean get_connection(){
 		return DBAccounts.map.get(account_id).online;

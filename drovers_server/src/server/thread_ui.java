@@ -2,6 +2,7 @@ package server;
 
 import java.io.FileNotFoundException;
 import java.io.UnsupportedEncodingException;
+import java.sql.SQLException;
 import java.util.Scanner;
 
 import database.DBAccounts;
@@ -24,13 +25,15 @@ class Server_UI extends Thread{
 				command_process(command);
 			} catch (FileNotFoundException | UnsupportedEncodingException e) {
 				System.out.println("Thread_ui err: 1 - invalid command");
+			} catch (SQLException e) {
+				System.out.println("Error in execute SQL command");
 			}
 		}
 		
 		in.close();
 	}
 	
-	private void command_process(String command) throws FileNotFoundException, UnsupportedEncodingException{
+	private void command_process(String command) throws FileNotFoundException, UnsupportedEncodingException, SQLException{
 		if(command.matches("^help$")){
 			System.out.println("========HELP=========");
 			System.out.println(">shutdown");

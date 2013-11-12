@@ -1,5 +1,6 @@
 package database;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -9,6 +10,9 @@ public class DBAccounts {
 	protected static Statement statement;
 	protected static ResultSet result;
 	public static HashMap<Integer, Account> map;
+	
+	//SQL
+	protected static String sqlInsertAccount = "INSERT INTO accounts (account_name, account_password) VALUES (?, ?)";
 	
 	DBAccounts() throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException{
 		map = new HashMap<Integer, Account>();
@@ -65,12 +69,18 @@ public class DBAccounts {
 		}
 	}
 
-	public static boolean addAccount(String accountName, String accountPassword) {
-		if(DBAccounts.searchId(accountName) == -1){
+	public static boolean addAccount(String accountName, String accountPassword) throws SQLException {
+		if(DBAccounts.searchId(accountName) != -1){
 			return false;
 		}
 		else{
 			map.put(map.size()+1, new Account(map.size()+1, accountName, accountPassword, 0));
+			
+			// Add account to MySQL
+			PreparedStatement statement = DataBase.connectionAccounts.prepareStatement(sqlInsertAccount);
+			statement.setString(1, accountName);
+			statement.setString(2, accountPassword);
+			statement.execute();
 			return true;
 		}
 	}

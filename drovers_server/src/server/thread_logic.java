@@ -1,6 +1,7 @@
 package server;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 import database.DBAccounts;
 import database.DBPlayers;
@@ -34,6 +35,8 @@ class Thread_Logic extends Thread
 						Thread_Logic.processEvents();
 					} catch (IOException e) {
 						e.printStackTrace();
+					} catch (SQLException e) {
+						e.printStackTrace();
 					}
 				}
 				
@@ -48,7 +51,7 @@ class Thread_Logic extends Thread
 		}
 	}
 	
-	public static void processEvents() throws IOException{
+	public static void processEvents() throws IOException, SQLException{
 		for(int i = 0; i < Server.msg_buffer.size(); ++i){
 			MessageIn tmp = Server.msg_buffer.get(i);
 			
@@ -92,6 +95,9 @@ class Thread_Logic extends Thread
 		
 		int account_id = DBAccounts.searchId(account);
 		if(DBAccounts.comparePassword(account_id, password) && !DBAccounts.map.get(account_id).online){
+			if(Server.client_list.get(client_id).get_account_id() != -1){
+				Server.client_list.get(client_id).disconnect();
+			}
 			Server.client_list.get(client_id).set_account_id(account_id);
 			DBAccounts.connect(account_id);
 			Server.client_list.get(client_id).send(Message.Type.CONNECTIONSUCESS, null);
@@ -101,7 +107,7 @@ class Thread_Logic extends Thread
 		}
 	}
 	
-	private static void events_create_player(int client_id, String name) throws IOException{
+	private static void events_create_player(int client_id, String name) throws IOException, SQLException{
 		if(Server.client_list.get(client_id).get_account_id() != -1){
 			boolean result = DBPlayers.addPlayer(Server.client_list.get(client_id).get_account_id(), name);
 			if(result){
