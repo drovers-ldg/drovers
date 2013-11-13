@@ -12,7 +12,8 @@ public class DBPlayers {
 	public static HashMap<Integer, Player> map;
 	
 	// SQL
-	protected static String sqlInsertPlayer = "INSERT INTO players (account_id, player_name) VALUES (?, ?)";
+	protected final static String sqlInsertPlayer = "INSERT INTO players (account_id, player_name) VALUES (?, ?)";
+	protected final static String sqlDeletePlayer = "DELETE FROM players WHERE id = ?";
 	
 	DBPlayers() throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException{
 		map = new HashMap<Integer, Player>();
@@ -61,8 +62,27 @@ public class DBPlayers {
 		statement.setInt(1, accountId);
 		statement.setString(2, playerName);
 		statement.execute();
-		
 		return true;
+	}
+	
+	public static boolean deletePlayer(int accountId, String playerName) throws SQLException{
+		for(Player item: map.values()){
+			if(item.playerName.equals(playerName)){
+				int id = item.id;
+				DBPlayers.map.remove(id);
+				PreparedStatement statement = DataBase.connectionAccounts.prepareStatement(sqlDeletePlayer);
+				statement.setInt(1, id);
+				statement.execute();
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public static void showAllPlayers() {
+		for(Player item: map.values()){
+			System.out.println("id: " + item.id + "\tName: " + item.playerName + "\tAccountId: " + item.accountId );
+		}
 	}
 }
 

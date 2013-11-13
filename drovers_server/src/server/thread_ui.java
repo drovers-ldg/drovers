@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.Scanner;
 
 import database.DBAccounts;
+import database.DBPlayers;
 
 class Server_UI extends Thread{
 	
@@ -39,9 +40,8 @@ class Server_UI extends Thread{
 			System.out.println(">shutdown");
 			System.out.println(">debug [on\\off]");
 			System.out.println(">account add [name] [password] [password]");
-			System.out.println(">save [all\\accounts\\players]");
-			System.out.println(">connections");
-			System.out.println(">show accounts");
+			System.out.println(">player add [account] [name]");
+			System.out.println(">show [accounts\\players\\connections]");
 			System.out.println("=====================");
 		}
 		else if(command.contains("account") && !command.matches("^save accounts$") && !command.matches("^show accounts$")){
@@ -64,18 +64,21 @@ class Server_UI extends Thread{
 				System.out.println(">account add [name] [password] [password]");
 			}
 		}
-		else if(command.contains("save")){
-			if(command.matches("^save all$")){
-				//
-			}
-			else if(command.matches("^save accounts$")){
-				//
-			}
-			else if(command.matches("^save players$")){
-				//
-			}
-			else{
-				System.out.println(">save [all\\accounts\\players]");
+		else if(command.matches("^show (accounts)|(players)|(connections)$")){
+			String [] tmp = command.split(" ");
+			switch(tmp[1]){
+			case "accounts":
+				show_all_accounts();
+				break;
+			case "players":
+				show_all_players();
+				break;
+			case "connections":
+				show_all_connections();
+				break;
+			case "":
+			default:
+				System.out.println(">show [accounts\\players\\connections]");
 			}
 		}
 		else if(command.contains("debug")){
@@ -95,12 +98,10 @@ class Server_UI extends Thread{
 			Server.is_runing = false;
 			System.exit(0);
 		}
-		else if(command.matches("^connections$")){
-			show_all_connections();
-		}
-		else if(command.matches("^show accounts$")){
-			show_all_accounts();
-		}
+	}
+
+	private void show_all_players() {
+		DBPlayers.showAllPlayers();
 	}
 
 	private void show_all_connections(){

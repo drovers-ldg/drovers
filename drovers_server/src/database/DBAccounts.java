@@ -12,7 +12,7 @@ public class DBAccounts {
 	public static HashMap<Integer, Account> map;
 	
 	//SQL
-	protected static String sqlInsertAccount = "INSERT INTO accounts (account_name, account_password) VALUES (?, ?)";
+	protected final static String sqlInsertAccount = "INSERT INTO accounts (account_name, account_password) VALUES (?, ?)";
 	
 	DBAccounts() throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException{
 		map = new HashMap<Integer, Account>();
