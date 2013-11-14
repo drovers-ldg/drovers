@@ -12,34 +12,46 @@ public class DataBase{
 	
 	// Connections
 	public static Connection connectionAccounts;
+	public static Connection connectionUnits;
 	public static DBAccounts accounts;
 	public static DBPlayers players;
+	public static DBUnits units;
 	
 	// Setup
 	public static String mysqlAddress;
 	public static String mysqlPort;
 	public static String mysqlUser;
 	public static String mysqlPassword;
+	// DB paths
 	public static String mysqlDBAccounts;
+	public static String mysqlDBUnits;
 	
 	public DataBase() throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException, FileNotFoundException{
+		System.out.println("---------------MySQL---------------");
 		readConfig();
 		
-		Properties setup = new Properties();
-		setup.put("characterEncoding","UTF8");
-		setup.put("user", mysqlUser);
-		setup.put("password", mysqlPassword);
-		String url = "jdbc:mysql://"+mysqlAddress+":"+mysqlPort+"/"+mysqlDBAccounts;
 		try{
-			connectionAccounts = DriverManager.getConnection(url, setup);
+			Properties setup = new Properties();
+			setup.put("characterEncoding","UTF8");
+			setup.put("user", mysqlUser);
+			setup.put("password", mysqlPassword);
+			
+			String urlAccounts 	= "jdbc:mysql://"+mysqlAddress+":"+mysqlPort+"/"+mysqlDBAccounts;
+			String urlUnits 	= "jdbc:mysql://"+mysqlAddress+":"+mysqlPort+"/"+mysqlDBUnits;
+			
+			// Set connections from MySQL
+			connectionAccounts 	= DriverManager.getConnection(urlAccounts, setup);
+			connectionUnits 	= DriverManager.getConnection(urlUnits, setup);
 			// add other connections here
 		}
 		catch(Exception e){
 			System.out.println("MySQL connection error. Check MySQL server status.");
 		}
-		
+		System.out.println("---------------DB Status-----------");
 		accounts = new DBAccounts();
-		players = new DBPlayers();
+		players	= new DBPlayers();
+		units = new DBUnits();
+		System.out.println("-----------------------------------");
 	}
 	
 	protected void readConfig() throws FileNotFoundException{
@@ -69,6 +81,10 @@ public class DataBase{
 					mysqlDBAccounts = data;
 					System.out.println("mysqlDBAccounts:" + mysqlDBAccounts);
 					break;
+				case "#MySQL_Units_DB:":
+					mysqlDBUnits = data;
+					System.out.println("mysqlDBUnits:" + mysqlDBUnits);
+					break;
 				default:
 					break;
 			}
@@ -79,6 +95,9 @@ public class DataBase{
 	protected void finalize() throws SQLException{
 		if(connectionAccounts != null){
 			connectionAccounts.close();
+		}
+		if(connectionUnits != null){
+			connectionUnits.close();
 		}
 	}
 }
