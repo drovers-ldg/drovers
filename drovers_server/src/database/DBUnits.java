@@ -12,6 +12,10 @@ class DBUnits{
 	protected static ResultSet result;
 	public static HashMap<Integer, Unit> map;
 		
+	// SQL
+	protected final static String sqlInsertUnit = "INSERT INTO units (player_id, name, map_id, x, y, z, body_id, code_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+	protected final static String sqlDeleteUnit = "DELETE FROM units WHERE id = ?";
+	
 	DBUnits() throws SQLException{
 		map = new HashMap<Integer, Unit>();
 		readTable();
@@ -35,7 +39,7 @@ class DBUnits{
 												  result.getInt("body_id"),
 												  result.getInt("code_id")));
 		}
-		System.out.println("DB.Units loaded;");
+		System.out.println("DB.Units loaded. Fields: " + map.size());
 	}
 	
 	protected void finalize() throws SQLException{

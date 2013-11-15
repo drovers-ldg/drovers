@@ -13,7 +13,7 @@ public class DBAccounts {
 	
 	//SQL
 	protected final static String sqlInsertAccount = "INSERT INTO accounts (account_name, account_password) VALUES (?, ?)";
-	
+
 	DBAccounts() throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException{
 		map = new HashMap<Integer, Account>();
 		readTable();
@@ -31,7 +31,7 @@ public class DBAccounts {
 													 result.getString("account_password"), 
 													 result.getInt("gm")));
 		}
-		System.out.println("DB.Accounts loaded;");
+		System.out.println("DB.Accounts loaded. Fields: " + map.size());
 	}
 	
 	protected void finalize() throws SQLException{
@@ -81,6 +81,7 @@ public class DBAccounts {
 			statement.setString(1, accountName);
 			statement.setString(2, accountPassword);
 			statement.execute();
+			System.out.println("Account added;\n");
 			return true;
 		}
 	}
