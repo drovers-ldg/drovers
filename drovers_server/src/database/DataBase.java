@@ -13,12 +13,9 @@ public class DataBase{
 	// Connections
 	public static Connection connectionAccounts;
 	public static Connection connectionUnits;
-	
-	// DB's
 	public static DBAccounts accounts;
 	public static DBPlayers players;
 	public static DBUnits units;
-	public static DBItems items;
 	
 	// Setup
 	public static String mysqlAddress;
@@ -54,7 +51,6 @@ public class DataBase{
 		accounts = new DBAccounts();
 		players	= new DBPlayers();
 		units = new DBUnits();
-		items = new DBItems();
 		System.out.println("-----------------------------------");
 	}
 	
@@ -67,19 +63,19 @@ public class DataBase{
 			switch(str){
 				case "#MySQL_Address:":
 					mysqlAddress = data;
-					System.out.println("mysqlAddress:\t" + mysqlAddress);
+					System.out.println("mysqlAddress:" + mysqlAddress);
 					break;
 				case "#MySQL_Port:":
 					mysqlPort = data;
-					System.out.println("mysqlAddress:\t" + mysqlPort);
+					System.out.println("mysqlAddress:" + mysqlPort);
 					break;
 				case "#MySQL_User:":
 					mysqlUser = data;
-					System.out.println("mysqlUser:\t" + mysqlUser);
+					System.out.println("mysqlUser:" + mysqlUser);
 					break;
 				case "#MySQL_Password:":
 					mysqlPassword = data;
-					System.out.println("mysqlPassword:\t" + mysqlPassword);
+					System.out.println("mysqlPassword:" + mysqlPassword);
 					break;
 				case "#MySQL_Accounts_DB:":
 					mysqlDBAccounts = data;
@@ -87,7 +83,7 @@ public class DataBase{
 					break;
 				case "#MySQL_Units_DB:":
 					mysqlDBUnits = data;
-					System.out.println("mysqlDBUnits:\t" + mysqlDBUnits);
+					System.out.println("mysqlDBUnits:" + mysqlDBUnits);
 					break;
 				default:
 					break;

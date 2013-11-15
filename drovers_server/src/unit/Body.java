@@ -1,11 +1,11 @@
 package unit;
 
 public class Body{
-	public enum bodyType {
+	enum bodyType {
 		SMALL,MEDIUM,HEAVY,
 	};
 	
-	public enum slotType {
+	enum slotType {
 		FREE,SOURCECARD,ENGINE,FUEL,ARMOR,WEAPON,AMMO,SENSOR, 	
 	};
 	
@@ -99,7 +99,6 @@ class BodyType{
 }
 class SlotType{
 	public Body.slotType type;
-	public int item_id;
 	
 	SlotType(Body.slotType type){
 		this.type = type;
