@@ -31,7 +31,7 @@ public class DBPlayers {
 													result.getInt("account_id"),
 													result.getString("player_name")));
 		}
-		System.out.println("DB.Players loaded;");
+		System.out.println("DB.Players loaded. Fields: " + map.size());
 	}
 	
 	protected void finalize() throws SQLException{
@@ -62,6 +62,7 @@ public class DBPlayers {
 		statement.setInt(1, accountId);
 		statement.setString(2, playerName);
 		statement.execute();
+	
 		return true;
 	}
 	

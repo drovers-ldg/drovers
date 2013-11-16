@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.Scanner;
 
 import database.DBAccounts;
+import database.DBItems;
 import database.DBPlayers;
 
 class Server_UI extends Thread{
@@ -38,55 +39,109 @@ class Server_UI extends Thread{
 		if(command.matches("^help$")){
 			System.out.println("========HELP=========");
 			System.out.println(">shutdown");
-			System.out.println(">debug [on\\off]");
-			System.out.println(">account add [name] [password] [password]");
-			System.out.println(">player add [account] [name]");
-			System.out.println(">show [accounts\\players\\connections]");
+			System.out.println(">debug [on|off]");
+			System.out.println(">add [account|item|player]");
+			System.out.println(">show [accounts|players|connections|items]");
 			System.out.println("=====================");
 		}
-		else if(command.contains("account") && !command.matches("^save accounts$") && !command.matches("^show accounts$")){
-			if(command.matches("^account add [a-zA-Z0-9]+ [a-zA-Z0-9]+ [a-zA-Z0-9]+$")){
-				String [] new_account = command.split(" ");
+		else if(command.contains("add")){
+			if(command.matches("^add account [a-zA-Z]+ [a-zA-Z0-9]+ [a-zA-Z0-9]+$")){
+				// account_name, password, password
+				String [] tmp = command.split(" ");
 				
-				// check password identity
-				if(new_account[3].equals(new_account[4])){
-					boolean add_result = DBAccounts.addAccount(new_account[2], new_account[4]);
-					if(add_result)
-						System.out.println("Account \"" + new_account[2] + "\" is secessful created");
-					else
-						System.out.println("Account \"" + new_account[2] + "\" is already used");
+				if(tmp[2] != null && tmp[3] != null && tmp[4] != null){
+					if(tmp[3].equals(tmp[4])){
+						boolean add_result = DBAccounts.addAccount(tmp[2], tmp[3]);
+						
+						if(add_result)
+							System.out.println("Account \"" + tmp[2] + "\" is secessful created");
+						else
+							System.out.println("Account \"" + tmp[2] + "\" is already used");
+					}
+					else{
+						System.out.println(">Different passwords;");
+					}
 				}
 				else{
-					System.out.println("passwords are different");
+					System.out.println(">add account [account] [password] [password]");
 				}
 			}
-			else{
-				System.out.println(">account add [name] [password] [password]");
+			else if(command.matches("^add player [a-zA-Z]+ [a-zA-Z]+$")){
+				String [] tmp = command.split(" ");
+				
+				int accountId = DBAccounts.searchId(tmp[2]);
+				if(accountId != -1){
+					boolean result = DBPlayers.addPlayer(accountId, tmp[3]);
+					if(result)
+						System.out.println("Player " + tmp[3] + " created;");
+					else
+						System.out.println("Player " + tmp[3] + " already created :(;");
+				}
+				else{
+					System.out.println("Wrong Account name;");
+				}
+			}
+			else if(command.matches("^add player [0-9]+ [a-zA-Z]+$")){
+				String [] tmp = command.split(" ");
+				
+				int accountId = Integer.parseInt(tmp[2]);
+				boolean result = DBPlayers.addPlayer(accountId, tmp[3]);
+				if(result)
+					System.out.println("Player " + tmp[3] + " created;");
+				else
+					System.out.println("Player " + tmp[3] + " already created :(;");
+			}
+			else if(command.matches("^add item [0-9]+ [_a-zA-Z]+ [0-9]+ [0-9]+$")){
+				String [] tmp = command.split(" ");
+				
+				// itemType, Name, weight, modelId
+				if(tmp[2] != null && tmp[3] != null && tmp[4] != null && tmp[5] != null){
+					int itemType = Integer.parseInt(tmp[2]);
+					int weight = Integer.parseInt(tmp[4]);
+					int modelId = Integer.parseInt(tmp[5]);
+					tmp[3] = tmp[3].replace("_", " "); // change '_' -> ' ';
+					
+					if(itemType > 0 || weight > 0 || modelId > 0){
+						DBItems.addItem(itemType, tmp[3], weight, modelId);
+					}
+					else{
+						System.out.println(">Item Type, Weight, ModelId > 0 only");
+					}
+				}
+				else{
+					System.out.println(">add item [itemType] [Item_name] [weight] [modelId]");
+				}
 			}
 		}
-		else if(command.matches("^show (accounts)|(players)|(connections)$")){
+		else if(command.matches("^show [a-z]+$")){
 			String [] tmp = command.split(" ");
 			switch(tmp[1]){
 			case "accounts":
-				show_all_accounts();
+				System.out.println("--------Accounts-----");
+				DBAccounts.showAllAccounts();
 				break;
 			case "players":
-				show_all_players();
+				System.out.println("--------Players------");
+				DBPlayers.showAllPlayers();
 				break;
 			case "connections":
 				show_all_connections();
+				
 				break;
-			case "":
+			case "items":
+				System.out.println("--------Items--------");
+				DBItems.showAllItems();
+				break;
 			default:
-				System.out.println(">show [accounts\\players\\connections]");
+				System.out.println(">show [accounts\\players\\connections\\items]");
 			}
 		}
 		else if(command.contains("debug")){
-			if(command.matches("^debug on$")){
+			if(command.equals("debug on")){
 				Server.debug = true;
 				System.out.println(">debug mode on");
 			}
-			else if(command.matches("^debug off$")){
+			else if(command.equals("debug off")){
 				Server.debug = false;
 				System.out.println(">debug mode off");
 			}
@@ -99,11 +154,7 @@ class Server_UI extends Thread{
 			System.exit(0);
 		}
 	}
-
-	private void show_all_players() {
-		DBPlayers.showAllPlayers();
-	}
-
+	
 	private void show_all_connections(){
 		System.out.println("Connection list: " + Server.client_list.size());
 		System.out.println("client_id | account_id");
@@ -111,8 +162,5 @@ class Server_UI extends Thread{
 			System.out.println(client.get_id() + " | " + client.get_account_id());
 		}
 		System.out.println();
-	}
-	private void show_all_accounts(){
-		DBAccounts.showAllAccounts();
 	}
 }
