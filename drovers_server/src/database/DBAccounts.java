@@ -74,13 +74,14 @@ public class DBAccounts {
 			return false;
 		}
 		else{
-			map.put(map.size()+1, new Account(map.size()+1, accountName, accountPassword, 0));
-			
 			// Add account to MySQL
 			PreparedStatement statement = DataBase.connectionAccounts.prepareStatement(sqlInsertAccount);
 			statement.setString(1, accountName);
 			statement.setString(2, accountPassword);
 			statement.execute();
+			
+			// Add to memory
+			map.put(map.size()+1, new Account(map.size()+1, accountName, accountPassword, 0));
 			System.out.println("Account added;\n");
 			return true;
 		}

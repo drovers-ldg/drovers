@@ -55,13 +55,15 @@ public class DBPlayers {
 				return false;
 			}
 		}
-		map.put(map.size()+1, new Player(map.size()+1, accountId, playerName));
 		
 		// Add account to MySQL
 		PreparedStatement statement = DataBase.connectionAccounts.prepareStatement(sqlInsertPlayer);
 		statement.setInt(1, accountId);
 		statement.setString(2, playerName);
 		statement.execute();
+		
+		// Add to memory
+		map.put(map.size()+1, new Player(map.size()+1, accountId, playerName));
 	
 		return true;
 	}
@@ -70,10 +72,10 @@ public class DBPlayers {
 		for(Player item: map.values()){
 			if(item.playerName.equals(playerName)){
 				int id = item.id;
-				DBPlayers.map.remove(id);
 				PreparedStatement statement = DataBase.connectionAccounts.prepareStatement(sqlDeletePlayer);
 				statement.setInt(1, id);
 				statement.execute();
+				map.remove(id);
 				return true;
 			}
 		}

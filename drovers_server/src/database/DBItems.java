@@ -41,8 +41,6 @@ public class DBItems{
 	}
 	
 	public static void addItem(int itemType, String name, int weight, int modelId) throws SQLException{
-		map.put(map.size()+1, new Item(map.size()+1, itemType, name, weight, modelId));
-		
 		// Add item to MySQL
 		PreparedStatement statement = DataBase.connectionUnits.prepareStatement(sqlInsertItem);
 		statement.setString(1, name);
@@ -50,6 +48,10 @@ public class DBItems{
 		statement.setInt(3, weight);
 		statement.setInt(4, modelId);
 		statement.execute();
+		
+		// Add to memory
+		map.put(map.size()+1, new Item(map.size()+1, itemType, name, weight, modelId));
+		
 		System.out.println("Item added;\n");
 	}
 	
