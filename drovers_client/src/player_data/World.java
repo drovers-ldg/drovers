@@ -1,5 +1,6 @@
 package player_data;
 
+import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -39,5 +40,28 @@ public class World{
 		texture_set.put("null", getSprite("null.png"));
 		texture_set.put("grass", getSprite("grass.png"));
 		texture_set.put("ground", getSprite("ground.png"));
+	}
+	
+	public static Image getTexture(int type){
+		// all types and codes see at player_data/WorldMap/WorldMapNode.class
+		switch(type){
+			case 0:
+				// null
+				return texture_set.get("null").getImage();
+			case 1:
+				// grass
+				return texture_set.get("grass").getImage();
+			case 2:
+				// forest
+				return texture_set.get("null").getImage();
+			case 3:
+				// deep forest
+				return texture_set.get("null").getImage();
+			case 4:
+				// rocks
+				return texture_set.get("ground").getImage();
+			default:
+				return texture_set.get("null").getImage();
+		}
 	}
 }

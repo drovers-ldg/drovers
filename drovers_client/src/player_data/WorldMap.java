@@ -40,10 +40,7 @@ public class WorldMap implements Externalizable{
 		g.setColor(Color.red);
 		for(int i = 0; i < sizeX; ++i)
 			for(int j = 0; j < sizeY; ++j){
-				if(World.texture_set.get(map[i][j].type) == null)
-					g.drawImage(World.texture_set.get("null").getImage(), i*64, j*64, 64, 64, null);
-				else 
-					g.drawImage(World.texture_set.get(map[i][j].type).getImage(), i*64, j*64, 64, 64, null);
+					g.drawImage(World.getTexture(map[i][j].type), i*64, j*64, 64, 64, null);
 				
 				g.drawString(map[i][j].areaName, i*64, j*64+64);
 			}
