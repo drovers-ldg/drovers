@@ -40,6 +40,7 @@ public class World{
 		texture_set.put("null", getSprite("null.png"));
 		texture_set.put("grass", getSprite("grass.png"));
 		texture_set.put("ground", getSprite("ground.png"));
+		texture_set.put("forest", getSprite("forest.png"));
 	}
 	
 	public static Image getTexture(int type){
@@ -53,7 +54,7 @@ public class World{
 				return texture_set.get("grass").getImage();
 			case 2:
 				// forest
-				return texture_set.get("null").getImage();
+				return texture_set.get("forest").getImage();
 			case 3:
 				// deep forest
 				return texture_set.get("null").getImage();
