@@ -44,7 +44,7 @@ public class DBItems{
 		map.put(map.size()+1, new Item(map.size()+1, itemType, name, weight, modelId));
 		
 		// Add item to MySQL
-		PreparedStatement statement = DataBase.connectionAccounts.prepareStatement(sqlInsertItem);
+		PreparedStatement statement = DataBase.connectionUnits.prepareStatement(sqlInsertItem);
 		statement.setString(1, name);
 		statement.setInt(2, itemType);
 		statement.setInt(3, weight);
@@ -70,7 +70,7 @@ public class DBItems{
 	
 	public static void showAllItems(){
 		for(Item item: map.values()){
-			System.out.println("id: " + item.id 
+			System.out.println("id:" + item.id 
 					+ "\tname: " + item.name 
 					+ "\tslot_type: " + item.itemType 
 					+ "\tweight: " + item.weight 

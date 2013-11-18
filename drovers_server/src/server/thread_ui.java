@@ -133,7 +133,7 @@ class Server_UI extends Thread{
 				DBItems.showAllItems();
 				break;
 			default:
-				System.out.println(">show [accounts\\players\\connections\\items]");
+				System.out.println(">show [accounts|players|connections|items]");
 			}
 		}
 		else if(command.contains("debug")){
@@ -159,7 +159,7 @@ class Server_UI extends Thread{
 		System.out.println("Connection list: " + Server.client_list.size());
 		System.out.println("client_id | account_id");
 		for(Client client: Server.client_list.values()){
-			System.out.println(client.get_id() + " | " + client.get_account_id());
+			System.out.println("id: " + client.get_id() + "\taccount: " + client.get_account_id());
 		}
 		System.out.println();
 	}
