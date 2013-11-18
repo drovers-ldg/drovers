@@ -58,4 +58,8 @@ class Thread_Socket extends Thread
 	public void sendMap() throws IOException{
 		World.areaMaps.get("null").writeExternal(out);;
 	}
+
+	public void sendWorld() throws IOException {
+		World.worldMap.writeExternal(out);
+	}
 }

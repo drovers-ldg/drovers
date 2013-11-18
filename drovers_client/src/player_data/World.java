@@ -9,10 +9,12 @@ import javax.imageio.ImageIO;
 
 public class World{
 	public static Area_Map map;
+	public static WorldMap worldMap;
 	public static HashMap<String, Sprite> texture_set;
 	
 	public World(){
 		map = new Area_Map();
+		worldMap = new WorldMap();
 		
 		// maps
 		texture_set = new HashMap<String, Sprite>();

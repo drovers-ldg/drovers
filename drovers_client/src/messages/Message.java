@@ -5,7 +5,8 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 public class Message implements Serializable{
-	private static final long serialVersionUID = 7112013039L;
+	
+	private static final long serialVersionUID = 201311182042L;
 	
 	public enum Type {
 		// read Manual\MessageTypes.txt
@@ -16,13 +17,13 @@ public class Message implements Serializable{
 		LOGOUT,
 		DISCONNECT,
 		UPDATEAREA,
+		UPDATEWORLD,
 		CREATEPLAYER,
 		CHOSEPLAYER,
 		CONNECTIONSUCESS,
 		CONNECTIONFAILED,
 	};
 
-	
 	public Type type = Type.DEFAULT;
 	public int prefix = -1;
 	public String data = null;

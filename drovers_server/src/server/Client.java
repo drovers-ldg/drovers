@@ -22,7 +22,6 @@ class Client{
 	public int get_id(){
 		return this.client_id;
 	}
-	
 	public int get_account_id(){
 		return this.account_id;
 	}
@@ -54,5 +53,8 @@ class Client{
 	}
 	public void sendMap() throws IOException{
 		this.thread.sendMap();
+	}
+	public void sendWorld() throws IOException {
+		this.thread.sendWorld();
 	}
 }

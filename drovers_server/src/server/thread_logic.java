@@ -83,13 +83,16 @@ class Thread_Logic extends Thread
 			else if(tmp.type.equals(Message.Type.CHOSEPLAYER)){
 				events_chose_player(tmp.client_id, tmp.data);
 			}
+			else if(tmp.type.equals(Message.Type.UPDATEWORLD)){
+				eventWorldUpdate(tmp.client_id);
+			}
 		}
 		Server.msg_buffer.clear();
 	}
 	
 	private static void updateMap(int client_id) throws IOException {
 		Server.client_list.get(client_id).sendMap();
-	}  
+	}
 
 	private static void events_in_connect(int client_id, String account, String password) throws IOException{
 		
@@ -150,5 +153,9 @@ class Thread_Logic extends Thread
 				client.send(accountName, msg);
 			}
 		}
+	}
+	
+	private static void eventWorldUpdate(int client_id) throws IOException{
+		Server.client_list.get(client_id).sendWorld();
 	}
 }

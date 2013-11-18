@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.io.IOException;
 
 import player_data.World;
+import player_data.WorldMap;
 
 class State
 {	
@@ -53,8 +54,11 @@ class State
 				break;
 			}
 			case "map":{
-				draw_map();
+				World.map.draw_map(g);
 				break;
+			}
+			case "worldMap":{
+				WorldMap.draw(g);
 			}
 			default:{
 				
@@ -84,9 +88,5 @@ class State
 		g.drawString("FPS: " + Long.toString(Game.FPS), 0, 60);
 		g.drawString("Msg: " + Game.server_msg, 0, 70);
 		g.drawString("Ping: " + Game.Ping, 0, 80);
-	}
-	
-	void draw_map(){
-		World.map.draw_map(g);
 	}
 }

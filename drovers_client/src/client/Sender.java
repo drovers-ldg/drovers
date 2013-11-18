@@ -23,4 +23,7 @@ public class Sender{
 	public static void updateMap() throws IOException{
 		new Message(Message.Type.UPDATEAREA).send(out);
 	}
+	public static void updateWorld() throws IOException{
+		new Message(Message.Type.UPDATEWORLD).send(out);
+	}
 }

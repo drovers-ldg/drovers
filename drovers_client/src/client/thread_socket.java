@@ -10,6 +10,7 @@ import messages.Message;
 import messages.MessageDouble;
 import player_data.Area_Map;
 import player_data.World;
+import player_data.WorldMap;
 
 class Thread_Socket extends Thread
 {
@@ -17,6 +18,7 @@ class Thread_Socket extends Thread
 	protected static ObjectOutputStream out;
 	protected static Socket socket;
 	protected static boolean waitMapUpdate;
+	protected static boolean waitWorldUpdate;
 	
 	Thread_Socket() throws IOException
 	{
@@ -34,7 +36,17 @@ class Thread_Socket extends Thread
 		
 			while(Game.is_runing)
 			{
-				if(!waitMapUpdate){
+				if(waitMapUpdate){
+					Area_Map map = new Area_Map();
+					map.readExternal(in);
+					processMsg(map);
+				}
+				else if(waitWorldUpdate){
+					WorldMap worldMap = new WorldMap();
+					worldMap.readExternal(in);
+					processMsg(worldMap);
+				}
+				else {
 					Object msg = in.readObject();
 					
 					if(msg instanceof MessageDouble){
@@ -46,11 +58,6 @@ class Thread_Socket extends Thread
 					else{
 						Game.server_msg = "Unexpected type of message";
 					}
-				}
-				else {
-					Area_Map map = new Area_Map();
-					map.readExternal(in);
-					processMsg(map);
 				}
 			}
 		}
@@ -86,6 +93,14 @@ class Thread_Socket extends Thread
 		Game.state.set_state("map");
 		waitMapUpdate = false;
 	}
+	public void processMsg(WorldMap worldMap) throws IOException{
+		World.worldMap = worldMap;
+		// Game.state.set_state("worldMap");
+		waitWorldUpdate = false;
+		waitMapUpdate = true;
+		Sender.updateMap();
+		Chat.add_to_msg_log("[SERVER] Connection to \""+ Game.address  + "\" sucess.");
+	}
 	public void processMsg(Message msg) throws IOException{
 		if(msg.type.equals(Message.Type.DEFAULT)){
 			msgDefault(msg.data);
@@ -111,9 +126,8 @@ class Thread_Socket extends Thread
 		Game.ping();
 	}
 	private void msgConnectionSucess() throws IOException{
-		waitMapUpdate = true;
-		Sender.updateMap();
-		Chat.add_to_msg_log("[SERVER] Connection to \""+ Game.address  + "\" sucess.");
+		waitWorldUpdate = true;
+		Sender.updateWorld();
 	}
 	private void msgConnectionFailed(){
 		Game.state.set_state("menu");

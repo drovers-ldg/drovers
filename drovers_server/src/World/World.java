@@ -7,16 +7,13 @@ import java.util.Scanner;
 
 public class World {
 	public static HashMap<String, AreaMap> areaMaps;
-	public WorldMap worldMap;
+	public static WorldMap worldMap;
 	
 	public World() throws FileNotFoundException{
 		worldMap = new WorldMap();
 		areaMaps = new HashMap<String, AreaMap>();
 		areaMaps.put("null", new AreaMap(10, 10));
 		loadAreas();
-		System.out.println("---------------World---------------");
-		System.out.println("Areas loaded: " + areaMaps.size());
-		System.out.println("-----------------------------------");
 	}
 	
 	public static void loadAreas(){
@@ -31,5 +28,9 @@ public class World {
 				}
 			}
 		}
+		
+		System.out.println("---------------World---------------");
+		System.out.println("Areas loaded: " + areaMaps.size());
+		System.out.println("-----------------------------------");
 	}
 }
