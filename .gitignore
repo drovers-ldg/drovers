@@ -7,3 +7,4 @@
 # Server DB files #
 *.db
 *.map
+*.log
