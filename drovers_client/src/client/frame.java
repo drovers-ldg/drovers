@@ -43,7 +43,7 @@ class Game
 	public static World game_data;
 	public static int mouseX = 0;
 	public static int mouseY = 0;
-	
+
 	Game() throws IOException, InterruptedException{
 		read_config();
 		
@@ -54,7 +54,6 @@ class Game
 		
 		Canvas gui = new Canvas();
 		frame.getContentPane().add(gui);
-
 		frame.setResizable(false);
 		frame.setVisible(true);
 		

@@ -41,6 +41,7 @@ public class World{
 		texture_set.put("grass", getSprite("grass.png"));
 		texture_set.put("ground", getSprite("ground.png"));
 		texture_set.put("forest", getSprite("forest.png"));
+		texture_set.put("inputString1", getSprite("inputString1.png"));
 	}
 	
 	public static Image getTexture(int type){
@@ -61,6 +62,9 @@ public class World{
 			case 4:
 				// rocks
 				return texture_set.get("ground").getImage();
+			case 5:
+				// inputString-1
+				return texture_set.get("inputString1").getImage();
 			default:
 				return texture_set.get("null").getImage();
 		}

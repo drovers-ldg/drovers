@@ -22,6 +22,8 @@ public class GameLoop implements Runnable {
  
 		public GameLoop(Canvas canvas) {
 			Game.is_runing = true;
+			canvas.addMouseListener(new Mouse());
+			canvas.addMouseMotionListener(new MouseMotion());
 			gui = canvas;
 			this.init();
 		}
@@ -59,7 +61,7 @@ public class GameLoop implements Runnable {
 				Game.msg_log[i] = "";
 			}
 			
-			Game.state = new State("menu");
+			Game.state = new State("login");
 			gui.addKeyListener(new key_input());
 		}
  

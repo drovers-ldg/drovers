@@ -2,8 +2,6 @@ package client;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.MouseInfo;
-import java.awt.Point;
 import java.io.IOException;
 import GUI.AreaMapMenu;
 import GUI.CharacterMenu;
@@ -17,27 +15,27 @@ import GUI.WorldMapMenu;
 
 class State
 {	
-	private Graphics g;
-	private String state;
+	public static Graphics g;
+	public static String state;
 	
 	// command line
 	private static boolean console_is_open;
 	public static String console_type;
 
 	State(String state){
-		this.g = null;
-		this.state = state;
+		State.g = null;
+		State.state = state;
 
 		console_is_open = false;
 		State.console_type = "";
 	}
 	
 	void set_graphic(Graphics g) { 
-		this.g = g;
+		State.g = g;
 	}
 	
 	void set_state(String state){
-		this.state = state;
+		State.state = state;
 	}
 	
 	public boolean get_console(){
@@ -121,9 +119,6 @@ class State
 		g.drawString("FPS: " + Long.toString(Game.FPS), 0, 60);
 		g.drawString("Msg: " + Game.server_msg, 0, 70);
 		g.drawString("Ping: " + Game.Ping, 0, 80);
-		
-		Point mouseLocation = MouseInfo.getPointerInfo().getLocation();
-		Point frameLocation = Game.frame.getLocation().getLocation();
-		g.drawString("X:" + (mouseLocation.x - frameLocation.x - 2) + " Y:" + (mouseLocation.y - frameLocation.y - 24), 0, 90);
+		g.drawString("X:" + Game.mouseX + " Y:" + Game.mouseY, 0, 90);
 	}
 }
