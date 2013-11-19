@@ -128,7 +128,7 @@ class Thread_Logic extends Thread
 	
 	private static void events_in_logout(int client_id){
 		try{
-			if(Server.client_list.get(client_id) != null)
+			if(Server.client_list.get(client_id)  != null)
 				Server.client_list.get(client_id).disconnect();
 		}catch(Exception e){
 			System.out.println("Disconnection err: " + e);

@@ -59,7 +59,6 @@ public class DBAccounts {
 	}
 
 	public static void disconnect(int accountId) {
-		System.out.println("DISCONNECT");
 		map.get(accountId).online = false;
 	}
 

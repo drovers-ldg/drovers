@@ -40,6 +40,8 @@ class Game
 	
 	// Game data
 	public static World game_data;
+	public static int mouseX;
+	public static int mouseY;
 	
 	Game() throws IOException, InterruptedException{
 		read_config();
@@ -47,6 +49,7 @@ class Game
 		JFrame frame = new JFrame("Drovers");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(WIDTH, HEIGHT);
+		frame.addMouseMotionListener(new MouseListener());
 		
 		Canvas gui = new Canvas();
 		frame.getContentPane().add(gui);

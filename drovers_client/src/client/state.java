@@ -4,8 +4,15 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.io.IOException;
 
-import player_data.World;
-import player_data.WorldMap;
+import GUI.AreaMapMenu;
+import GUI.CharacterMenu;
+import GUI.InventoryMenu;
+import GUI.LoginMenu;
+import GUI.MainMenu;
+import GUI.RegistrationMenu;
+import GUI.SorceCodeMenu;
+import GUI.UnitsConstructorMenu;
+import GUI.WorldMapMenu;
 
 class State
 {	
@@ -49,16 +56,41 @@ class State
 		// State switcher
 		switch(state)
 		{
-			case "menu":{
-				
+			case "login":{
+				LoginMenu.draw(g);
 				break;
 			}
-			case "map":{
-				World.map.draw_map(g);
+			case "register":{
+				RegistrationMenu.draw(g);
+				break;
+			}
+			case "menu":{
+				MainMenu.draw(g);
+				break;
+			}
+			case "char":{
+				CharacterMenu.draw(g);
+				break;
+			}
+			case "inventory":{
+				InventoryMenu.draw(g);
+				break;
+			}
+			case "code":{
+				SorceCodeMenu.draw(g);
+				break;
+			}
+			case "units":{
+				UnitsConstructorMenu.draw(g);
+				break;
+			}
+			case "areaMap":{
+				AreaMapMenu.draw(g);
 				break;
 			}
 			case "worldMap":{
-				WorldMap.draw(g);
+				WorldMapMenu.draw(g);
+				break;
 			}
 			default:{
 				
@@ -88,5 +120,6 @@ class State
 		g.drawString("FPS: " + Long.toString(Game.FPS), 0, 60);
 		g.drawString("Msg: " + Game.server_msg, 0, 70);
 		g.drawString("Ping: " + Game.Ping, 0, 80);
+		g.drawString("X:" + Game.mouseX + "_Y:" + Game.mouseY, 0, 90);
 	}
 }

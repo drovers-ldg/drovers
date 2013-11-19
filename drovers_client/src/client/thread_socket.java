@@ -89,8 +89,8 @@ class Thread_Socket extends Thread
 		msgChat(msg.data, msg.data2);
 	}
 	public void processMsg(Area_Map map){
-		World.map = map;
-		Game.state.set_state("map");
+		World.areaMap = map;
+		Game.state.set_state("areaMap");
 		waitMapUpdate = false;
 	}
 	public void processMsg(WorldMap worldMap) throws IOException{
