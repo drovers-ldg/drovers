@@ -14,7 +14,8 @@ import player_data.World;
 
 class Game
 {	
-	// Frame size
+	// Frame
+	public static JFrame frame;
     public static int WIDTH = 1024;
     public static int HEIGHT = WIDTH / 16 * 9;
 	
@@ -40,16 +41,16 @@ class Game
 	
 	// Game data
 	public static World game_data;
-	public static int mouseX;
-	public static int mouseY;
+	public static int mouseX = 0;
+	public static int mouseY = 0;
 	
 	Game() throws IOException, InterruptedException{
 		read_config();
 		
-		JFrame frame = new JFrame("Drovers");
+		frame = new JFrame("Drovers");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(WIDTH, HEIGHT);
-		frame.addMouseMotionListener(new MouseListener());
+		frame.getLocation();
 		
 		Canvas gui = new Canvas();
 		frame.getContentPane().add(gui);

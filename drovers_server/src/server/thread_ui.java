@@ -129,7 +129,7 @@ class Server_UI extends Thread{
 				
 				break;
 			case "items":
-				System.out.println("--------Items--------");
+		System.out.println("--------Items--------");
 				DBItems.showAllItems();
 				break;
 			default:
@@ -156,8 +156,7 @@ class Server_UI extends Thread{
 	}
 	
 	private void show_all_connections(){
-		System.out.println("Connection list: " + Server.client_list.size());
-		System.out.println("client_id | account_id");
+		System.out.println("--------Connections--");
 		for(Client client: Server.client_list.values()){
 			System.out.println("id: " + client.get_id() + "\taccount: " + client.get_account_id());
 		}

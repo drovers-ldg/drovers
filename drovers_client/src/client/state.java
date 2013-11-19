@@ -2,8 +2,9 @@ package client;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.MouseInfo;
+import java.awt.Point;
 import java.io.IOException;
-
 import GUI.AreaMapMenu;
 import GUI.CharacterMenu;
 import GUI.InventoryMenu;
@@ -103,13 +104,13 @@ class State
 	void draw_msg_log(){
 		g.setColor(Color.white);
 		for(int i = 0; i < Game.msg_log.length; ++i){
-			g.drawString(Game.msg_log[i], 0, 120+(i*10));
+			g.drawString(Game.msg_log[i], 0, 150+(i*10));
 		}
 	}
 	void draw_console(){
 		if(console_is_open){
 			g.setColor(Color.white);
-			g.drawString(">" + State.console_type, 0, 100);
+			g.drawString(">" + State.console_type, 0, 130);
 		}
 	}
 	
@@ -120,6 +121,9 @@ class State
 		g.drawString("FPS: " + Long.toString(Game.FPS), 0, 60);
 		g.drawString("Msg: " + Game.server_msg, 0, 70);
 		g.drawString("Ping: " + Game.Ping, 0, 80);
-		g.drawString("X:" + Game.mouseX + "_Y:" + Game.mouseY, 0, 90);
+		
+		Point mouseLocation = MouseInfo.getPointerInfo().getLocation();
+		Point frameLocation = Game.frame.getLocation().getLocation();
+		g.drawString("X:" + (mouseLocation.x - frameLocation.x - 2) + " Y:" + (mouseLocation.y - frameLocation.y - 24), 0, 90);
 	}
 }
