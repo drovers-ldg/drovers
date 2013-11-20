@@ -11,12 +11,12 @@ CREATE TABLE `accounts` (
   `map_id` int(10) unsigned NOT NULL DEFAULT '0',
   `units_id` int(10) unsigned NOT NULL DEFAULT '0',
   `recource_thorium` int(10) NOT NULL DEFAULT '0',
-  `recource_metall` int(10) NOT NULL,
+  `recource_metal` int(10) NOT NULL,
   `recource_money` int(10) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
-INSERT INTO `accounts` VALUES ('1', 'admin', 'test', '3', '', 'default player name', '0', '0', '0', '0', '0');
-INSERT INTO `accounts` VALUES ('2', 'test', 'test', '0', '', 'default player name', '0', '0', '0', '0', '0');
-INSERT INTO `accounts` VALUES ('3', 'user', 'test', '0', '', 'default player name', '0', '0', '0', '0', '0');
-INSERT INTO `accounts` VALUES ('4', 'testaccount', 'pass', '0', '', 'default player name', '0', '0', '0', '0', '0');
+INSERT INTO `accounts` VALUES ('1', 'admin', 'test', '3', '\0', 'Admin', '0', '0', '0', '0', '0');
+INSERT INTO `accounts` VALUES ('2', 'test', 'test', '0', '\0', 'Test', '0', '0', '0', '0', '0');
+INSERT INTO `accounts` VALUES ('3', 'user', 'test', '0', '\0', 'User', '0', '0', '0', '0', '0');
+INSERT INTO `accounts` VALUES ('4', 'testaccount', 'pass', '0', '\0', 'Testaccount', '0', '0', '0', '0', '0');
