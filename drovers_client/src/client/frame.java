@@ -10,6 +10,7 @@ import java.util.Scanner;
 
 import javax.swing.JFrame;
 
+import GUI.GUI;
 import player_data.World;
 
 class Game
@@ -46,7 +47,7 @@ class Game
 
 	Game() throws IOException, InterruptedException{
 		read_config();
-		
+		new GUI();
 		frame = new JFrame("Drovers");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(WIDTH, HEIGHT);

@@ -6,6 +6,7 @@ import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
 
+import GUI.LoginMenu;
 import messages.Message;
 import messages.MessageDouble;
 import player_data.Area_Map;
@@ -130,7 +131,8 @@ class Thread_Socket extends Thread
 		Sender.updateWorld();
 	}
 	private void msgConnectionFailed(){
-		Game.state.set_state("menu");
+		Game.state.set_state("login");
+		LoginMenu.errString = "Wrong login or password";
 		Chat.add_to_msg_log("[SERVER] Failed by connection.");
 	}
 	

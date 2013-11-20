@@ -8,18 +8,29 @@ import GUI.LoginMenu;
 
 public class key_input extends KeyAdapter 
 {
+	
+	// GUI INPUTS
+	public static boolean systemConsole = false;
+	// GUI.LoginMenu.java
+	public static boolean loginMenuLoginFeild = false;
+	public static boolean loginMenuPasswordField = false;
+	
+	// -------------------------
 	public void keyPressed(KeyEvent e){
 		switch(State.state){
-			case "login":
-				if(LoginMenu.focusLoginString){
-					// ENTER TO LOGIN STRING
+			case "login":{
+					if(loginMenuLoginFeild){
+						// ENTER TO LOGIN STRING
+						LoginMenu.loginString.inputKey(e);
+						return;
+					}
+					else if(loginMenuPasswordField){
+						// ENTER TO PASSWORD STRING
+						LoginMenu.passwordString.inputKey(e);
+						return;
+					}
 				}
-				else if(LoginMenu.focusPasswordString){
-					// ENTER TO PASSWORD STRING
-				}
-				else
-					break;
-		
+				break;
 			default:
 		}
 		if(Game.state.get_console() && e.getKeyCode() != KeyEvent.VK_ENTER){

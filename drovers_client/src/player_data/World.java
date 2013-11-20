@@ -41,7 +41,15 @@ public class World{
 		texture_set.put("grass", getSprite("grass.png"));
 		texture_set.put("ground", getSprite("ground.png"));
 		texture_set.put("forest", getSprite("forest.png"));
+		
+		// Fields
 		texture_set.put("inputString1", getSprite("inputString1.png"));
+		
+		// Buttons
+		texture_set.put("buttonLogin", getSprite("loginButton.png"));
+		texture_set.put("buttonExit", getSprite("exitButton.png"));
+		texture_set.put("buttonAuthor", getSprite("authorButton.png"));
+		
 	}
 	
 	public static Image getTexture(int type){
@@ -65,6 +73,15 @@ public class World{
 			case 5:
 				// inputString-1
 				return texture_set.get("inputString1").getImage();
+			case 6:
+				// loginButton
+				return texture_set.get("buttonLogin").getImage();
+			case 7: 
+				// exitButton
+				return texture_set.get("buttonExit").getImage();
+			case 8: 
+				// authorButton
+				return texture_set.get("buttonAuthor").getImage();
 			default:
 				return texture_set.get("null").getImage();
 		}

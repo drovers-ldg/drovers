@@ -3,6 +3,7 @@ package client;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.io.IOException;
 
 import GUI.LoginMenu;
 
@@ -13,7 +14,11 @@ public class Mouse implements MouseListener{
 		Game.server_msg = "CLICK! 1";
 		switch(State.state){
 			case "login":
-				mouseClickLogin();
+				try {
+					mouseClickLogin();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
 				break;
 			default:
 		}
@@ -39,19 +44,40 @@ public class Mouse implements MouseListener{
 		Game.server_msg = "CLICK! 5";
 	}
 	
-	private void mouseClickLogin(){
+	private void mouseClickLogin() throws IOException{
 		// GUI.LoginMenu.java;
 		// Login field
 		if(Game.mouseX > 400 && Game.mouseX < 600 && Game.mouseY > 100 && Game.mouseY < 120){
 			Game.server_msg = "LOGIN FIELD DETECTED";
 			LoginMenu.clearCtrl();
-			LoginMenu.focusLoginString = true;
+			key_input.loginMenuLoginFeild = true;
 		}
 		// Password field
 		else if(Game.mouseX > 400 && Game.mouseX < 600 && Game.mouseY > 120 && Game.mouseY < 140){
 			Game.server_msg = "PASSWORD FIELD DETECTED";
 			LoginMenu.clearCtrl();
-			LoginMenu.focusPasswordString = true;
+			key_input.loginMenuPasswordField = true;
+		}
+		// 'Login' button
+		else if(Game.mouseX > 450 && Game.mouseX < 550 && Game.mouseY > 150 && Game.mouseY < 170){
+			Game.server_msg = "'Login' button";
+			LoginMenu.clearCtrl();
+			LoginMenu.loginButton();
+		}
+		// 'Exit' button
+		else if(Game.mouseX > 450 && Game.mouseX < 550 && Game.mouseY > 500 && Game.mouseY < 520){
+			Game.server_msg = "'Exit' button";
+			LoginMenu.clearCtrl();
+			LoginMenu.exitButton();
+		}
+		// 'Author' button
+		else if(Game.mouseX > 50 && Game.mouseX < 150 && Game.mouseY > 500 && Game.mouseY < 520){
+			Game.server_msg = "'Author' button";
+			LoginMenu.clearCtrl();
+			LoginMenu.authorsButton();
+		}
+		else{
+			LoginMenu.clearCtrl();
 		}
 	}
 }
