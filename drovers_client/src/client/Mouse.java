@@ -11,7 +11,6 @@ public class Mouse implements MouseListener{
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		Game.server_msg = "CLICK! 1";
 		switch(State.state){
 			case "login":
 				try {
@@ -37,6 +36,12 @@ public class Mouse implements MouseListener{
 	@Override
 	public void mousePressed(MouseEvent e) {
 		Game.server_msg = "CLICK! 4";
+		switch(State.state){
+			case "login":
+				mousePressLogin();
+			break;
+		default:
+		}
 	}
 
 	@Override
@@ -61,23 +66,31 @@ public class Mouse implements MouseListener{
 		// 'Login' button
 		else if(Game.mouseX > 450 && Game.mouseX < 550 && Game.mouseY > 150 && Game.mouseY < 170){
 			Game.server_msg = "'Login' button";
+			LoginMenu.buttonLoginTexture = 6;
 			LoginMenu.clearCtrl();
 			LoginMenu.loginButton();
 		}
 		// 'Exit' button
 		else if(Game.mouseX > 450 && Game.mouseX < 550 && Game.mouseY > 500 && Game.mouseY < 520){
 			Game.server_msg = "'Exit' button";
+			LoginMenu.buttonExitTexture = 7;
 			LoginMenu.clearCtrl();
 			LoginMenu.exitButton();
 		}
-		// 'Author' button
-		else if(Game.mouseX > 50 && Game.mouseX < 150 && Game.mouseY > 500 && Game.mouseY < 520){
-			Game.server_msg = "'Author' button";
-			LoginMenu.clearCtrl();
-			LoginMenu.authorsButton();
-		}
 		else{
 			LoginMenu.clearCtrl();
+		}
+	}
+	
+	private void mousePressLogin(){
+		// GUI.LoginMenu.java;
+		// 'Login' button
+		if(Game.mouseX > 450 && Game.mouseX < 550 && Game.mouseY > 150 && Game.mouseY < 170){
+			LoginMenu.buttonLoginTexture = 8; // 8
+		}
+		// 'Exit' button
+		else if(Game.mouseX > 450 && Game.mouseX < 550 && Game.mouseY > 500 && Game.mouseY < 520){
+			LoginMenu.buttonExitTexture = 9; // 9
 		}
 	}
 }
@@ -87,7 +100,6 @@ class MouseMotion implements MouseMotionListener{
 	@Override
 	public void mouseDragged(MouseEvent arg0) {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override

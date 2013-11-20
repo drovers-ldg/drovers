@@ -48,8 +48,9 @@ public class World{
 		// Buttons
 		texture_set.put("buttonLogin", getSprite("loginButton.png"));
 		texture_set.put("buttonExit", getSprite("exitButton.png"));
-		texture_set.put("buttonAuthor", getSprite("authorButton.png"));
-		
+		// Buttons Pressed
+		texture_set.put("buttonLoginPressed", getSprite("loginButtonPressed.png"));
+		texture_set.put("buttonExitPressed", getSprite("exitButtonPressed.png"));
 	}
 	
 	public static Image getTexture(int type){
@@ -80,8 +81,11 @@ public class World{
 				// exitButton
 				return texture_set.get("buttonExit").getImage();
 			case 8: 
-				// authorButton
-				return texture_set.get("buttonAuthor").getImage();
+				// loginButtonPressed
+				return texture_set.get("buttonLoginPressed").getImage();
+			case 9: 
+				// exitButtonPressed
+				return texture_set.get("buttonExitPressed").getImage();
 			default:
 				return texture_set.get("null").getImage();
 		}

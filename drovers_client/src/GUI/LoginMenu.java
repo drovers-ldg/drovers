@@ -17,6 +17,11 @@ public class LoginMenu{
 	public static PasswordField passwordString;
 	public static String errString;
 	
+	// Button textures effect
+	// Normal
+	public static int buttonLoginTexture = 6;
+	public static int buttonExitTexture = 7;	
+	
 	public LoginMenu(){
 		init();
 	}
@@ -40,9 +45,10 @@ public class LoginMenu{
 		g.drawImage(World.getTexture(5), 400, 120, 200, 20, null); // 200 x 20 - 'Password' filed
 		g.drawString(passwordString.str, 405, 135);
 		
-		g.drawImage(World.getTexture(6), 450, 150, 100, 20, null); // 100 x 20 - 'Login' button
-		g.drawImage(World.getTexture(7), 450, 500, 100, 20, null); // 100 x 20 - 'Exit' button
-		g.drawImage(World.getTexture(8), 50, 500, 100, 20, null); // 100 x 20 - 'Author' button
+		g.drawImage(World.getTexture(buttonLoginTexture), 450, 150, 100, 20, null); // 100 x 20 - 'Login' button
+		g.drawImage(World.getTexture(buttonExitTexture), 450, 500, 100, 20, null); // 100 x 20 - 'Exit' button
+		
+		g.drawString("by LDG", 5, 530);
 	}
 	
 	public static void clearCtrl(){
@@ -62,10 +68,6 @@ public class LoginMenu{
 	}
 	
 	public static void exitButton(){
-		
-	}
-	
-	public static void authorsButton(){
-		
+		System.exit(0);
 	}
 }
