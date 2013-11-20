@@ -79,10 +79,17 @@ class Thread_Logic extends Thread
 			else if(tmp.type.equals(Message.Type.UPDATEWORLD)){
 				eventWorldUpdate(tmp.client_id);
 			}
+			else if(tmp.type.equals(Message.Type.UPDATEPLAYER)){
+				updatePlayer(tmp.client_id);
+			}
 		}
 		Server.msg_buffer.clear();
 	}
 	
+	private static void updatePlayer(int client_id) throws IOException {
+		Server.client_list.get(client_id).sendPlayer();
+	}
+
 	private static void updateMap(int client_id) throws IOException {
 		Server.client_list.get(client_id).sendMap();
 	}

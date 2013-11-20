@@ -10,6 +10,7 @@ import GUI.LoginMenu;
 import messages.Message;
 import messages.MessageDouble;
 import player_data.Area_Map;
+import player_data.Player;
 import player_data.World;
 import player_data.WorldMap;
 
@@ -20,6 +21,7 @@ class Thread_Socket extends Thread
 	protected static Socket socket;
 	protected static boolean waitMapUpdate;
 	protected static boolean waitWorldUpdate;
+	protected static boolean waitPlayerUpdate;
 	
 	Thread_Socket() throws IOException
 	{
@@ -37,7 +39,12 @@ class Thread_Socket extends Thread
 		
 			while(Game.is_runing)
 			{
-				if(waitMapUpdate){
+				if(waitPlayerUpdate){
+					Player player = new Player();
+					player.readExternal(in);
+					processMsg(player);
+				}
+				else if(waitMapUpdate){
 					Area_Map map = new Area_Map();
 					map.readExternal(in);
 					processMsg(map);
@@ -55,6 +62,9 @@ class Thread_Socket extends Thread
 					}
 					else if(msg instanceof Message){
 						processMsg((Message)msg);
+					}
+					else if(msg instanceof Player){
+						processMsg((Player)msg);
 					}
 					else{
 						Game.server_msg = "Unexpected type of message";
@@ -89,11 +99,13 @@ class Thread_Socket extends Thread
 	public void processMsg(MessageDouble msg){
 		msgChat(msg.data, msg.data2);
 	}
+	
 	public void processMsg(Area_Map map){
 		World.areaMap = map;
 		Game.state.set_state("worldMap");
 		waitMapUpdate = false;
 	}
+	
 	public void processMsg(WorldMap worldMap) throws IOException{
 		World.worldMap = worldMap;
 		waitWorldUpdate = false;
@@ -101,6 +113,14 @@ class Thread_Socket extends Thread
 		Sender.updateMap();
 		Chat.add_to_msg_log("[SERVER] Connection to \""+ Game.address  + "\" sucess.");
 	}
+	
+	public void processMsg(Player player){
+		waitWorldUpdate = false;
+		Chat.add_to_msg_log("PLAYER DATA RECIVED: " + Player.playerName);
+		World.playerData = player;
+		Game.state.set_state("char");
+	}
+	
 	public void processMsg(Message msg) throws IOException{
 		if(msg.type.equals(Message.Type.DEFAULT)){
 			msgDefault(msg.data);
@@ -126,8 +146,9 @@ class Thread_Socket extends Thread
 		Game.ping();
 	}
 	private void msgConnectionSucess() throws IOException{
-		waitWorldUpdate = true;
-		Sender.updateWorld();
+		waitPlayerUpdate = true;
+		Sender.updatePlayer();
+		Chat.add_to_msg_log("[SERVER] Connection sucess!");
 	}
 	private void msgConnectionFailed(){
 		Game.state.set_state("login");

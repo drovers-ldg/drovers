@@ -6,7 +6,7 @@ import java.io.Serializable;
 
 public class Message implements Serializable{
 	
-	private static final long serialVersionUID = 201311182042L;
+	private static final long serialVersionUID = 201311201740L;
 	
 	public enum Type {
 		// read Manual\MessageTypes.txt
@@ -18,8 +18,7 @@ public class Message implements Serializable{
 		DISCONNECT,
 		UPDATEAREA,
 		UPDATEWORLD,
-		CREATEPLAYER,
-		CHOSEPLAYER,
+		UPDATEPLAYER,
 		CONNECTIONSUCESS,
 		CONNECTIONFAILED,
 	};

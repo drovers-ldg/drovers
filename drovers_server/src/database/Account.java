@@ -1,6 +1,14 @@
 package database;
 
-public class Account{
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
+
+public class Account implements Externalizable{
+	
+	private static final long serialVersionUID = 201311201743L;
+	
 	public int id;
 	public String accountName;
 	public String accountPassword;
@@ -31,6 +39,7 @@ public class Account{
 			int thorium,
 			int metal, 
 			int money){
+		
 		this.id = id;
 		this.accountName = accountName;
 		this.accountPassword = accountPassword;
@@ -42,5 +51,21 @@ public class Account{
 		this.thorium = thorium;
 		this.metal = metal;
 		this.money = money;
+	}
+
+
+	@Override
+	public void readExternal(ObjectInput arg0) throws IOException, ClassNotFoundException {
+		// void
+	}
+
+	@Override
+	public void writeExternal(ObjectOutput out) throws IOException {
+		out.writeUTF(playerName);
+		out.writeInt(gm);
+		out.writeInt(thorium);
+		out.writeInt(metal);
+		out.writeInt(money);
+		out.flush();
 	}
 }

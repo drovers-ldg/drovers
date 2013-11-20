@@ -12,10 +12,12 @@ public class World{
 	public static Area_Map areaMap;
 	public static WorldMap worldMap;
 	public static HashMap<String, Sprite> texture_set;
+	public static Player playerData;
 	
 	public World(){
 		areaMap = new Area_Map();
 		worldMap = new WorldMap();
+		playerData = new Player();
 		
 		// maps
 		texture_set = new HashMap<String, Sprite>();

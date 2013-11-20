@@ -57,4 +57,7 @@ class Client{
 	public void sendWorld() throws IOException {
 		this.thread.sendWorld();
 	}
+	public void sendPlayer() throws IOException{
+		this.thread.sendPlayer();
+	}
 }

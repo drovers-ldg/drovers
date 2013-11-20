@@ -25,5 +25,8 @@ public class Sender{
 	}
 	public static void updateWorld() throws IOException{
 		new Message(Message.Type.UPDATEWORLD).send(out);
+	}	
+	public static void updatePlayer() throws IOException{
+		new Message(Message.Type.UPDATEPLAYER).send(out);
 	}
 }

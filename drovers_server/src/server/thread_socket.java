@@ -5,6 +5,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
+import database.DBAccounts;
 import World.World;
 import messages.Message;
 import messages.MessageDouble;
@@ -45,8 +46,8 @@ class Thread_Socket extends Thread
 		catch (ClassNotFoundException e) {
 		}
 		finally{
-			Server.msg_buffer.add(new MessageIn(Message.Type.LOGOUT, client_id)); // logout
-			Server.msg_buffer.add(new MessageIn(Message.Type.DISCONNECT, client_id)); // disconnect
+			Server.msg_buffer.add(new MessageIn(Message.Type.LOGOUT, client_id));
+			Server.msg_buffer.add(new MessageIn(Message.Type.DISCONNECT, client_id));
 		}
 	}
 	public void send(Message.Type type, String msg) throws IOException{
@@ -61,5 +62,9 @@ class Thread_Socket extends Thread
 
 	public void sendWorld() throws IOException {
 		World.worldMap.writeExternal(out);
+	}
+	
+	public void sendPlayer() throws IOException {
+		DBAccounts.map.get(Server.client_list.get(client_id).get_account_id()).writeExternal(out);
 	}
 }
