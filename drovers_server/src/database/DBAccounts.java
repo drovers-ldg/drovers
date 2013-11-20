@@ -12,7 +12,7 @@ public class DBAccounts {
 	public static HashMap<Integer, Account> map;
 	
 	//SQL
-	protected final static String sqlInsertAccount = "INSERT INTO accounts (account_name, account_password) VALUES (?, ?)";
+	protected final static String sqlInsertAccount = "INSERT INTO accounts (account_name, account_password, player_name) VALUES (?, ?, ?)";
 
 	DBAccounts() throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException{
 		map = new HashMap<Integer, Account>();
@@ -25,11 +25,19 @@ public class DBAccounts {
 		String sql = "SELECT * FROM accounts";
 		result = statement.executeQuery(sql);
 		
+		
+		//SQL: id, accountName, accountPassword, gm, online, player_name, map_id, units_id, thorium, metal, money
 		while (result.next()) {
 			map.put(result.getInt("id"), new Account(result.getInt("id"),
 													 result.getString("account_name"), 
 													 result.getString("account_password"), 
-													 result.getInt("gm")));
+													 result.getInt("gm"),
+													 result.getString("player_name"),
+													 result.getInt("map_id"),
+													 result.getInt("units_id"),
+													 result.getInt("recource_thorium"),
+													 result.getInt("recource_metal"),
+													 result.getInt("recource_money")));
 		}
 		System.out.println("DB.Accounts loaded. Fields: " + map.size());
 	}
@@ -68,7 +76,7 @@ public class DBAccounts {
 		}
 	}
 
-	public static boolean addAccount(String accountName, String accountPassword) throws SQLException {
+	public static boolean addAccount(String accountName, String accountPassword, String playerName) throws SQLException {
 		if(DBAccounts.searchId(accountName) != -1){
 			return false;
 		}
@@ -77,10 +85,11 @@ public class DBAccounts {
 			PreparedStatement statement = DataBase.connectionAccounts.prepareStatement(sqlInsertAccount);
 			statement.setString(1, accountName);
 			statement.setString(2, accountPassword);
+			statement.setString(3, playerName);
 			statement.execute();
 			
 			// Add to memory
-			map.put(map.size()+1, new Account(map.size()+1, accountName, accountPassword, 0));
+			map.put(map.size()+1, new Account(map.size()+1, accountName, accountPassword, 0, playerName, 0, 0, 0, 0, 0));
 			System.out.println("Account added;\n");
 			return true;
 		}

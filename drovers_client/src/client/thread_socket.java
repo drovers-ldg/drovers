@@ -91,12 +91,11 @@ class Thread_Socket extends Thread
 	}
 	public void processMsg(Area_Map map){
 		World.areaMap = map;
-		Game.state.set_state("areaMap");
+		Game.state.set_state("worldMap");
 		waitMapUpdate = false;
 	}
 	public void processMsg(WorldMap worldMap) throws IOException{
 		World.worldMap = worldMap;
-		// Game.state.set_state("worldMap");
 		waitWorldUpdate = false;
 		waitMapUpdate = true;
 		Sender.updateMap();

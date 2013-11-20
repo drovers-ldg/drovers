@@ -16,7 +16,6 @@ public class DataBase{
 	
 	// DB's
 	public static DBAccounts accounts;
-	public static DBPlayers players;
 	public static DBUnits units;
 	public static DBItems items;
 	
@@ -52,7 +51,6 @@ public class DataBase{
 		}
 		System.out.println("---------------DB Status-----------");
 		accounts = new DBAccounts();
-		players	= new DBPlayers();
 		units = new DBUnits();
 		items = new DBItems();
 	}

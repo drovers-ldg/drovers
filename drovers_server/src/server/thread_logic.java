@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 import database.DBAccounts;
-import database.DBPlayers;
 import messages.Message;
 import messages.MessageIn;
 
@@ -77,12 +76,6 @@ class Thread_Logic extends Thread
 			else if(tmp.type.equals(Message.Type.UPDATEAREA)){
 				updateMap(tmp.client_id);
 			}
-			else if(tmp.type.equals(Message.Type.CREATEPLAYER)){
-				events_create_player(tmp.client_id, tmp.data);
-			}
-			else if(tmp.type.equals(Message.Type.CHOSEPLAYER)){
-				events_chose_player(tmp.client_id, tmp.data);
-			}
 			else if(tmp.type.equals(Message.Type.UPDATEWORLD)){
 				eventWorldUpdate(tmp.client_id);
 			}
@@ -110,22 +103,6 @@ class Thread_Logic extends Thread
 		}
 	}
 	
-	private static void events_create_player(int client_id, String name) throws IOException, SQLException{
-		if(Server.client_list.get(client_id).get_account_id() != -1){
-			boolean result = DBPlayers.addPlayer(Server.client_list.get(client_id).get_account_id(), name);
-			if(result){
-				events_in_logout(client_id);
-				Server.client_list.get(client_id).send(Message.Type.DEFAULT, "CREATE:SUCESS");
-			}
-			else{
-				Server.client_list.get(client_id).send(Message.Type.DEFAULT, "CREATE:FAILED");
-			}
-		}
-		else{
-			Server.client_list.get(client_id).send(Message.Type.DEFAULT, "CREATE:FAILED");
-		}
-	}
-	
 	private static void events_in_logout(int client_id){
 		try{
 			if(Server.client_list.get(client_id)  != null)
@@ -136,10 +113,6 @@ class Thread_Logic extends Thread
 	}
 	private static void close_socket(int client_id){
 		Server.client_list.remove(client_id);
-	}
-	
-	private static void events_chose_player(int client_id, String player_name){
-		//Server.client_list.get(client_id).set_player_id(DB.db_players.search_player(Server.client_list.get(client_id).get_account_id(), player_name));
 	}
 	
 	private static void event_chat_msg(int client_id, String msg) throws IOException{
