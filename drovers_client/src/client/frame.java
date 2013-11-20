@@ -8,6 +8,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Scanner;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
 import GUI.GUI;
@@ -49,6 +50,8 @@ class Game
 		read_config();
 		new GUI();
 		frame = new JFrame("Drovers");
+		frame.setIconImage(new ImageIcon("gear.png").getImage());
+		
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(WIDTH, HEIGHT);
 		frame.getLocation();
