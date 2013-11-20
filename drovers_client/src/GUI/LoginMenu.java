@@ -39,7 +39,12 @@ public class LoginMenu{
 		g.setColor(Color.white);
 		g.drawString("Login:", 355, 115);
 		g.drawString("Passw:", 355, 135);
-				
+		
+		
+		g.drawImage(World.getTexture(10), 0, 150, 100, 200, null); // Gear left
+		g.drawImage(World.getTexture(11), 920, 150, 100, 200, null); // Gear right
+		g.drawImage(World.getTexture(12), 350, 0, 300, 100, null); // logo
+		
 		g.drawImage(World.getTexture(5), 400, 100, 200, 20, null); // 200 x 20 - 'Login' field
 		g.drawString(loginString.str, 405, 115);
 		g.drawImage(World.getTexture(5), 400, 120, 200, 20, null); // 200 x 20 - 'Password' filed

@@ -114,8 +114,8 @@ class Thread_Logic extends Thread
 		try{
 			if(Server.client_list.get(client_id)  != null)
 				Server.client_list.get(client_id).disconnect();
-		}catch(Exception e){
-			System.out.println("Disconnection err: " + e);
+		}
+		catch(Exception e){
 		}
 	}
 	private static void close_socket(int client_id){
