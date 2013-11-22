@@ -119,6 +119,6 @@ class State
 		g.drawString("FPS: " + Long.toString(Game.FPS), 0, 60);
 		//g.drawString("Msg: " + Game.server_msg, 0, 70);
 		//g.drawString("Ping: " + Game.Ping, 0, 80);
-		//g.drawString("X:" + Game.mouseX + " Y:" + Game.mouseY, 0, 90);
+		g.drawString("X:" + Game.mouseX + " Y:" + Game.mouseY, 0, 90);
 	}
 }

@@ -41,13 +41,13 @@ public class LoginMenu{
 		g.drawString("Passw:", 355, 135);
 		
 		
-		g.drawImage(World.getTexture(10), 0, 150, 100, 200, null); // Gear left
-		g.drawImage(World.getTexture(11), 920, 150, 100, 200, null); // Gear right
-		g.drawImage(World.getTexture(12), 350, 0, 300, 100, null); // logo
+		g.drawImage(World.texture_set.get("gear1").getImage(), 0, 150, 100, 200, null); // Gear left
+		g.drawImage(World.texture_set.get("gear2").getImage(), 920, 150, 100, 200, null); // Gear right
+		g.drawImage(World.texture_set.get("logo").getImage(), 350, 0, 300, 100, null); // logo
 		
-		g.drawImage(World.getTexture(5), 400, 100, 200, 20, null); // 200 x 20 - 'Login' field
+		g.drawImage(World.texture_set.get("inputString1").getImage(), 400, 100, 200, 20, null); // 200 x 20 - 'Login' field
 		g.drawString(loginString.str, 405, 115);
-		g.drawImage(World.getTexture(5), 400, 120, 200, 20, null); // 200 x 20 - 'Password' filed
+		g.drawImage(World.texture_set.get("inputString1").getImage(), 400, 120, 200, 20, null); // 200 x 20 - 'Password' filed
 		g.drawString(passwordString.str, 405, 135);
 		
 		g.drawImage(World.getTexture(buttonLoginTexture), 450, 150, 100, 20, null); // 100 x 20 - 'Login' button
