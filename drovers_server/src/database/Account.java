@@ -22,7 +22,7 @@ public class Account implements Externalizable{
 	public int money;
 	
 	// coords
-	public int mapId;
+	public String mapId;
 	
 	// army
 	public int unitsId;
@@ -34,7 +34,7 @@ public class Account implements Externalizable{
 			String accountPassword, 
 			int gm, 
 			String playerName, 
-			int mapId, 
+			String mapId, 
 			int unitsId, 
 			int thorium,
 			int metal, 

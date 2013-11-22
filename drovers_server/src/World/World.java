@@ -12,18 +12,19 @@ public class World {
 	public static HashMap<String, AreaMap> areaMaps;
 	public static WorldMap worldMap;
 	
-	public World() throws FileNotFoundException, UnsupportedEncodingException{
+	public World() throws FileNotFoundException, UnsupportedEncodingException{	
+		generateWorld();
+		
 		worldMap = new WorldMap();
 		areaMaps = new HashMap<String, AreaMap>();
 		areaMaps.put("null", new AreaMap(10, 10));
-		
-		//generateWorld();
+	
 		loadAreas();
 	}
 	
 	public static void generateWorld() throws FileNotFoundException, UnsupportedEncodingException{
-		int sizeX = 100;
-		int sizeY = 100;
+		int sizeX = 10;
+		int sizeY = 10;
 		int id = 0;
 		
 		PrintWriter out = new PrintWriter("maps\\allworld.map", "UTF-8");
@@ -48,8 +49,8 @@ public class World {
 		out.close();
 	}
 	public static void getnerateArea(int x, int y, int type) throws FileNotFoundException, UnsupportedEncodingException{
-		int sizeX = 50;
-		int sizeY = 50;
+		int sizeX = 10;
+		int sizeY = 10;
 		
 		PrintWriter out = new PrintWriter("maps\\" + x + "_" + y + ".map", "UTF-8");
 		out.println(sizeX);

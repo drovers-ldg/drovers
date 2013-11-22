@@ -33,7 +33,7 @@ public class DBAccounts {
 													 result.getString("account_password"), 
 													 result.getInt("gm"),
 													 result.getString("player_name"),
-													 result.getInt("map_id"),
+													 result.getString("map_id"),
 													 result.getInt("units_id"),
 													 result.getInt("recource_thorium"),
 													 result.getInt("recource_metal"),
@@ -89,7 +89,7 @@ public class DBAccounts {
 			statement.execute();
 			
 			// Add to memory
-			map.put(map.size()+1, new Account(map.size()+1, accountName, accountPassword, 0, playerName, 0, 0, 0, 0, 0));
+			map.put(map.size()+1, new Account(map.size()+1, accountName, accountPassword, 0, playerName, "null", 0, 0, 0, 0));
 			System.out.println("Account added;\n");
 			return true;
 		}

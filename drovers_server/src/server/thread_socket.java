@@ -57,7 +57,7 @@ class Thread_Socket extends Thread
 		new MessageDouble(player, data).send(out);
 	}
 	public void sendMap() throws IOException{
-		World.areaMaps.get("null").writeExternal(out);;
+		World.areaMaps.get(World.areaMaps.get(Server.client_list.get(client_id))).writeExternal(out);;
 	}
 
 	public void sendWorld() throws IOException {
