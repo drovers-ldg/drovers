@@ -114,11 +114,14 @@ class Thread_Socket extends Thread
 		Chat.add_to_msg_log("[SERVER] Connection to \""+ Game.address  + "\" sucess.");
 	}
 	
-	public void processMsg(Player player){
-		waitWorldUpdate = false;
+	public void processMsg(Player player) throws IOException{
+		waitPlayerUpdate = false;
 		Chat.add_to_msg_log("PLAYER DATA RECIVED: " + Player.playerName);
-		World.playerData = player;
+		World.playerData = player;	
 		Game.state.set_state("char");
+		
+		waitWorldUpdate = true;
+		Sender.updateWorld();
 	}
 	
 	public void processMsg(Message msg) throws IOException{
