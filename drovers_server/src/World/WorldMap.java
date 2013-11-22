@@ -20,7 +20,7 @@ public class WorldMap implements Externalizable{
 	}
 	
 	private static void loadMap() throws FileNotFoundException{
-		Scanner in = new Scanner(new File("maps\\world.map"));
+		Scanner in = new Scanner(new File("maps\\allworld.map"));
 		
 		sizeX = in.nextInt();
 		sizeY = in.nextInt();
