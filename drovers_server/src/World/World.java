@@ -17,7 +17,7 @@ public class World {
 		
 		worldMap = new WorldMap();
 		areaMaps = new HashMap<String, AreaMap>();
-		areaMaps.put("null", new AreaMap(10, 10));
+		areaMaps.put("default", new AreaMap(10, 10));
 	
 		loadAreas();
 	}

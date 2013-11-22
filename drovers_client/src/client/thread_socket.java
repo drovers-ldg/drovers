@@ -102,7 +102,6 @@ class Thread_Socket extends Thread
 	
 	public void processMsg(Area_Map map){
 		World.areaMap = map;
-		Game.state.set_state("worldMap");
 		waitMapUpdate = false;
 	}
 	

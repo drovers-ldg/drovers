@@ -72,7 +72,7 @@ public class DBAccounts {
 
 	public static void showAllAccounts() {
 		for(Account item: map.values()){
-			System.out.println("id:"+item.id+"\tacc:"+item.accountName+"\tgm:"+item.gm+"\tonline:"+item.online);
+			System.out.println("id:"+item.id+"\tacc:"+item.accountName+"\tgm:"+item.gm+"\tzone:"+item.mapId+"\tonline:"+item.online);
 		}
 	}
 
@@ -89,7 +89,7 @@ public class DBAccounts {
 			statement.execute();
 			
 			// Add to memory
-			map.put(map.size()+1, new Account(map.size()+1, accountName, accountPassword, 0, playerName, "null", 0, 0, 0, 0));
+			map.put(map.size()+1, new Account(map.size()+1, accountName, accountPassword, 0, playerName, "default", 0, 0, 0, 0));
 			System.out.println("Account added;\n");
 			return true;
 		}

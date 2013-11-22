@@ -40,9 +40,23 @@ public class World{
 	
 	public void load_textures(){
 		texture_set.put("null", getSprite("null.png"));
-		texture_set.put("grass", getSprite("grass.png"));
-		texture_set.put("ground", getSprite("ground.png"));
-		texture_set.put("forest", getSprite("forest.png"));
+		texture_set.put("grass1", getSprite("grass.png"));
+		texture_set.put("grass2", getSprite("grass2.png"));
+		texture_set.put("grass3", getSprite("grass3.png"));
+		texture_set.put("dirt1", getSprite("dirt1.png"));
+		texture_set.put("dirt2", getSprite("dirt2.png"));
+		texture_set.put("dirt3", getSprite("dirt3.png"));
+		texture_set.put("rock1", getSprite("rock1.png"));
+		texture_set.put("rock2", getSprite("rock2.png"));
+		texture_set.put("rock3", getSprite("rock3.png"));
+		texture_set.put("tree1", getSprite("tree1.png"));
+		texture_set.put("tree2", getSprite("tree2.png"));
+		texture_set.put("tree3", getSprite("tree3.png"));
+		texture_set.put("tree4", getSprite("tree4.png"));
+		texture_set.put("stone1", getSprite("stone1.png"));
+		texture_set.put("stone2", getSprite("stone2.png"));
+		texture_set.put("stone3", getSprite("stone3.png"));
+		texture_set.put("water1", getSprite("water1.png"));
 		
 		// Fields
 		texture_set.put("inputString1", getSprite("inputString1.png"));
@@ -68,16 +82,16 @@ public class World{
 				return texture_set.get("null").getImage();
 			case 1:
 				// grass
-				return texture_set.get("grass").getImage();
+				return texture_set.get("grass1").getImage();
 			case 2:
 				// forest
-				return texture_set.get("forest").getImage();
+				return texture_set.get("tree1").getImage();
 			case 3:
 				// deep forest
 				return texture_set.get("null").getImage();
 			case 4:
 				// rocks
-				return texture_set.get("ground").getImage();
+				return texture_set.get("dirt1").getImage();
 			case 5:
 				// inputString-1
 				return texture_set.get("inputString1").getImage();
@@ -102,6 +116,29 @@ public class World{
 			case 12:
 				// LoginMenu 'Logo'
 				return texture_set.get("logo").getImage();
+			default:
+				return texture_set.get("null").getImage();
+		}
+	}
+	
+	public static Image getTile(int type){
+		switch(type){
+			case 0:
+				return texture_set.get("grass1").getImage();
+			case 1:
+				return texture_set.get("grass2").getImage();
+			case 2:
+				return texture_set.get("tree1").getImage();
+			case 3:
+				return texture_set.get("dirt1").getImage();
+			case 4:
+				return texture_set.get("tree4").getImage();
+			case 5:
+				return texture_set.get("stone1").getImage();
+			case 6:
+				return texture_set.get("rock1").getImage();
+			case 7:
+				return texture_set.get("water1").getImage();
 			default:
 				return texture_set.get("null").getImage();
 		}
