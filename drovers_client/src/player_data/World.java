@@ -60,7 +60,7 @@ public class World{
 		
 		// Fields
 		texture_set.put("inputString1", getSprite("inputString1.png"));
-		
+		texture_set.put("chat", getSprite("chat.png"));
 		// Buttons
 		texture_set.put("buttonLogin", getSprite("loginButton.png"));
 		texture_set.put("buttonExit", getSprite("exitButton.png"));
@@ -116,6 +116,9 @@ public class World{
 			case 12:
 				// LoginMenu 'Logo'
 				return texture_set.get("logo").getImage();
+			case 13:
+				// chat
+				return texture_set.get("chat").getImage();
 			default:
 				return texture_set.get("null").getImage();
 		}

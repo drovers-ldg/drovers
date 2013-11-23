@@ -23,8 +23,8 @@ public class World {
 	}
 	
 	public static void generateWorld() throws FileNotFoundException, UnsupportedEncodingException{
-		int sizeX = 10;
-		int sizeY = 10;
+		int sizeX = 20;
+		int sizeY = 20;
 		int id = 0;
 		
 		PrintWriter out = new PrintWriter("maps\\allworld.map", "UTF-8");
