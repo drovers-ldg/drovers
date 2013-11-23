@@ -17,6 +17,8 @@ public class Player implements Externalizable{
 	public static int thorium;
 	public static int metal;
 	public static int money;
+	public static int mapX;
+	public static int mapY;
 
 	public Player(){
 		playerName = "";
@@ -33,6 +35,8 @@ public class Player implements Externalizable{
 		thorium = in.readInt();
 		metal = in.readInt();
 		money = in.readInt();
+		mapX = in.readInt();
+		mapY = in.readInt();
 	}
 
 	@Override

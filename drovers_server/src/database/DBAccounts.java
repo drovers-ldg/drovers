@@ -37,7 +37,9 @@ public class DBAccounts {
 													 result.getInt("units_id"),
 													 result.getInt("recource_thorium"),
 													 result.getInt("recource_metal"),
-													 result.getInt("recource_money")));
+													 result.getInt("recource_money"),
+													 result.getInt("map_x"),
+													 result.getInt("map_y")));
 		}
 		System.out.println("DB.Accounts loaded. Fields: " + map.size());
 	}
@@ -89,7 +91,7 @@ public class DBAccounts {
 			statement.execute();
 			
 			// Add to memory
-			map.put(map.size()+1, new Account(map.size()+1, accountName, accountPassword, 0, playerName, "default", 0, 0, 0, 0));
+			map.put(map.size()+1, new Account(map.size()+1, accountName, accountPassword, 0, playerName, "default", 0, 0, 0, 0, 0, 0));
 			System.out.println("Account added;\n");
 			return true;
 		}

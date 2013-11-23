@@ -39,6 +39,7 @@ public class World{
 	}
 	
 	public void load_textures(){
+		texture_set.put("char", getSprite("char.png"));
 		texture_set.put("null", getSprite("null.png"));
 		texture_set.put("grass1", getSprite("grass.png"));
 		texture_set.put("grass2", getSprite("grass2.png"));

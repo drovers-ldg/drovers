@@ -23,6 +23,8 @@ public class Account implements Externalizable{
 	
 	// coords
 	public String mapId;
+	public int mapX;
+	public int mapY;
 	
 	// army
 	public int unitsId;
@@ -38,7 +40,9 @@ public class Account implements Externalizable{
 			int unitsId, 
 			int thorium,
 			int metal, 
-			int money){
+			int money,
+			int mapX,
+			int mapY){
 		
 		this.id = id;
 		this.accountName = accountName;
@@ -51,6 +55,8 @@ public class Account implements Externalizable{
 		this.thorium = thorium;
 		this.metal = metal;
 		this.money = money;
+		this.mapX = mapX;
+		this.mapY = mapY;
 	}
 
 
@@ -66,6 +72,8 @@ public class Account implements Externalizable{
 		out.writeInt(thorium);
 		out.writeInt(metal);
 		out.writeInt(money);
+		out.writeInt(mapX);
+		out.writeInt(mapY);
 		out.flush();
 	}
 }

@@ -40,9 +40,8 @@ public class WorldMap implements Externalizable{
 		g.setColor(Color.red);
 		for(int i = 0; i < sizeX; ++i)
 			for(int j = 0; j < sizeY; ++j){
-					g.drawImage(World.getTile(map[i][j].type), i*32+380, j*32, 32, 32, null);
-				
-				g.drawString(map[i][j].areaName, i*32+380, j*32);
+				g.drawImage(World.getTile(map[i][j].type), (i+Player.mapX)*32+380, (j+Player.mapY)*32, 32, 32, null);
+				g.drawString(map[i][j].areaName, (i+Player.mapX)*32+380, (j+Player.mapY)*32);
 			}
 	}
 }
@@ -55,6 +54,6 @@ class WorldMapNode{
 	WorldMapNode(String areaName, int id, int type){
 		this.id = id;
 		this.areaName = areaName;
-		this.type = type; // 0 - null, 1 - grass, 2 - forest, 3 - deep forest, 4 - rocks
+		this.type = type;
 	}
 }
