@@ -69,26 +69,27 @@ class State
 			}
 			case "char":{
 				CharacterMenu.draw(g);
+				draw_msg_log();
 				break;
 			}
 			case "inventory":{
 				InventoryMenu.draw(g);
+				draw_msg_log();
 				break;
 			}
 			case "code":{
 				SorceCodeMenu.draw(g);
+				draw_msg_log();
 				break;
 			}
 			case "units":{
 				UnitsConstructorMenu.draw(g);
+				draw_msg_log();
 				break;
 			}
 			case "areaMap":{
 				AreaMapMenu.draw(g);
-				break;
-			}
-			case "worldMap":{
-				WorldMapMenu.draw(g);
+				draw_msg_log();
 				break;
 			}
 			default:{
@@ -119,6 +120,7 @@ class State
 		g.drawString("FPS: " + Long.toString(Game.FPS), 0, 60);
 		//g.drawString("Msg: " + Game.server_msg, 0, 70);
 		//g.drawString("Ping: " + Game.Ping, 0, 80);
+		g.drawString("nX: " + CharacterMenu.nodeX + "_nY: "+ CharacterMenu.nodeY, 0, 80);
 		g.drawString("X:" + Game.mouseX + " Y:" + Game.mouseY, 0, 90);
 	}
 }

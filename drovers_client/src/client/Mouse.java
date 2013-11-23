@@ -5,6 +5,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.io.IOException;
 
+import GUI.CharacterMenu;
 import GUI.LoginMenu;
 
 public class Mouse implements MouseListener{
@@ -19,6 +20,8 @@ public class Mouse implements MouseListener{
 					e1.printStackTrace();
 				}
 				break;
+			case "char":
+				mouseClickChar();
 			default:
 		}
 	}
@@ -91,6 +94,13 @@ public class Mouse implements MouseListener{
 		// 'Exit' button
 		else if(Game.mouseX > 450 && Game.mouseX < 550 && Game.mouseY > 500 && Game.mouseY < 520){
 			LoginMenu.buttonExitTexture = 9; // 9
+		}
+	}
+	
+	private void mouseClickChar(){
+		if(Game.mouseX > 380){
+			CharacterMenu.nodeX = (Game.mouseX - 380) / 32;
+			CharacterMenu.nodeY = (Game.mouseY)/ 32;
 		}
 	}
 }
