@@ -11,6 +11,5 @@ public class GUI{
 		new RegistrationMenu();
 		new SorceCodeMenu();
 		new UnitsConstructorMenu();
-		new WorldMapMenu();
 	}
 }

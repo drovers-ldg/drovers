@@ -82,6 +82,18 @@ class Thread_Logic extends Thread
 			else if(tmp.type.equals(Message.Type.UPDATEPLAYER)){
 				updatePlayer(tmp.client_id);
 			}
+			else if(tmp.type.equals(Message.Type.SQMOVEUP)){
+				Logic.SQMove.moveUp(tmp.client_id);
+			}
+			else if(tmp.type.equals(Message.Type.SQMOVEDOWN)){
+				Logic.SQMove.moveDown(tmp.client_id);
+			}
+			else if(tmp.type.equals(Message.Type.SQMOVELEFT)){
+				Logic.SQMove.moveLeft(tmp.client_id);
+			}
+			else if(tmp.type.equals(Message.Type.SQMOVERIGHT)){
+				Logic.SQMove.moveRight(tmp.client_id);
+			}
 		}
 		Server.msg_buffer.clear();
 	}

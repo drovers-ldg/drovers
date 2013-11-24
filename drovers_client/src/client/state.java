@@ -11,7 +11,6 @@ import GUI.MainMenu;
 import GUI.RegistrationMenu;
 import GUI.SorceCodeMenu;
 import GUI.UnitsConstructorMenu;
-import GUI.WorldMapMenu;
 
 class State
 {	

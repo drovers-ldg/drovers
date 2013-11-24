@@ -116,6 +116,18 @@ class MouseMotion implements MouseMotionListener{
 	public void mouseMoved(MouseEvent e) {
 		Game.mouseX = e.getX();
 		Game.mouseY = e.getY();
+		
+		switch(State.state){
+			case "char":
+				mouseMoveChar();
+				break;
+			default:
+		}
 	}
 	
+	public static void mouseMoveChar(){
+		if(Game.mouseX > 380){
+			// TO DISPLAY CURSOR
+		}
+	}
 }

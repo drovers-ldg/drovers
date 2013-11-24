@@ -6,7 +6,7 @@ import java.io.Serializable;
 
 public class Message implements Serializable{
 	
-	private static final long serialVersionUID = 201311201740L;
+	private static final long serialVersionUID = 201311230927L;
 	
 	public enum Type {
 		// read Manual\MessageTypes.txt
@@ -21,6 +21,12 @@ public class Message implements Serializable{
 		UPDATEPLAYER,
 		CONNECTIONSUCESS,
 		CONNECTIONFAILED,
+		
+		// Squad Move
+		SQMOVEUP,
+		SQMOVEDOWN,
+		SQMOVELEFT,
+		SQMOVERIGHT,
 	};
 	
 	public Type type = Type.DEFAULT;
