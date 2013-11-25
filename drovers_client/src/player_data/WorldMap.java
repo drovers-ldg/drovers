@@ -38,11 +38,12 @@ public class WorldMap implements Externalizable{
 
 	public static void draw(Graphics g) {
 		g.setColor(Color.red);
-		for(int i = 0; i < sizeX; ++i)
+		for(int i = 0; i < sizeX; ++i){
 			for(int j = 0; j < sizeY; ++j){
-				g.drawImage(World.getTile(map[i][j].type), (i+Player.mapX)*32+380, (j+Player.mapY)*32, 32, 32, null);
-				g.drawString(map[i][j].areaName, (i+Player.mapX)*32+380, (j+Player.mapY)*32);
+				g.drawImage(World.getTile(map[i][j].type), i*32+380, j*32, 32, 32, null);
+				g.drawString(map[i][j].areaName, i*32+380, j*32);
 			}
+		}
 	}
 }
 

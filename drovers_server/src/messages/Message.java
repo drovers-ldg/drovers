@@ -53,5 +53,6 @@ public class Message implements Serializable{
 	
 	public void send(ObjectOutputStream out) throws IOException{
 		out.writeObject(this);
+		out.flush();
 	}
 }

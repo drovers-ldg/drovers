@@ -136,6 +136,34 @@ class Thread_Socket extends Thread
 		else if(msg.type.equals(Message.Type.CONNECTIONFAILED)){
 			msgConnectionFailed();
 		}
+		else if(msg.type.equals(Message.Type.SQMOVEUP)){
+			Player.mapY--;
+		}
+		else if(msg.type.equals(Message.Type.SQMOVEDOWN)){
+			Player.mapY++;
+		}
+		else if(msg.type.equals(Message.Type.SQMOVELEFT)){
+			Player.mapX--;
+		}
+		else if(msg.type.equals(Message.Type.SQMOVERIGHT)){
+			Player.mapX++;
+		}
+		else if(msg.type.equals(Message.Type.SQMOVEUPLEFT)){
+			Player.mapY--;
+			Player.mapX--;
+		}
+		else if(msg.type.equals(Message.Type.SQMOVEUPRIGHT)){
+			Player.mapY--;
+			Player.mapX++;
+		}
+		else if(msg.type.equals(Message.Type.SQMOVEDOWNLEFT)){
+			Player.mapY++;
+			Player.mapX--;
+		}
+		else if(msg.type.equals(Message.Type.SQMOVEDOWNRIGHT)){
+			Player.mapY++;
+			Player.mapX++;
+		}
 	}
 	private void msgDefault(String data){
 		Game.server_msg = data;

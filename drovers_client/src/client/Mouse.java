@@ -56,7 +56,6 @@ public class Mouse implements MouseListener{
 				try {
 					mouseReleasedClickCharMenu();
 				} catch (IOException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 				break;
@@ -66,39 +65,39 @@ public class Mouse implements MouseListener{
 	
 	private void mouseReleasedClickCharMenu() throws IOException{
 		if(Game.mouseX > 380){
-			if((Game.mouseX-380)/32 == Player.mapX/32){
-				if(Game.mouseY/32 < Player.mapY/32){
+			if((Game.mouseX-380)/32 == Player.mapX){
+				if(Game.mouseY/32 < Player.mapY){
 					Sender.moveUp();
 					Game.server_msg = "Up";
 				}
-				if(Game.mouseY/32 > Player.mapY/32){
+				if(Game.mouseY/32 > Player.mapY){
 					Sender.moveDown();
 					Game.server_msg = "Down";
 				}
 			}
-			else if(Game.mouseY/32 == Player.mapY/32){
-				if((Game.mouseX-380)/32 < Player.mapX/32){
-					Sender.moveLeft();	
+			else if(Game.mouseY/32 == Player.mapY){
+				if((Game.mouseX-380)/32 < Player.mapX){
+					Sender.moveLeft();
 					Game.server_msg = "Left";
 				}
-				if((Game.mouseX-380)/32 > Player.mapX/32){
+				if((Game.mouseX-380)/32 > Player.mapX){
 					Sender.moveRight();
 					Game.server_msg = "Right";
 				}
 			}
-			else if(Game.mouseX/32 < Player.mapX/32 && Game.mouseY/32 < Player.mapY/32){
+			else if((Game.mouseX-380)/32 < Player.mapX && Game.mouseY/32 < Player.mapY){
 				Sender.moveUpLeft();
 				Game.server_msg = "Left-Up";
 			}
-			else if(Game.mouseX/32 < Player.mapX/32 && Game.mouseY/32 > Player.mapY/32){
+			else if((Game.mouseX-380)/32 < Player.mapX && Game.mouseY/32 > Player.mapY){
 				Sender.moveDownLeft();
 				Game.server_msg = "Left-Down";
 			}
-			else if(Game.mouseX/32 > Player.mapX/32 && Game.mouseY/32 < Player.mapY/32){
+			else if((Game.mouseX-380)/32 > Player.mapX && Game.mouseY/32 < Player.mapY){
 				Sender.moveUpRight();
 				Game.server_msg = "Right-Up";
 			}
-			else if(Game.mouseX/32 > Player.mapX/32 && Game.mouseY/32 > Player.mapY/32){
+			else if((Game.mouseX-380)/32 > Player.mapX && Game.mouseY/32 > Player.mapY){
 				Sender.moveDownRight();
 				Game.server_msg = "Right-Down";
 			}	
@@ -162,7 +161,7 @@ class MouseMotion implements MouseMotionListener{
 
 	@Override
 	public void mouseDragged(MouseEvent arg0) {
-		// TODO Auto-generated method stub
+
 	}
 
 	@Override
