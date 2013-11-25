@@ -10,7 +10,7 @@ import database.DataBase;
 import World.World;
 import messages.MessagesBuffer;
 
-class Server
+public class Server
 {
 	// Debug mode
 	public static boolean debug = false;

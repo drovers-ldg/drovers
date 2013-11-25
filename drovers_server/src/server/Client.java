@@ -6,7 +6,7 @@ import java.net.Socket;
 import database.DBAccounts;
 import messages.Message;
 
-class Client{
+public class Client{
 	private int client_id;
 	private int account_id;
 	private int player_id;

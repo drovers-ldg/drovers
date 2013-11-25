@@ -1,5 +1,4 @@
 SET FOREIGN_KEY_CHECKS=0;
-
 DROP TABLE IF EXISTS `accounts`;
 CREATE TABLE `accounts` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
@@ -13,10 +12,11 @@ CREATE TABLE `accounts` (
   `recource_thorium` int(10) NOT NULL DEFAULT '0',
   `recource_metal` int(10) NOT NULL,
   `recource_money` int(10) NOT NULL DEFAULT '0',
+  `map_x` int(10) unsigned NOT NULL DEFAULT '0',
+  `map_y` int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
-
-INSERT INTO `accounts` VALUES ('1', 'admin', 'test', '3', '', 'Admin', 'null', '0', '0', '0', '0');
-INSERT INTO `accounts` VALUES ('2', 'test', 'test', '0', '', 'Test', 'null', '0', '0', '0', '0');
-INSERT INTO `accounts` VALUES ('3', 'user', 'test', '0', '', 'User', 'null', '0', '0', '0', '0');
-INSERT INTO `accounts` VALUES ('4', 'testaccount', 'pass', '0', '', 'Testaccount', 'null', '0', '0', '0', '0');
+INSERT INTO `accounts` VALUES ('1', 'admin', 'test', '3', '', 'Admin', 'default', '0', '0', '0', '0', '0', '0');
+INSERT INTO `accounts` VALUES ('2', 'test', 'test', '0', '', 'Test', 'default', '0', '0', '0', '0', '0', '0');
+INSERT INTO `accounts` VALUES ('3', 'user', 'test', '0', '', 'User', 'default', '0', '0', '0', '0', '0', '0');
+INSERT INTO `accounts` VALUES ('4', 'testaccount', 'pass', '0', '', 'Testaccount', 'default', '0', '0', '0', '0', '0', '0');
