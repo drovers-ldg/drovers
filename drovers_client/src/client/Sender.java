@@ -29,4 +29,18 @@ public class Sender{
 	public static void updatePlayer() throws IOException{
 		new Message(Message.Type.UPDATEPLAYER).send(out);
 	}
+	
+	// SQMove
+	public static void moveUp() throws IOException{
+		new Message(Message.Type.SQMOVEUP).send(out);
+	}
+	public static void moveDown() throws IOException{
+		new Message(Message.Type.SQMOVEDOWN).send(out);
+	}
+	public static void moveLeft() throws IOException{
+		new Message(Message.Type.SQMOVELEFT).send(out);
+	}
+	public static void moveRight() throws IOException{
+		new Message(Message.Type.SQMOVERIGHT).send(out);
+	}
 }

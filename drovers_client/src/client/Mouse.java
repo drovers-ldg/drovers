@@ -5,6 +5,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.io.IOException;
 
+import player_data.Player;
 import GUI.CharacterMenu;
 import GUI.LoginMenu;
 
@@ -50,6 +51,38 @@ public class Mouse implements MouseListener{
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		Game.server_msg = "CLICK! 5";
+		switch(State.state){
+			case "char":
+				try {
+					mouseReleasedClickCharMenu();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				break;
+			default:
+		}
+	}
+	
+	private void mouseReleasedClickCharMenu() throws IOException{
+		if(Game.mouseX > 380){
+			if(Game.mouseX/32 < Player.mapX/32){
+				Sender.moveLeft();
+				Game.server_msg = "Left";
+			}
+			else if(Game.mouseX/32 > Player.mapX/32){
+				Sender.moveRight();
+				Game.server_msg = "Right";
+			}
+			else if(Game.mouseY/32 < Player.mapY/32){
+				Sender.moveUp();
+				Game.server_msg = "Up";
+			}
+			else if(Game.mouseY/32 > Player.mapY/32){
+				Sender.moveDown();
+				Game.server_msg = "Down";
+			}
+		}
 	}
 	
 	private void mouseClickLogin() throws IOException{
@@ -126,8 +159,19 @@ class MouseMotion implements MouseMotionListener{
 	}
 	
 	public static void mouseMoveChar(){
+		switch(State.state){
+			case "char":
+				mouseMoveCharCharMenu();
+				break;
+			default:
+		}
+	}
+	
+	private static void mouseMoveCharCharMenu(){
 		if(Game.mouseX > 380){
-			// TO DISPLAY CURSOR
+			CharacterMenu.showMapCursor = true;
+			CharacterMenu.mouseX = Game.mouseX;
+			CharacterMenu.mouseY = Game.mouseY;
 		}
 	}
 }

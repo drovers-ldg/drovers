@@ -33,6 +33,8 @@ public class LoginMenu{
 	}
 	
 	public static void draw(Graphics g){
+		loginString.str ="admin";
+		passwordString.pass = "test";
 		g.setColor(Color.red);
 		g.drawString(errString, 450, 90);
 		

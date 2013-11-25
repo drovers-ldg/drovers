@@ -21,11 +21,12 @@ public class GameLoop implements Runnable {
 		private static long Last_Update = 0;
  
 		public GameLoop(Canvas canvas) {
-			Game.is_runing = true;
-			canvas.addMouseListener(new Mouse());
-			canvas.addMouseMotionListener(new MouseMotion());
-			gui = canvas;
 			this.init();
+			Game.is_runing = true;
+			gui = canvas;
+			gui.addMouseListener(new Mouse());
+			gui.addMouseMotionListener(new MouseMotion());
+			gui.addKeyListener(new key_input());	
 		}
  
 		public void run(){			
@@ -62,7 +63,6 @@ public class GameLoop implements Runnable {
 			}
 			
 			Game.state = new State("login");
-			gui.addKeyListener(new key_input());
 		}
  
 		private void render(BufferStrategy strategy) {

@@ -10,6 +10,9 @@ import player_data.WorldMap;
 public class CharacterMenu{
 	public static int nodeX;
 	public static int nodeY;
+	public static int mouseX;
+	public static int mouseY;
+	public static boolean showMapCursor = false;
 	
 	public CharacterMenu(){
 		nodeX = 0;
@@ -27,5 +30,9 @@ public class CharacterMenu{
 		g.setColor(Color.white);
 		g.drawString(Player.playerName, 0, 10);
 		g.drawImage(World.texture_set.get("char").getImage(), Player.mapX*32+380, Player.mapY*32, 32, 32, null);
+		
+		if(showMapCursor){
+			g.drawImage(World.texture_set.get("cursor").getImage(), (mouseX/32)*32-5, (mouseY/32)*32, 32, 32, null);
+		}
 	}
 }

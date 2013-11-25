@@ -73,6 +73,8 @@ public class World{
 		texture_set.put("gear1", getSprite("gear1.png"));
 		texture_set.put("gear2", getSprite("gear2.png"));
 		texture_set.put("logo", getSprite("logo.png"));
+		
+		texture_set.put("cursor", getSprite("cursor.png"));
 	}
 	
 	public static Image getTexture(int type){
