@@ -30,11 +30,13 @@ public class LoginMenu{
 		loginString = new InputField();
 		passwordString = new PasswordField();
 		errString = "";
+		loginString.str ="admin";
+		passwordString.pass = "test";
+		passwordString.str = "****";
 	}
 	
 	public static void draw(Graphics g){
-		loginString.str ="admin";
-		passwordString.pass = "test";
+
 		g.setColor(Color.red);
 		g.drawString(errString, 450, 90);
 		

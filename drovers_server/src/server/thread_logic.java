@@ -10,7 +10,7 @@ import messages.MessageIn;
 class Thread_Logic extends Thread
 {
 	// Timer
-	private final long Logic_Update = 10;
+	private final long Logic_Update = 30;
 	private final long Logic_Delta = 1000/Logic_Update;
 	
 	Thread_Logic(){
@@ -23,7 +23,7 @@ class Thread_Logic extends Thread
 			if(System.currentTimeMillis() - Last_Update >= Logic_Delta){
 				if(Server.client_list.size() == 0 || Server.msg_buffer.size() == 0){
 					try{
-						Thread.sleep(1000);
+						Thread.sleep(200);
 					}
 					catch (InterruptedException e){
 						e.printStackTrace();
@@ -152,9 +152,9 @@ class Thread_Logic extends Thread
 			return;
 		}
 		else{
-			String accountName = DBAccounts.map.get(accountId).accountName;
+			String playerName = DBAccounts.map.get(accountId).playerName;
 			for(Client client: Server.client_list.values()){
-				client.send(accountName, msg);
+				client.send(playerName, msg);
 			}
 		}
 	}
