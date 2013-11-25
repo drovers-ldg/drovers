@@ -6,7 +6,7 @@ import java.io.Serializable;
 
 public class Message implements Serializable{
 	
-	private static final long serialVersionUID = 201311230927L;
+	private static final long serialVersionUID = 201311251205L;
 	
 	public enum Type {
 		// read Manual\MessageTypes.txt
@@ -27,6 +27,11 @@ public class Message implements Serializable{
 		SQMOVEDOWN,
 		SQMOVELEFT,
 		SQMOVERIGHT,
+		
+		SQMOVEUPLEFT,
+		SQMOVEUPRIGHT,
+		SQMOVEDOWNLEFT,
+		SQMOVEDOWNRIGHT
 	};
 
 	public Type type = Type.DEFAULT;

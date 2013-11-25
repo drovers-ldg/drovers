@@ -66,22 +66,42 @@ public class Mouse implements MouseListener{
 	
 	private void mouseReleasedClickCharMenu() throws IOException{
 		if(Game.mouseX > 380){
-			if(Game.mouseX/32 < Player.mapX/32){
-				Sender.moveLeft();
-				Game.server_msg = "Left";
+			if((Game.mouseX-380)/32 == Player.mapX/32){
+				if(Game.mouseY/32 < Player.mapY/32){
+					Sender.moveUp();
+					Game.server_msg = "Up";
+				}
+				if(Game.mouseY/32 > Player.mapY/32){
+					Sender.moveDown();
+					Game.server_msg = "Down";
+				}
 			}
-			else if(Game.mouseX/32 > Player.mapX/32){
-				Sender.moveRight();
-				Game.server_msg = "Right";
+			else if(Game.mouseY/32 == Player.mapY/32){
+				if((Game.mouseX-380)/32 < Player.mapX/32){
+					Sender.moveLeft();	
+					Game.server_msg = "Left";
+				}
+				if((Game.mouseX-380)/32 > Player.mapX/32){
+					Sender.moveRight();
+					Game.server_msg = "Right";
+				}
 			}
-			else if(Game.mouseY/32 < Player.mapY/32){
-				Sender.moveUp();
-				Game.server_msg = "Up";
+			else if(Game.mouseX/32 < Player.mapX/32 && Game.mouseY/32 < Player.mapY/32){
+				Sender.moveUpLeft();
+				Game.server_msg = "Left-Up";
 			}
-			else if(Game.mouseY/32 > Player.mapY/32){
-				Sender.moveDown();
-				Game.server_msg = "Down";
+			else if(Game.mouseX/32 < Player.mapX/32 && Game.mouseY/32 > Player.mapY/32){
+				Sender.moveDownLeft();
+				Game.server_msg = "Left-Down";
 			}
+			else if(Game.mouseX/32 > Player.mapX/32 && Game.mouseY/32 < Player.mapY/32){
+				Sender.moveUpRight();
+				Game.server_msg = "Right-Up";
+			}
+			else if(Game.mouseX/32 > Player.mapX/32 && Game.mouseY/32 > Player.mapY/32){
+				Sender.moveDownRight();
+				Game.server_msg = "Right-Down";
+			}	
 		}
 	}
 	

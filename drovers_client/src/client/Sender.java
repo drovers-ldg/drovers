@@ -43,4 +43,16 @@ public class Sender{
 	public static void moveRight() throws IOException{
 		new Message(Message.Type.SQMOVERIGHT).send(out);
 	}
+	public static void moveUpLeft() throws IOException{
+		new Message(Message.Type.SQMOVEUPLEFT).send(out);
+	}
+	public static void moveUpRight() throws IOException{
+		new Message(Message.Type.SQMOVEUPRIGHT).send(out);
+	}
+	public static void moveDownLeft() throws IOException{
+		new Message(Message.Type.SQMOVEDOWNLEFT).send(out);
+	}
+	public static void moveDownRight() throws IOException{
+		new Message(Message.Type.SQMOVEDOWNRIGHT).send(out);
+	}
 }
