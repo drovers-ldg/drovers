@@ -3,6 +3,8 @@ package client;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.io.IOException;
+
+import player_data.World;
 import GUI.AreaMapMenu;
 import GUI.CharacterMenu;
 import GUI.InventoryMenu;
@@ -119,7 +121,8 @@ class State
 		g.drawString("FPS: " + Long.toString(Game.FPS), 0, 60);
 		g.drawString("Msg: " + Game.server_msg, 0, 70);
 		//g.drawString("Ping: " + Game.Ping, 0, 80);
-		g.drawString("nX: " + CharacterMenu.nodeX + "_nY: "+ CharacterMenu.nodeY, 0, 80);
-		g.drawString("X:" + Game.mouseX + " Y:" + Game.mouseY, 0, 90);
+		g.drawString("Online: " + World.playersOnline.size(), 0, 80);
+		g.drawString("nX: " + CharacterMenu.nodeX + "_nY: "+ CharacterMenu.nodeY, 0, 90);
+		g.drawString("X:" + Game.mouseX + " Y:" + Game.mouseY, 0, 100);
 	}
 }

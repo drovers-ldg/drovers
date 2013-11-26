@@ -11,6 +11,7 @@ import messages.Message;
 import messages.MessageDouble;
 import player_data.Area_Map;
 import player_data.Player;
+import player_data.PlayersOnline;
 import player_data.World;
 import player_data.WorldMap;
 
@@ -22,6 +23,7 @@ class Thread_Socket extends Thread
 	protected static boolean waitMapUpdate;
 	protected static boolean waitWorldUpdate;
 	protected static boolean waitPlayerUpdate;
+	protected static boolean waitSQUpdate;
 	
 	Thread_Socket() throws IOException
 	{
@@ -39,7 +41,14 @@ class Thread_Socket extends Thread
 		
 			while(Game.is_runing)
 			{
-				if(waitPlayerUpdate){
+				if(waitSQUpdate){
+					World.playersOnline.setSize(in.readInt());
+					for(int i = 0; i < World.playersOnline.size(); ++i){
+						World.playersOnline.set(i, new PlayersOnline(in.readInt(), in.readInt(), in.readUTF()));
+					}
+					waitSQUpdate = false;
+				}
+				else if(waitPlayerUpdate){
 					Player player = new Player();
 					player.readExternal(in);
 					processMsg(player);
@@ -164,6 +173,10 @@ class Thread_Socket extends Thread
 			Player.mapY++;
 			Player.mapX++;
 		}
+		else if(msg.type.equals(Message.Type.UPDATESQUADS)){
+			waitSQUpdate = true;
+			Sender.sendSQUpdate();
+		}
 	}
 	private void msgDefault(String data){
 		Game.server_msg = data;
@@ -187,6 +200,6 @@ class Thread_Socket extends Thread
 	}
 	
 	public void send(Message.Type type, String msg) throws IOException{
-		new Message(type, msg).send(out);;
+		new Message(type, msg).send(out);
 	}
 }

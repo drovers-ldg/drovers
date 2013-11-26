@@ -55,4 +55,7 @@ public class Sender{
 	public static void moveDownRight() throws IOException{
 		new Message(Message.Type.SQMOVEDOWNRIGHT).send(out);
 	}
+	public static void sendSQUpdate() throws IOException{
+		new Message(Message.Type.UPDATESQUADS).send(out);
+	}
 }

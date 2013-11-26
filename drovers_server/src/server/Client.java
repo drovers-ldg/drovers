@@ -60,4 +60,13 @@ public class Client{
 	public void sendPlayer() throws IOException{
 		this.thread.sendPlayer();
 	}
+
+	public void sendPlayersOnlineRequest() throws IOException {
+		this.thread.sendPlayersOnlineRequest();
+	}
+	
+	public void sendPlayersOnline() throws IOException{
+		this.thread.sendPlayersOnline();
+	}
+
 }

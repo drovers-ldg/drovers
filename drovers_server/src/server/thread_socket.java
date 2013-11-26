@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.Set;
 
 import database.DBAccounts;
 import World.World;
@@ -48,6 +49,7 @@ class Thread_Socket extends Thread
 		finally{
 			Server.msg_buffer.add(new MessageIn(Message.Type.LOGOUT, client_id));
 			Server.msg_buffer.add(new MessageIn(Message.Type.DISCONNECT, client_id));
+			this.interrupt();
 		}
 	}
 	public void send(Message.Type type, String msg) throws IOException{
@@ -57,8 +59,9 @@ class Thread_Socket extends Thread
 		new MessageDouble(player, data).send(out);
 	}
 	public void sendMap() throws IOException{
-		System.out.println("send to: " + client_id);
-		World.areaMaps.get(DBAccounts.map.get(Server.client_list.get(this.client_id).get_account_id()).mapId).writeExternal(out);
+		synchronized(DBAccounts.map){
+			World.areaMaps.get(DBAccounts.map.get(Server.client_list.get(this.client_id).get_account_id()).mapId).writeExternal(out);
+		}
 	}
 
 	public void sendWorld() throws IOException {
@@ -66,6 +69,31 @@ class Thread_Socket extends Thread
 	}
 	
 	public void sendPlayer() throws IOException {
-		DBAccounts.map.get(Server.client_list.get(client_id).get_account_id()).writeExternal(out);
+		synchronized(DBAccounts.map){
+			DBAccounts.map.get(Server.client_list.get(client_id).get_account_id()).writeExternal(out);
+		}
+	}
+
+	public void sendPlayersOnlineRequest()  throws IOException{
+		new Message(Message.Type.UPDATESQUADS).send(out);
+	}
+	
+	public void sendPlayersOnline() throws IOException {
+		synchronized(DBAccounts.map){
+			int onlineCount = 0;
+			Set<Integer> client_list = Server.client_list.keySet();
+			for(Integer index: client_list){
+				if(Server.client_list.get(index).get_connection()){
+					onlineCount++;
+				}
+			}
+			out.writeInt(onlineCount);
+			for(Integer index: client_list){
+				out.writeInt(DBAccounts.map.get(Server.client_list.get(index).get_account_id()).mapX);
+				out.writeInt(DBAccounts.map.get(Server.client_list.get(index).get_account_id()).mapY);
+				out.writeUTF(DBAccounts.map.get(Server.client_list.get(index).get_account_id()).playerName);
+			}
+			out.flush();
+		}
 	}
 }

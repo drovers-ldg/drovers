@@ -5,6 +5,7 @@ import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Vector;
 
 import javax.imageio.ImageIO;
 
@@ -13,11 +14,13 @@ public class World{
 	public static WorldMap worldMap;
 	public static HashMap<String, Sprite> texture_set;
 	public static Player playerData;
+	public static Vector<PlayersOnline> playersOnline;
 	
 	public World(){
 		areaMap = new Area_Map();
 		worldMap = new WorldMap();
 		playerData = new Player();
+		playersOnline = new Vector<PlayersOnline>();
 		
 		// maps
 		texture_set = new HashMap<String, Sprite>();

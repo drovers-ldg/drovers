@@ -9,7 +9,7 @@ import java.io.ObjectOutput;
 import java.util.Scanner;
 
 public class WorldMap implements Externalizable{
-	private static final long serialVersionUID = 201311182029L;
+	private static final long serialVersionUID = 201311261826L;
 	
 	public static WorldMapNode [][] map;
 	public static int sizeX;
@@ -51,6 +51,5 @@ public class WorldMap implements Externalizable{
 				out.writeInt(map[i][j].type);
 			}
 		}
-		out.flush();
 	}
 }
