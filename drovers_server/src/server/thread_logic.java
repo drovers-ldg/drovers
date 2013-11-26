@@ -131,7 +131,6 @@ class Thread_Logic extends Thread
 			Server.client_list.get(client_id).set_account_id(account_id);
 			DBAccounts.connect(account_id);
 			Server.client_list.get(client_id).send(Message.Type.CONNECTIONSUCESS, null);
-			Logic.SQMove.updateSQRequest();
 		}
 		else{
 			Server.client_list.get(client_id).send(Message.Type.CONNECTIONFAILED, null);

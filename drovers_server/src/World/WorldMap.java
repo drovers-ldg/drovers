@@ -51,5 +51,6 @@ public class WorldMap implements Externalizable{
 				out.writeInt(map[i][j].type);
 			}
 		}
+		out.flush();
 	}
 }
