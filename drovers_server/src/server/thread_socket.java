@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.HashSet;
 import java.util.Set;
 
 import database.DBAccounts;
@@ -82,13 +83,16 @@ class Thread_Socket extends Thread
 		synchronized(DBAccounts.map){
 			int onlineCount = 0;
 			Set<Integer> client_list = Server.client_list.keySet();
+			Set<Integer> send_list = new HashSet<Integer>();
+			
 			for(Integer index: client_list){
-				if(Server.client_list.get(index).get_connection()){
+				if(Server.client_list.get(index).get_connection() && index != client_id){
 					onlineCount++;
+					send_list.add(index);
 				}
 			}
 			out.writeInt(onlineCount);
-			for(Integer index: client_list){
+			for(Integer index: send_list){
 				out.writeInt(DBAccounts.map.get(Server.client_list.get(index).get_account_id()).mapX);
 				out.writeInt(DBAccounts.map.get(Server.client_list.get(index).get_account_id()).mapY);
 				out.writeUTF(DBAccounts.map.get(Server.client_list.get(index).get_account_id()).playerName);

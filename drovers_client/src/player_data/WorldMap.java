@@ -41,7 +41,7 @@ public class WorldMap implements Externalizable{
 		for(int i = 0; i < sizeX; ++i){
 			for(int j = 0; j < sizeY; ++j){
 				g.drawImage(World.getTile(map[i][j].type), i*32+380, j*32, 32, 32, null);
-				g.drawString(map[i][j].areaName, i*32+380, j*32);
+				//g.drawString(map[i][j].areaName, i*32+380, j*32);
 			}
 		}
 	}
