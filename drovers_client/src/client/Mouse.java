@@ -129,10 +129,37 @@ public class Mouse implements MouseListener{
 					}
 					actionMenuClose();
 				}
+				else if(actionMenuMouseExplore()){
+					if(CharacterMenu.actionWay == CharacterMenu.Way.UP){
+						Sender.attackUp();
+					}
+					else if(CharacterMenu.actionWay == CharacterMenu.Way.DOWN){
+						Sender.attackDown();
+					}
+					else if(CharacterMenu.actionWay == CharacterMenu.Way.LEFT){
+						Sender.attackLeft();
+					}
+					else if(CharacterMenu.actionWay == CharacterMenu.Way.RIGHT){
+						Sender.attackRight();
+					}
+					else if(CharacterMenu.actionWay == CharacterMenu.Way.UPLEFT){
+						Sender.attackUpLeft();
+					}
+					else if(CharacterMenu.actionWay == CharacterMenu.Way.UPRIGHT){
+						Sender.attackUpRight();
+					}
+					else if(CharacterMenu.actionWay == CharacterMenu.Way.DOWNRIGHT){
+						Sender.attackDownRight();
+					}
+					else if(CharacterMenu.actionWay == CharacterMenu.Way.DOWNLEFT){
+						Sender.attackDownLeft();
+					}
+					actionMenuClose();
+				}
 				else {
 					actionMenuClose();
 				}
-			}
+			}	
 			else if((Game.mouseX-380)/32 == Player.mapX){
 				if(Game.mouseY/32 < Player.mapY){
 					actionMenuShow();

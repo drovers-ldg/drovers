@@ -58,4 +58,30 @@ public class Sender{
 	public static void sendSQUpdate() throws IOException{
 		new Message(Message.Type.UPDATESQUADS).send(out);
 	}
+	
+	//SQAttack
+	public static void attackUp() throws IOException{
+		new Message(Message.Type.SQATTACKUP).send(out);
+	}
+	public static void attackDown() throws IOException{
+		new Message(Message.Type.SQATTACKDOWN).send(out);
+	}
+	public static void attackLeft() throws IOException{
+		new Message(Message.Type.SQATTACKLEFT).send(out);
+	}
+	public static void attackRight() throws IOException{
+		new Message(Message.Type.SQATTACKRIGHT).send(out);
+	}
+	public static void attackUpLeft() throws IOException{
+		new Message(Message.Type.SQATTACKUPLEFT).send(out);
+	}
+	public static void attackUpRight() throws IOException{
+		new Message(Message.Type.SQATTACKUPRIGHT).send(out);
+	}
+	public static void attackDownLeft() throws IOException{
+		new Message(Message.Type.SQATTACKDOWNLEFT).send(out);
+	}
+	public static void attackDownRight() throws IOException{
+		new Message(Message.Type.SQATTACKDOWNRIGHT).send(out);
+	}
 }

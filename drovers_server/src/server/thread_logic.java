@@ -109,6 +109,30 @@ class Thread_Logic extends Thread
 			else if(tmp.type.equals(Message.Type.UPDATESQUADS)){
 				Logic.SQMove.updateSQ(tmp.client_id);
 			}
+			else if(tmp.type.equals(Message.Type.SQATTACKUP)){
+				Logic.SQAttack.attackUp();
+			}
+			else if(tmp.type.equals(Message.Type.SQATTACKDOWN)){
+				Logic.SQAttack.attackDown();
+			}
+			else if(tmp.type.equals(Message.Type.SQATTACKLEFT)){
+				Logic.SQAttack.attackLeft();
+			}
+			else if(tmp.type.equals(Message.Type.SQATTACKRIGHT)){
+				Logic.SQAttack.attackRight();
+			}
+			else if(tmp.type.equals(Message.Type.SQATTACKUPLEFT)){
+				Logic.SQAttack.attackUpLeft();
+			}
+			else if(tmp.type.equals(Message.Type.SQATTACKUPRIGHT)){
+				Logic.SQAttack.attackUpRight();
+			}
+			else if(tmp.type.equals(Message.Type.SQATTACKDOWNLEFT)){
+				Logic.SQAttack.attackDownLeft();
+			}
+			else if(tmp.type.equals(Message.Type.SQATTACKDOWNRIGHT)){
+				Logic.SQAttack.attackDownRight();
+			}
 		}
 		Server.msg_buffer.clear();
 	}
