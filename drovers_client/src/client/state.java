@@ -123,6 +123,6 @@ class State
 		//g.drawString("Ping: " + Game.Ping, 0, 80);
 		g.drawString("Online: " + World.playersOnline.size(), 0, 80);
 		g.drawString("nX: " + CharacterMenu.nodeX + "_nY: "+ CharacterMenu.nodeY, 0, 90);
-		g.drawString("X:" + Game.mouseX + " Y:" + Game.mouseY, 0, 100);
+		g.drawString("M:X:" + Game.mouseX + " Y:" + Game.mouseY, 0, 100);
 	}
 }

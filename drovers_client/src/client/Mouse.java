@@ -74,132 +74,100 @@ public class Mouse implements MouseListener{
 		CharacterMenu.actionShow = false;
 		CharacterMenu.showMapCursor = true;
 	}
-	private boolean actionMenuMouseCoords(){
-		if(CharacterMenu.mouseX > CharacterMenu.actionShowMouseX-25	&& CharacterMenu.mouseX < CharacterMenu.actionShowMouseX+25
-		&& CharacterMenu.mouseY > CharacterMenu.actionShowMouseY 	&& CharacterMenu.mouseX < CharacterMenu.actionShowMouseY+50){
-			return false;
-		}
-		else{
+	public static boolean actionMenuMouseMove(){
+		if(CharacterMenu.actionShow 
+				&& CharacterMenu.mouseX > CharacterMenu.actionMenuCursorX + 32 
+				&& CharacterMenu.mouseX < CharacterMenu.actionMenuCursorX + 82
+				&& CharacterMenu.mouseY > CharacterMenu.actionMenuCursorY + 32
+				&& CharacterMenu.mouseY < CharacterMenu.actionMenuCursorY + 52){
 			return true;
 		}
-	}	
+		else{
+			return false;
+		}
+	}
+	public static boolean actionMenuMouseExplore(){
+		if(CharacterMenu.actionShow 
+				&& CharacterMenu.mouseX > CharacterMenu.actionMenuCursorX + 32 
+				&& CharacterMenu.mouseX < CharacterMenu.actionMenuCursorX + 82
+				&& CharacterMenu.mouseY > CharacterMenu.actionMenuCursorY + 52
+				&& CharacterMenu.mouseY < CharacterMenu.actionMenuCursorY + 72){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+	
 	private void mouseReleasedClickCharMenu() throws IOException{
 		if(Game.mouseX > 380){
-			if((Game.mouseX-380)/32 == Player.mapX){
+			if(CharacterMenu.actionShow){
+				if(actionMenuMouseMove()){
+					if(CharacterMenu.actionWay == CharacterMenu.Way.UP){
+						Sender.moveUp();
+					}
+					else if(CharacterMenu.actionWay == CharacterMenu.Way.DOWN){
+						Sender.moveDown();
+					}
+					else if(CharacterMenu.actionWay == CharacterMenu.Way.LEFT){
+						Sender.moveLeft();
+					}
+					else if(CharacterMenu.actionWay == CharacterMenu.Way.RIGHT){
+						Sender.moveRight();
+					}
+					else if(CharacterMenu.actionWay == CharacterMenu.Way.UPLEFT){
+						Sender.moveUpLeft();
+					}
+					else if(CharacterMenu.actionWay == CharacterMenu.Way.UPRIGHT){
+						Sender.moveUpRight();
+					}
+					else if(CharacterMenu.actionWay == CharacterMenu.Way.DOWNRIGHT){
+						Sender.moveDownRight();
+					}
+					else if(CharacterMenu.actionWay == CharacterMenu.Way.DOWNLEFT){
+						Sender.moveDownLeft();
+					}
+					actionMenuClose();
+				}
+				else {
+					actionMenuClose();
+				}
+			}
+			else if((Game.mouseX-380)/32 == Player.mapX){
 				if(Game.mouseY/32 < Player.mapY){
-					if(CharacterMenu.actionShow){
-						if(actionMenuMouseCoords()){
-							Sender.moveUp();
-							actionMenuClose();
-						}
-						else{
-							actionMenuClose();
-						}
-					}
-					else {
-						actionMenuShow();
-					}
+					actionMenuShow();
+					CharacterMenu.actionWay = CharacterMenu.Way.UP;
 				}
 				else if(Game.mouseY/32 > Player.mapY){
-					if(CharacterMenu.actionShow){
-						if(actionMenuMouseCoords()){
-							Sender.moveDown();
-							actionMenuClose();
-						}
-						else{
-							actionMenuClose();
-						}
-					}
-					else {
-						actionMenuShow();
-					}
+					actionMenuShow();
+					CharacterMenu.actionWay = CharacterMenu.Way.DOWN;
 				}
 			}
 			else if(Game.mouseY/32 == Player.mapY){
 				if((Game.mouseX-380)/32 < Player.mapX){
-					if(CharacterMenu.actionShow){
-						if(actionMenuMouseCoords()){
-							Sender.moveLeft();
-							actionMenuClose();
-						}
-						else{
-							actionMenuClose();
-						}
-					}
-					else {
-						actionMenuShow();
-					}
+					actionMenuShow();
+					CharacterMenu.actionWay = CharacterMenu.Way.LEFT;
 				}
 				else if((Game.mouseX-380)/32 > Player.mapX){
-					if(CharacterMenu.actionShow){
-						if(actionMenuMouseCoords()){
-							Sender.moveRight();	
-							actionMenuClose();
-						}
-						else{
-							actionMenuClose();
-						}
-					}
-					else {
-						actionMenuShow();
-					}
+					actionMenuShow();
+					CharacterMenu.actionWay = CharacterMenu.Way.RIGHT;
 				}
 			}
 			else if((Game.mouseX-380)/32 < Player.mapX && Game.mouseY/32 < Player.mapY){
-				if(CharacterMenu.actionShow){
-					if(actionMenuMouseCoords()){
-						Sender.moveUpLeft();
-						actionMenuClose();
-					}
-					else{
-						actionMenuClose();
-					}
-				}
-				else {
-					actionMenuShow();
-				}
+				actionMenuShow();
+				CharacterMenu.actionWay = CharacterMenu.Way.UPLEFT;
 			}
 			else if((Game.mouseX-380)/32 < Player.mapX && Game.mouseY/32 > Player.mapY){
-				if(CharacterMenu.actionShow){
-					if(actionMenuMouseCoords()){
-						Sender.moveDownLeft();
-						actionMenuClose();
-					}
-					else{
-						actionMenuClose();
-					}
-				}
-				else {
-					actionMenuShow();
-				}
+				actionMenuShow();
+				CharacterMenu.actionWay = CharacterMenu.Way.DOWNLEFT;
 			}
 			else if((Game.mouseX-380)/32 > Player.mapX && Game.mouseY/32 < Player.mapY){
-				if(CharacterMenu.actionShow){
-					if(actionMenuMouseCoords()){
-						Sender.moveUpRight();
-						actionMenuClose();
-					}
-					else{
-						actionMenuClose();
-					}
-				}
-				else {
-					actionMenuShow();
-				}
+				actionMenuShow();
+				CharacterMenu.actionWay = CharacterMenu.Way.UPRIGHT;
 			}
 			else if((Game.mouseX-380)/32 > Player.mapX && Game.mouseY/32 > Player.mapY){
-				if(CharacterMenu.actionShow){
-					if(actionMenuMouseCoords()){
-						Sender.moveDownRight();
-						actionMenuClose();
-					}
-					else{
-						actionMenuClose();
-					}
-				}
-				else {
-					actionMenuShow();
-				}
+				actionMenuShow();
+				CharacterMenu.actionWay = CharacterMenu.Way.DOWNRIGHT;
 			}	
 		}
 	}
@@ -291,6 +259,7 @@ class MouseMotion implements MouseMotionListener{
 			CharacterMenu.showMapCursor = true;
 			CharacterMenu.mouseX = Game.mouseX;
 			CharacterMenu.mouseY = Game.mouseY;
+			CharacterMenu.actionMenuDetected = Mouse.actionMenuMouseMove();
 		}
 	}
 }
