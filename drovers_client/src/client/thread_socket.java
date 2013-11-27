@@ -112,7 +112,6 @@ class Thread_Socket extends Thread
 	public void processMsg(Area_Map map) throws IOException{
 		World.areaMap = map;
 		waitMapUpdate = false;
-		
 		waitSQUpdate = true;
 		Sender.sendSQUpdate();
 	}
@@ -122,7 +121,7 @@ class Thread_Socket extends Thread
 		waitWorldUpdate = false;
 		waitMapUpdate = true;
 		Sender.updateMap();
-		
+		Game.state.set_state("char");
 		Chat.add_to_msg_log("[SERVER] Connection to \""+ Game.address  + "\" sucess.");
 	}
 	
@@ -130,8 +129,6 @@ class Thread_Socket extends Thread
 		waitPlayerUpdate = false;
 		Chat.add_to_msg_log("PLAYER DATA RECIVED: " + Player.playerName);
 		World.playerData = player;	
-		Game.state.set_state("char");
-		
 		waitWorldUpdate = true;
 		Sender.updateWorld();
 	}

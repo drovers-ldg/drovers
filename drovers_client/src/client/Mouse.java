@@ -62,44 +62,144 @@ public class Mouse implements MouseListener{
 			default:
 		}
 	}
-	
+	private void actionMenuShow(){
+		CharacterMenu.actionShow = true;
+		CharacterMenu.actionMenuCursorX = (CharacterMenu.mouseX/32)*32-5;
+		CharacterMenu.actionMenuCursorY = (CharacterMenu.mouseY/32)*32;
+		CharacterMenu.actionShowMouseX = (CharacterMenu.mouseX/32+1)*32-5;
+		CharacterMenu.actionShowMouseY = (CharacterMenu.mouseY/32+1)*32;
+		CharacterMenu.showMapCursor = false;
+	}
+	private void actionMenuClose(){
+		CharacterMenu.actionShow = false;
+		CharacterMenu.showMapCursor = true;
+	}
+	private boolean actionMenuMouseCoords(){
+		if(CharacterMenu.mouseX > CharacterMenu.actionShowMouseX-25	&& CharacterMenu.mouseX < CharacterMenu.actionShowMouseX+25
+		&& CharacterMenu.mouseY > CharacterMenu.actionShowMouseY 	&& CharacterMenu.mouseX < CharacterMenu.actionShowMouseY+50){
+			return false;
+		}
+		else{
+			return true;
+		}
+	}	
 	private void mouseReleasedClickCharMenu() throws IOException{
 		if(Game.mouseX > 380){
 			if((Game.mouseX-380)/32 == Player.mapX){
 				if(Game.mouseY/32 < Player.mapY){
-					Sender.moveUp();
-					Game.server_msg = "Up";
+					if(CharacterMenu.actionShow){
+						if(actionMenuMouseCoords()){
+							Sender.moveUp();
+							actionMenuClose();
+						}
+						else{
+							actionMenuClose();
+						}
+					}
+					else {
+						actionMenuShow();
+					}
 				}
-				if(Game.mouseY/32 > Player.mapY){
-					Sender.moveDown();
-					Game.server_msg = "Down";
+				else if(Game.mouseY/32 > Player.mapY){
+					if(CharacterMenu.actionShow){
+						if(actionMenuMouseCoords()){
+							Sender.moveDown();
+							actionMenuClose();
+						}
+						else{
+							actionMenuClose();
+						}
+					}
+					else {
+						actionMenuShow();
+					}
 				}
 			}
 			else if(Game.mouseY/32 == Player.mapY){
 				if((Game.mouseX-380)/32 < Player.mapX){
-					Sender.moveLeft();
-					Game.server_msg = "Left";
+					if(CharacterMenu.actionShow){
+						if(actionMenuMouseCoords()){
+							Sender.moveLeft();
+							actionMenuClose();
+						}
+						else{
+							actionMenuClose();
+						}
+					}
+					else {
+						actionMenuShow();
+					}
 				}
-				if((Game.mouseX-380)/32 > Player.mapX){
-					Sender.moveRight();
-					Game.server_msg = "Right";
+				else if((Game.mouseX-380)/32 > Player.mapX){
+					if(CharacterMenu.actionShow){
+						if(actionMenuMouseCoords()){
+							Sender.moveRight();	
+							actionMenuClose();
+						}
+						else{
+							actionMenuClose();
+						}
+					}
+					else {
+						actionMenuShow();
+					}
 				}
 			}
 			else if((Game.mouseX-380)/32 < Player.mapX && Game.mouseY/32 < Player.mapY){
-				Sender.moveUpLeft();
-				Game.server_msg = "Left-Up";
+				if(CharacterMenu.actionShow){
+					if(actionMenuMouseCoords()){
+						Sender.moveUpLeft();
+						actionMenuClose();
+					}
+					else{
+						actionMenuClose();
+					}
+				}
+				else {
+					actionMenuShow();
+				}
 			}
 			else if((Game.mouseX-380)/32 < Player.mapX && Game.mouseY/32 > Player.mapY){
-				Sender.moveDownLeft();
-				Game.server_msg = "Left-Down";
+				if(CharacterMenu.actionShow){
+					if(actionMenuMouseCoords()){
+						Sender.moveDownLeft();
+						actionMenuClose();
+					}
+					else{
+						actionMenuClose();
+					}
+				}
+				else {
+					actionMenuShow();
+				}
 			}
 			else if((Game.mouseX-380)/32 > Player.mapX && Game.mouseY/32 < Player.mapY){
-				Sender.moveUpRight();
-				Game.server_msg = "Right-Up";
+				if(CharacterMenu.actionShow){
+					if(actionMenuMouseCoords()){
+						Sender.moveUpRight();
+						actionMenuClose();
+					}
+					else{
+						actionMenuClose();
+					}
+				}
+				else {
+					actionMenuShow();
+				}
 			}
 			else if((Game.mouseX-380)/32 > Player.mapX && Game.mouseY/32 > Player.mapY){
-				Sender.moveDownRight();
-				Game.server_msg = "Right-Down";
+				if(CharacterMenu.actionShow){
+					if(actionMenuMouseCoords()){
+						Sender.moveDownRight();
+						actionMenuClose();
+					}
+					else{
+						actionMenuClose();
+					}
+				}
+				else {
+					actionMenuShow();
+				}
 			}	
 		}
 	}

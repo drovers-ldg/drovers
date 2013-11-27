@@ -28,7 +28,7 @@ public class Area_Map implements Externalizable{
 	public void draw(Graphics g){
 		for(int i = 0; i < this.size_x; ++i)
 			for(int j = 0; j < this.size_y; ++j)
-				g.drawImage(World.getTile(map[i][j]), i*32, j*32, 32, 32, null);
+				g.drawImage(World.getTile(map[i][j]), i*32+380, j*32, 32, 32, null);
 	}
 
 	@Override

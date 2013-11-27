@@ -78,6 +78,7 @@ public class World{
 		texture_set.put("logo", getSprite("logo.png"));
 		
 		texture_set.put("cursor", getSprite("cursor.png"));
+		texture_set.put("cursorSelected", getSprite("cursorSelected.png"));
 	}
 	
 	public static Image getTexture(int type){
