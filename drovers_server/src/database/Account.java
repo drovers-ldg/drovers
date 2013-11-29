@@ -29,6 +29,8 @@ public class Account implements Externalizable{
 	// army
 	public int unitsId;
 	
+	// Battle ID
+	public int battleId;
 	
 	// SQL: id, accountName, accountPassword, gm, online, player_name, map_id, units_id, thorium, metal, money 
 	Account(int id, 
@@ -56,6 +58,7 @@ public class Account implements Externalizable{
 		this.metal = metal;
 		this.money = money;
 		this.mapX = mapX;
+		this.battleId = 0;
 		this.mapY = mapY;
 	}
 

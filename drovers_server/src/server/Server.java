@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 
 import database.DataBase;
+import Logic.BattleThread;
 import World.World;
 import messages.MessagesBuffer;
 
@@ -26,6 +27,7 @@ public class Server
 	public static MessagesBuffer msg_buffer;
 	public static HashMap<Integer, Client> client_list; 
 	public static DB server_db;
+	public static HashMap<Integer, BattleThread> battlesList;
 	
 	// World data
 	public static World world;
@@ -38,6 +40,7 @@ public class Server
 		server_db = new DB();
 		msg_buffer = new MessagesBuffer();
 		client_list = new HashMap<Integer, Client>();
+		battlesList = new HashMap<Integer, BattleThread>();
 		world = new World();
 		run_sockets();
 	}

@@ -110,28 +110,28 @@ class Thread_Logic extends Thread
 				Logic.SQMove.updateSQ(tmp.client_id);
 			}
 			else if(tmp.type.equals(Message.Type.SQATTACKUP)){
-				Logic.SQAttack.attackUp();
+				Logic.SQAttack.attackUp(tmp.client_id);
 			}
 			else if(tmp.type.equals(Message.Type.SQATTACKDOWN)){
-				Logic.SQAttack.attackDown();
+				Logic.SQAttack.attackDown(tmp.client_id);
 			}
 			else if(tmp.type.equals(Message.Type.SQATTACKLEFT)){
-				Logic.SQAttack.attackLeft();
+				Logic.SQAttack.attackLeft(tmp.client_id);
 			}
 			else if(tmp.type.equals(Message.Type.SQATTACKRIGHT)){
-				Logic.SQAttack.attackRight();
+				Logic.SQAttack.attackRight(tmp.client_id);
 			}
 			else if(tmp.type.equals(Message.Type.SQATTACKUPLEFT)){
-				Logic.SQAttack.attackUpLeft();
+				Logic.SQAttack.attackUpLeft(tmp.client_id);
 			}
 			else if(tmp.type.equals(Message.Type.SQATTACKUPRIGHT)){
-				Logic.SQAttack.attackUpRight();
+				Logic.SQAttack.attackUpRight(tmp.client_id);
 			}
 			else if(tmp.type.equals(Message.Type.SQATTACKDOWNLEFT)){
-				Logic.SQAttack.attackDownLeft();
+				Logic.SQAttack.attackDownLeft(tmp.client_id);
 			}
 			else if(tmp.type.equals(Message.Type.SQATTACKDOWNRIGHT)){
-				Logic.SQAttack.attackDownRight();
+				Logic.SQAttack.attackDownRight(tmp.client_id);
 			}
 		}
 		Server.msg_buffer.clear();
