@@ -6,6 +6,7 @@ import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
 
+import GUI.AreaMapMenu;
 import GUI.LoginMenu;
 import messages.Message;
 import messages.MessageDouble;
@@ -116,7 +117,7 @@ class Thread_Socket extends Thread
 		waitMap2Update = false;
 		waitSQUpdate = true;
 		Sender.sendSQUpdate();
-		Chat.add_to_msg_log("AREA2 LOADED");
+		World.mergeAreas();
 	}
 
 	private void loadMap1(Area_Map map) throws IOException {
@@ -124,7 +125,6 @@ class Thread_Socket extends Thread
 		waitMap1Update = false;
 		waitMap2Update = true;
 		Sender.UpdateArea2();
-		Chat.add_to_msg_log("AREA1 LOADED");
 	}
 
 	public void processMsg(MessageDouble msg){
@@ -192,6 +192,7 @@ class Thread_Socket extends Thread
 			Sender.sendSQUpdate();
 		}
 		else if(msg.type.equals(Message.Type.BATTLEAREA1)){
+			AreaMapMenu.topology = msg.data;
 			waitMap1Update = true;
 			Sender.UpdateArea1();
 		}

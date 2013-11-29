@@ -14,7 +14,7 @@ import GUI.RegistrationMenu;
 import GUI.SorceCodeMenu;
 import GUI.UnitsConstructorMenu;
 
-class State
+public class State
 {	
 	public static Graphics g;
 	public static String state;

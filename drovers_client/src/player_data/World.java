@@ -6,8 +6,9 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Vector;
-
 import javax.imageio.ImageIO;
+import client.State;
+import GUI.AreaMapMenu;
 
 public class World{
 	public static Area_Map areaMap1;
@@ -154,5 +155,44 @@ public class World{
 			default:
 				return texture_set.get("null").getImage();
 		}
+	}
+	
+	public static void mergeAreas(){
+		int [][] map = null;
+		switch(AreaMapMenu.topology){
+			case "1": // UP
+				map = new int[areaMap1.size_x][areaMap1.size_y*2];
+				for(int i = 0; i < areaMap1.size_x; ++i){
+					for(int j = 0; j < areaMap1.size_y; ++j){
+						map[i][j] = areaMap2.map[i][j];
+					}
+				}
+				for(int i = 0; i < areaMap1.size_x; ++i){
+					for(int j = areaMap1.size_x, z = 0; j < (areaMap1.size_y*2); ++j, ++z){
+						map[i][j] = areaMap1.map[i][z];
+					}
+				}
+				areaMap1.map = map;
+				areaMap1.size_x = areaMap1.size_x;
+				areaMap1.size_y = areaMap1.size_y*2;
+				State.state = "areaMap";
+				break;
+			case "2": // DOWN
+				
+				State.state = "areaMap";
+				break;
+			case "3":
+				
+				State.state = "areaMap";
+				break;
+			case "4":
+				
+				State.state = "areaMap";
+				break;
+			default:
+		}
+	}
+	public static void drawArea(){
+		
 	}
 }

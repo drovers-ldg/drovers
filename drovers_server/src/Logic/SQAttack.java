@@ -10,7 +10,7 @@ import database.DBAccounts;
 public class SQAttack{
 	public static int battleIds = 0;
 	
-	public static void checkAndRunBattle(int clientId, int mapX1, int mapY1, int mapX2, int mapY2){
+	public static void checkAndRunBattle(int clientId, int mapX1, int mapY1, int mapX2, int mapY2, int topology){
 		Vector<Integer> playersEnemies = new Vector<Integer>();
 		Set<Integer> keys = DBAccounts.map.keySet();
 		
@@ -28,7 +28,7 @@ public class SQAttack{
 			int id = battleIds++;
 			if(playersEnemies.size() > 1){
 				// ID, mapX(to), mapY(to), mapX(from), mapY(from), begginerId, allEnemies
-				Server.battlesList.put(id, new BattleThread(id, mapX1, mapY1, mapX2, mapY2, playersEnemies));
+				Server.battlesList.put(id, new BattleThread(id, mapX1, mapY1, mapX2, mapY2, playersEnemies, topology));
 			}
 		}
 	}
@@ -42,7 +42,7 @@ public class SQAttack{
 				mapX = DBAccounts.map.get(Server.client_list.get(clientId).get_account_id()).mapX;
 				mapY = DBAccounts.map.get(Server.client_list.get(clientId).get_account_id()).mapY;
 				if(mapY-1 >= 0){
-					checkAndRunBattle(clientId, mapX, mapY, mapX, mapY-1);
+					checkAndRunBattle(clientId, mapX, mapY, mapX, mapY-1, 1);
 				}
 			}
 		}		
@@ -57,7 +57,7 @@ public class SQAttack{
 				mapX = DBAccounts.map.get(Server.client_list.get(clientId).get_account_id()).mapX;
 				mapY = DBAccounts.map.get(Server.client_list.get(clientId).get_account_id()).mapY;
 				if(mapY+1 < World.WorldMap.sizeY){
-					checkAndRunBattle(clientId, mapX, mapY, mapX, mapY+1);
+					checkAndRunBattle(clientId, mapX, mapY, mapX, mapY+1, 2);
 				}
 			}
 		}
@@ -72,7 +72,7 @@ public class SQAttack{
 				mapX = DBAccounts.map.get(Server.client_list.get(clientId).get_account_id()).mapX;
 				mapY = DBAccounts.map.get(Server.client_list.get(clientId).get_account_id()).mapY;
 				if(mapX-1 >= 0){
-					checkAndRunBattle(clientId, mapX, mapY, mapX-1, mapY);
+					checkAndRunBattle(clientId, mapX, mapY, mapX-1, mapY, 3);
 				}
 			}
 		}
@@ -87,7 +87,7 @@ public class SQAttack{
 				mapX = DBAccounts.map.get(Server.client_list.get(clientId).get_account_id()).mapX;
 				mapY = DBAccounts.map.get(Server.client_list.get(clientId).get_account_id()).mapY;
 				if(mapX+1 < World.WorldMap.sizeX){
-					checkAndRunBattle(clientId, mapX, mapY, mapX+1, mapY);
+					checkAndRunBattle(clientId, mapX, mapY, mapX+1, mapY, 4);
 				}
 			}
 		}

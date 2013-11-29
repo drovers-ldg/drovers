@@ -19,10 +19,11 @@ public class Area_Map implements Externalizable{
 		map = null;
 	}
 	
-	public void rebuild_size(int size_x, int size_y){
+	public Area_Map rebuild_size(int size_x, int size_y){
 		this.size_x = size_x;
 		this.size_y = size_y;
 		this.map = new int[size_x][size_y];
+		return this;
 	}
 	
 	public void draw(Graphics g){
