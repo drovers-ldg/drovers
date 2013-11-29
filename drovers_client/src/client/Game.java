@@ -14,7 +14,7 @@ import javax.swing.JFrame;
 import GUI.GUI;
 import player_data.World;
 
-class Game
+public class Game
 {	
 	// Frame
 	public static JFrame frame;

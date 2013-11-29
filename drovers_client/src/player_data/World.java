@@ -10,14 +10,16 @@ import java.util.Vector;
 import javax.imageio.ImageIO;
 
 public class World{
-	public static Area_Map areaMap;
+	public static Area_Map areaMap1;
+	public static Area_Map areaMap2;
 	public static WorldMap worldMap;
 	public static HashMap<String, Sprite> texture_set;
 	public static Player playerData;
 	public static Vector<PlayersOnline> playersOnline;
 	
 	public World(){
-		areaMap = new Area_Map();
+		areaMap1 = new Area_Map();
+		areaMap2 = new Area_Map();
 		worldMap = new WorldMap();
 		playerData = new Player();
 		playersOnline = new Vector<PlayersOnline>();

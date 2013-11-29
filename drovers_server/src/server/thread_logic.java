@@ -74,7 +74,7 @@ class Thread_Logic extends Thread
 				close_socket(tmp.client_id);
 			}
 			else if(tmp.type.equals(Message.Type.UPDATEAREA)){
-				updateMap(tmp.client_id);
+				// DELETED
 			}
 			else if(tmp.type.equals(Message.Type.UPDATEWORLD)){
 				eventWorldUpdate(tmp.client_id);
@@ -133,16 +133,18 @@ class Thread_Logic extends Thread
 			else if(tmp.type.equals(Message.Type.SQATTACKDOWNRIGHT)){
 				Logic.SQAttack.attackDownRight(tmp.client_id);
 			}
+			else if(tmp.type.equals(Message.Type.BATTLEAREA1)){
+				sendArea(tmp.client_id, 1);
+			}
+			else if(tmp.type.equals(Message.Type.BATTLEAREA2)){
+				sendArea(tmp.client_id, 2);
+			}
 		}
 		Server.msg_buffer.clear();
 	}
 	
 	private static void updatePlayer(int client_id) throws IOException {
 		Server.client_list.get(client_id).sendPlayer();
-	}
-
-	private static void updateMap(int client_id) throws IOException {
-		Server.client_list.get(client_id).sendMap();
 	}
 
 	private static void events_in_connect(int client_id, String account, String password) throws IOException{
@@ -153,7 +155,7 @@ class Thread_Logic extends Thread
 				Server.client_list.get(client_id).disconnect();
 			}
 			Server.client_list.get(client_id).set_account_id(account_id);
-			DBAccounts.connect(account_id);
+			DBAccounts.connect(account_id, client_id);
 			Server.client_list.get(client_id).send(Message.Type.CONNECTIONSUCESS, null);
 		}
 		else{
@@ -188,5 +190,9 @@ class Thread_Logic extends Thread
 	
 	private static void eventWorldUpdate(int client_id) throws IOException{
 		Server.client_list.get(client_id).sendWorld();
+	}
+	
+	private static void sendArea(int clientId, int type) throws IOException{
+		Server.client_list.get(clientId).sendMap(type);
 	}
 }

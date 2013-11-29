@@ -64,17 +64,19 @@ public class DBAccounts {
 		return map.get(id).accountPassword.equals(password);
 	}
 	
-	public static void connect(int accountId){
+	public static void connect(int accountId, int clientId){
 		map.get(accountId).online = true;
+		map.get(accountId).clientId = clientId;
 	}
 
 	public static void disconnect(int accountId) {
 		map.get(accountId).online = false;
+		map.get(accountId).clientId = -1;
 	}
 
 	public static void showAllAccounts() {
 		for(Account item: map.values()){
-			System.out.println("id:"+item.id+"\tacc:"+item.accountName+"\tgm:"+item.gm+"\tzone:"+item.mapId+"\tonline:"+item.online);
+			System.out.println("id:"+item.id+"\tacc:"+item.accountName+"\tgm:"+item.gm+"\tzone:"+item.mapId+"\tonline:"+item.online+"\tB: "+item.battleId);
 		}
 	}
 

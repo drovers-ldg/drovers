@@ -84,4 +84,10 @@ public class Sender{
 	public static void attackDownRight() throws IOException{
 		new Message(Message.Type.SQATTACKDOWNRIGHT).send(out);
 	}
+	public static void UpdateArea1() throws IOException {
+		new Message(Message.Type.BATTLEAREA1).send(out);
+	}
+	public static void UpdateArea2() throws IOException {
+		new Message(Message.Type.BATTLEAREA2).send(out);
+	}
 }

@@ -7,8 +7,9 @@ import player_data.World;
 
 public class AreaMapMenu{
 	public static void draw(Graphics g){
-		World.areaMap.draw(g);
-
+		// AREA1
+		// AREA2
+		
 		g.drawImage(World.texture_set.get("chat").getImage(), 0, 120, 380, 15, null);
 		g.drawImage(World.texture_set.get("chat").getImage(), 0, 0, 380, 120, null);
 		g.drawImage(World.texture_set.get("chat").getImage(), 0, 135, 380, 115, null);

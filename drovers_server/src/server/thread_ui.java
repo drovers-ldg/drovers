@@ -1,9 +1,11 @@
 package server;
 
 import java.io.FileNotFoundException;
+
 import java.io.UnsupportedEncodingException;
 import java.sql.SQLException;
 import java.util.Scanner;
+import java.util.Set;
 
 import database.DBAccounts;
 import database.DBItems;
@@ -40,7 +42,7 @@ class Server_UI extends Thread{
 			System.out.println(">shutdown");
 			System.out.println(">debug [on|off]");
 			System.out.println(">add [account|item]");
-			System.out.println(">show [accounts|connections|items]");
+			System.out.println(">show [accounts|connections|items|battles]");
 			System.out.println("=====================");
 		}
 		else if(command.contains("add")){
@@ -99,11 +101,15 @@ class Server_UI extends Thread{
 				
 				break;
 			case "items":
-		System.out.println("--------Items--------");
+				System.out.println("--------Items--------");
 				DBItems.showAllItems();
 				break;
+			case "battles":
+				System.out.println("--------Battles------");
+				showAllBattles();
+				break;
 			default:
-				System.out.println(">show [accounts|connections|items]");
+				System.out.println(">show [accounts|connections|items|battles]");
 			}
 		}
 		else if(command.contains("debug")){
@@ -131,5 +137,14 @@ class Server_UI extends Thread{
 			System.out.println("id: " + client.get_id() + "\taccount: " + client.get_account_id());
 		}
 		System.out.println();
+	}
+	
+	private void showAllBattles(){
+		Set<Integer> keys = Server.battlesList.keySet();
+		for(Integer key: keys){
+			System.out.println("id: " + Server.battlesList.get(key).id 
+							 + " X: " + Server.battlesList.get(key).mapX1 
+							 + " Y: " + Server.battlesList.get(key).mapY1);
+		}
 	}
 }

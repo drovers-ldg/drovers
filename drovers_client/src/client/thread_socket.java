@@ -20,7 +20,8 @@ class Thread_Socket extends Thread
 	protected static ObjectInputStream in;
 	protected static ObjectOutputStream out;
 	protected static Socket socket;
-	protected static boolean waitMapUpdate;
+	protected static boolean waitMap1Update;
+	protected static boolean waitMap2Update;
 	protected static boolean waitWorldUpdate;
 	protected static boolean waitPlayerUpdate;
 	protected static boolean waitSQUpdate;
@@ -53,10 +54,15 @@ class Thread_Socket extends Thread
 					player.readExternal(in);
 					processMsg(player);
 				}
-				else if(waitMapUpdate){
+				else if(waitMap1Update){
 					Area_Map map = new Area_Map();
 					map.readExternal(in);
-					processMsg(map);
+					loadMap1(map);
+				}
+				else if(waitMap2Update){
+					Area_Map map = new Area_Map();
+					map.readExternal(in);
+					loadMap2(map);
 				}
 				else if(waitWorldUpdate){
 					WorldMap worldMap = new WorldMap();
@@ -105,22 +111,29 @@ class Thread_Socket extends Thread
 		}	
 	}
 	
+	private void loadMap2(Area_Map map) throws IOException {
+		World.areaMap2 = map;
+		waitMap2Update = false;
+		waitSQUpdate = true;
+		Sender.sendSQUpdate();
+		Chat.add_to_msg_log("AREA2 LOADED");
+	}
+
+	private void loadMap1(Area_Map map) throws IOException {
+		World.areaMap1 = map;
+		waitMap1Update = false;
+		waitMap2Update = true;
+		Sender.UpdateArea2();
+		Chat.add_to_msg_log("AREA1 LOADED");
+	}
+
 	public void processMsg(MessageDouble msg){
 		msgChat(msg.data, msg.data2);
 	}
-	
-	public void processMsg(Area_Map map) throws IOException{
-		World.areaMap = map;
-		waitMapUpdate = false;
-		waitSQUpdate = true;
-		Sender.sendSQUpdate();
-	}
-	
+		
 	public void processMsg(WorldMap worldMap) throws IOException{
 		World.worldMap = worldMap;
 		waitWorldUpdate = false;
-		waitMapUpdate = true;
-		Sender.updateMap();
 		Game.state.set_state("char");
 		Chat.add_to_msg_log("[SERVER] Connection to \""+ Game.address  + "\" sucess.");
 	}
@@ -177,6 +190,10 @@ class Thread_Socket extends Thread
 		else if(msg.type.equals(Message.Type.UPDATESQUADS)){
 			waitSQUpdate = true;
 			Sender.sendSQUpdate();
+		}
+		else if(msg.type.equals(Message.Type.BATTLEAREA1)){
+			waitMap1Update = true;
+			Sender.UpdateArea1();
 		}
 	}
 	private void msgDefault(String data){

@@ -1,6 +1,10 @@
 package Logic;
 
+import java.io.IOException;
 import java.util.Vector;
+
+import server.Server;
+import messages.Message;
 import database.DBAccounts;
 
 public class BattleThread extends Thread{
@@ -11,41 +15,48 @@ public class BattleThread extends Thread{
 	public int mapX2;
 	public int mapY2;
 	
-	public BattleThread(int id, int mapX1, int mapY1, int mapX2, int mapY2, Integer playerIdBegginer, Vector<Integer> playerIdEnemies){
+	public BattleThread(int id, int mapX1, int mapY1, int mapX2, int mapY2, Vector<Integer> addPlayers){
+		this.players = addPlayers;
 		this.id = id;
 		this.mapX1 = mapX1;
 		this.mapY1 = mapY1;
 		this.mapX2 = mapX2;
 		this.mapY2 = mapY2;
-		
-		this.players = new Vector<Integer>();
-		this.addPlayer(playerIdBegginer);
-		for(Integer playerId: playerIdEnemies){
-			this.addPlayer(playerId);
-		}
+		addPlayers();
 		this.run();
 	}
 	
 	public void run(){
 		try{
-			System.out.println("Battle is begin: " + mapX1 + ", " + mapY1 + " <- " + mapX2 + ", " + mapY2 + " id: " + id);
+			sendMaps();		
+		} 
+		catch (IOException e) {
+			e.printStackTrace();
 		}
-		finally{
-			for(Integer playerId: players){
-				this.exitPlayer(playerId);
-			}
+		finally{	
 			this.interrupt();
 		}
 	}
 	
-	public void addPlayer(Integer playerId){
-		this.players.add(playerId);
-		DBAccounts.map.get(playerId).battleId = id;
-		// Send MapsData
+	protected void finalize(){
+		exitPlayers();
 	}
 	
-	public void exitPlayer(Integer playerId){
-		this.players.remove(playerId);
-		DBAccounts.map.get(playerId).battleId = -1;
+	public synchronized void addPlayers(){
+		for(Integer playerId: this.players){
+			DBAccounts.map.get(playerId).battleId = this.id;
+		}
+	}
+	
+	public synchronized void exitPlayers(){
+		for(Integer playerId: this.players){
+			DBAccounts.map.get(playerId).battleId = -1;
+		}
+	}
+	
+	public synchronized void sendMaps() throws IOException{
+		for(Integer playerId: this.players){
+			Server.client_list.get(DBAccounts.map.get(playerId).clientId).send(Message.Type.BATTLEAREA1, null);
+		}
 	}
 }

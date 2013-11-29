@@ -10,83 +10,84 @@ import database.DBAccounts;
 public class SQAttack{
 	public static int battleIds = 0;
 	
-	public static void checkAndRunBattle(int clientId, int mapX, int mapY){
+	public static void checkAndRunBattle(int clientId, int mapX1, int mapY1, int mapX2, int mapY2){
 		Vector<Integer> playersEnemies = new Vector<Integer>();
 		Set<Integer> keys = DBAccounts.map.keySet();
+		
+		playersEnemies.add(Server.client_list.get(clientId).get_account_id());
 		for(Integer key: keys){
-			if(DBAccounts.map.get(key).mapX == mapX && DBAccounts.map.get(key).mapY == mapY){
-				playersEnemies.add(key);
+			if(!DBAccounts.map.get(key).equals(Server.client_list.get(clientId).get_account_id())
+				&& DBAccounts.map.get(key).online
+				&& DBAccounts.map.get(key).mapX == mapX2 
+				&& DBAccounts.map.get(key).mapY == mapY2){
+					playersEnemies.add(key);
 			}
 		}
 
 		synchronized(Server.battlesList){
 			int id = battleIds++;
-			if(playersEnemies.size() != 0){
+			if(playersEnemies.size() > 1){
 				// ID, mapX(to), mapY(to), mapX(from), mapY(from), begginerId, allEnemies
-				Server.battlesList.put(id, new BattleThread(id, mapX, mapY, mapX, mapY+1, clientId, playersEnemies));
+				Server.battlesList.put(id, new BattleThread(id, mapX1, mapY1, mapX2, mapY2, playersEnemies));
 			}
 		}
 	}
 	
 	public static void attackUp(int clientId) {
-		System.out.println("ClientID " + clientId + ", initiate battle");
 		synchronized(DBAccounts.map){
 			int mapX = -1;
 			int mapY = -1;
 			
 			synchronized(Server.client_list){
 				mapX = DBAccounts.map.get(Server.client_list.get(clientId).get_account_id()).mapX;
-				mapY = DBAccounts.map.get(Server.client_list.get(clientId).get_account_id()).mapY - 1; // Up
-				if(mapY >= 0){
-					checkAndRunBattle(clientId, mapX, mapY);
+				mapY = DBAccounts.map.get(Server.client_list.get(clientId).get_account_id()).mapY;
+				if(mapY-1 >= 0){
+					checkAndRunBattle(clientId, mapX, mapY, mapX, mapY-1);
 				}
 			}
 		}		
 	}
 
 	public static void attackDown(int clientId) {
-		System.out.println("ClientID " + clientId + ", initiate battle");
 		synchronized(DBAccounts.map){
 			int mapX = -1;
 			int mapY = -1;
 			
 			synchronized(Server.client_list){
 				mapX = DBAccounts.map.get(Server.client_list.get(clientId).get_account_id()).mapX;
-				mapY = DBAccounts.map.get(Server.client_list.get(clientId).get_account_id()).mapY + 1; // Up
-				if(mapY < World.WorldMap.sizeY){
-					checkAndRunBattle(clientId, mapX, mapY);
+				mapY = DBAccounts.map.get(Server.client_list.get(clientId).get_account_id()).mapY;
+				if(mapY+1 < World.WorldMap.sizeY){
+					checkAndRunBattle(clientId, mapX, mapY, mapX, mapY+1);
 				}
 			}
 		}
 	}
 
 	public static void attackLeft(int clientId) {
-		System.out.println("ClientID " + clientId + ", initiate battle");
 		synchronized(DBAccounts.map){
 			int mapX = -1;
 			int mapY = -1;
 			
 			synchronized(Server.client_list){
-				mapX = DBAccounts.map.get(Server.client_list.get(clientId).get_account_id()).mapX - 1;
-				mapY = DBAccounts.map.get(Server.client_list.get(clientId).get_account_id()).mapY; // Up
-				if(mapX >= 0){
-					checkAndRunBattle(clientId, mapX, mapY);
+				mapX = DBAccounts.map.get(Server.client_list.get(clientId).get_account_id()).mapX;
+				mapY = DBAccounts.map.get(Server.client_list.get(clientId).get_account_id()).mapY;
+				if(mapX-1 >= 0){
+					checkAndRunBattle(clientId, mapX, mapY, mapX-1, mapY);
 				}
 			}
 		}
 	}
 	
 	public static void attackRight(int clientId) {
-		System.out.println("ClientID " + clientId + ", initiate battle");
 		synchronized(DBAccounts.map){
 			int mapX = -1;
 			int mapY = -1;
 			
 			synchronized(Server.client_list){
-				mapX = DBAccounts.map.get(Server.client_list.get(clientId).get_account_id()).mapX + 1;
-				mapY = DBAccounts.map.get(Server.client_list.get(clientId).get_account_id()).mapY; // Up
-				if(mapX < World.WorldMap.sizeX){
-					checkAndRunBattle(clientId, mapX, mapY);
+				mapX = DBAccounts.map.get(Server.client_list.get(clientId).get_account_id()).mapX;
+				mapY = DBAccounts.map.get(Server.client_list.get(clientId).get_account_id()).mapY;
+				if(mapX+1 < World.WorldMap.sizeX){
+					checkAndRunBattle(clientId, mapX, mapY, mapX+1, mapY);
 				}
 			}
 		}

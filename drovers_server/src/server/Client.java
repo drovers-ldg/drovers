@@ -36,6 +36,7 @@ public class Client{
 	}
 	public void set_account_id(int account_id){
 		this.account_id = account_id;
+		this.thread.setAccountId(account_id);
 	}
 	public void set_player_id(int player_id){
 		this.player_id = player_id;
@@ -44,6 +45,7 @@ public class Client{
 		DBAccounts.disconnect(this.account_id);
 		this.account_id = -1;
 		this.player_id = -1;
+		this.thread.setAccountId(-1);
 	}
 	public boolean get_connection(){
 		return DBAccounts.map.get(account_id).online;
@@ -51,8 +53,8 @@ public class Client{
 	public Thread_Socket get_socket(){
 		return this.thread;
 	}
-	public void sendMap() throws IOException{
-		this.thread.sendMap();
+	public void sendMap(int type) throws IOException{
+		this.thread.sendMap(type);
 	}
 	public void sendWorld() throws IOException {
 		this.thread.sendWorld();

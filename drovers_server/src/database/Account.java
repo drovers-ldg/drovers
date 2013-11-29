@@ -8,6 +8,7 @@ import java.io.ObjectOutput;
 public class Account implements Externalizable{
 	
 	private static final long serialVersionUID = 201311201743L;
+	public int clientId;
 	
 	public int id;
 	public String accountName;
@@ -33,7 +34,7 @@ public class Account implements Externalizable{
 	public int battleId;
 	
 	// SQL: id, accountName, accountPassword, gm, online, player_name, map_id, units_id, thorium, metal, money 
-	Account(int id, 
+	Account(int id,
 			String accountName,
 			String accountPassword, 
 			int gm, 
@@ -45,7 +46,7 @@ public class Account implements Externalizable{
 			int money,
 			int mapX,
 			int mapY){
-		
+		this.clientId = -1;
 		this.id = id;
 		this.accountName = accountName;
 		this.accountPassword = accountPassword;
@@ -58,8 +59,8 @@ public class Account implements Externalizable{
 		this.metal = metal;
 		this.money = money;
 		this.mapX = mapX;
-		this.battleId = 0;
 		this.mapY = mapY;
+		this.battleId = 0;
 	}
 
 

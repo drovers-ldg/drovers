@@ -9,6 +9,7 @@ import java.util.Set;
 
 import database.DBAccounts;
 import World.World;
+import World.WorldMap;
 import messages.Message;
 import messages.MessageDouble;
 import messages.MessageIn;
@@ -17,6 +18,7 @@ class Thread_Socket extends Thread
 {
 	private Socket socket;
 	private int client_id;
+	private int accountId;
 	
 	// IO-streams
 	private ObjectOutputStream out;
@@ -25,6 +27,8 @@ class Thread_Socket extends Thread
 	Thread_Socket(Socket socket, int client_id) throws IOException{
     	this.socket = socket;
     	this.client_id = client_id;
+    	this.accountId = -1;
+    	
     	System.out.println(this.socket.getInetAddress().toString() + ":" + this.socket.getPort() + " id:" + this.client_id + " is connected;");
   
     	out = new ObjectOutputStream(this.socket.getOutputStream());
@@ -53,15 +57,30 @@ class Thread_Socket extends Thread
 			this.interrupt();
 		}
 	}
+	public void setAccountId(int accountId){
+		this.accountId = accountId;
+	}
 	public void send(Message.Type type, String msg) throws IOException{
 		new Message(type, msg).send(out);
 	}
 	public void send(String player, String data) throws IOException{
 		new MessageDouble(player, data).send(out);
 	}
-	public void sendMap() throws IOException{
+	public void sendMap(int type) throws IOException{
 		synchronized(DBAccounts.map){
-			World.areaMaps.get(DBAccounts.map.get(Server.client_list.get(this.client_id).get_account_id()).mapId).writeExternal(out);
+			synchronized(Server.battlesList){
+				int battleId = DBAccounts.map.get(this.accountId).battleId;
+				if(type == 1){
+					int mapX = Server.battlesList.get(battleId).mapX1;
+					int mapY = Server.battlesList.get(battleId).mapY1;
+					World.areaMaps.get(WorldMap.map[mapX][mapY].areaName).writeExternal(out);
+				}
+				else if(type == 2){
+					int mapX = Server.battlesList.get(battleId).mapX2;
+					int mapY = Server.battlesList.get(battleId).mapY2;
+					World.areaMaps.get(WorldMap.map[mapX][mapY].areaName).writeExternal(out);
+				}
+			}
 		}
 	}
 
