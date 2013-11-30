@@ -30,7 +30,7 @@ public class DBSquads{
 		
 		while(result.next()){
 			map.put(result.getInt("id"), new Squad(result.getInt("id"),
-												  result.getInt("playerId"),
+												  result.getInt("accountId"),
 												  result.getInt("unit1"),
 												  result.getInt("unit2"),
 												  result.getInt("unit3")));

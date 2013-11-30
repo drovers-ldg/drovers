@@ -90,4 +90,9 @@ public class Sender{
 	public static void UpdateArea2() throws IOException {
 		new Message(Message.Type.BATTLEAREA2).send(out);
 	}
+	
+	// SQUpdate
+	public static void updateSquad() throws IOException{
+		new Message(Message.Type.SQUPDATE).send(out);
+	}
 }

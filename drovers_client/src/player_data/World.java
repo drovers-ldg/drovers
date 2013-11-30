@@ -17,8 +17,12 @@ public class World{
 	public static HashMap<String, Sprite> texture_set;
 	public static Player playerData;
 	public static Vector<PlayersOnline> playersOnline;
-	
+	public static Squad squad;
 	public World(){
+		// Player
+		squad = new Squad();
+		
+		// GeoData
 		areaMap1 = new Area_Map();
 		areaMap2 = new Area_Map();
 		worldMap = new WorldMap();

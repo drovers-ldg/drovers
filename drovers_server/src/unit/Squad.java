@@ -1,5 +1,6 @@
 package unit;
 
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.sql.SQLException;
 
@@ -9,8 +10,8 @@ import database.DBUnits;
 public class Squad implements Serializable{
 	private static final long serialVersionUID = 201311301514L;
 	
-	public int id;
-	public int accountId;
+	transient public int id;
+	transient public int accountId;
 	
 	public Unit unit1; 
 	public Unit unit2;
@@ -40,5 +41,9 @@ public class Squad implements Serializable{
 		DBUnits.addUnit(playerId, "scout");
 		DBUnits.addUnit(playerId, "art");
 		DBSquads.addSquad(this);
+	}
+	
+	public void send(ObjectOutputStream out){
+		this.send(out);
 	}
 }

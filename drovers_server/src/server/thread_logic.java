@@ -139,6 +139,10 @@ class Thread_Logic extends Thread
 			else if(tmp.type.equals(Message.Type.BATTLEAREA2)){
 				sendArea(tmp.client_id, 2);
 			}
+			else if(tmp.type.equals(Message.Type.SQUPDATE)){
+				System.out.println("Sending squad data is begin");
+				sendSQ(tmp.client_id);
+			}
 		}
 		Server.msg_buffer.clear();
 	}
@@ -194,5 +198,9 @@ class Thread_Logic extends Thread
 	
 	private static void sendArea(int clientId, int type) throws IOException{
 		Server.client_list.get(clientId).sendMap(type);
+	}
+	
+	private static void sendSQ(int clientId) {
+		Server.client_list.get(clientId).sendSquad();
 	}
 }

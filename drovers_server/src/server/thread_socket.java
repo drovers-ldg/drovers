@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import database.DBAccounts;
+import database.DBSquads;
 import World.World;
 import World.WorldMap;
 import messages.Message;
@@ -118,5 +119,10 @@ class Thread_Socket extends Thread
 			}
 			out.flush();
 		}
+	}
+	
+	public void sendSquad(){
+		DBSquads.map.get(this.accountId).send(out);
+		System.out.println("Send SQUAD to " + this.accountId);
 	}
 }

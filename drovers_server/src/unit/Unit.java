@@ -1,9 +1,13 @@
 package unit;
 
-public class Unit{
+import java.io.Serializable;
+
+public class Unit implements Serializable{
+	private static final long serialVersionUID = 201311301514L;
+	
 	// Personal
-	public int id;
-	public int playerId;
+	transient public int id;
+	transient public int playerId;
 	public String name;
 	
 	// GPS
@@ -14,7 +18,7 @@ public class Unit{
 	// public int bodyId;
 	
 	// Code
-	public int codeId;
+	transient public int codeId;
 	
 	// Combat data
 	public int hp;

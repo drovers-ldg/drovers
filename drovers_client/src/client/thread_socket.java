@@ -13,6 +13,7 @@ import messages.MessageDouble;
 import player_data.Area_Map;
 import player_data.Player;
 import player_data.PlayersOnline;
+import player_data.Squad;
 import player_data.World;
 import player_data.WorldMap;
 
@@ -26,6 +27,7 @@ class Thread_Socket extends Thread
 	protected static boolean waitWorldUpdate;
 	protected static boolean waitPlayerUpdate;
 	protected static boolean waitSQUpdate;
+	protected static boolean waitUnitsUpdate;
 	
 	Thread_Socket() throws IOException
 	{
@@ -43,7 +45,12 @@ class Thread_Socket extends Thread
 		
 			while(Game.is_runing)
 			{
-				if(waitSQUpdate){
+				if(waitUnitsUpdate){
+					World.squad = (Squad)in.readObject();
+					waitUnitsUpdate = false;
+					Chat.add_to_msg_log("[Server] Squad sucessly loaded");
+				}
+				else if(waitSQUpdate){
 					World.playersOnline.setSize(in.readInt());
 					for(int i = 0; i < World.playersOnline.size(); ++i){
 						World.playersOnline.set(i, new PlayersOnline(in.readInt(), in.readInt(), in.readUTF()));
@@ -118,6 +125,9 @@ class Thread_Socket extends Thread
 		waitSQUpdate = true;
 		Sender.sendSQUpdate();
 		World.mergeAreas();
+		
+		waitUnitsUpdate = true;
+		Sender.updateSquad();
 	}
 
 	private void loadMap1(Area_Map map) throws IOException {
@@ -140,7 +150,6 @@ class Thread_Socket extends Thread
 	
 	public void processMsg(Player player) throws IOException{
 		waitPlayerUpdate = false;
-		Chat.add_to_msg_log("PLAYER DATA RECIVED: " + Player.playerName);
 		World.playerData = player;	
 		waitWorldUpdate = true;
 		Sender.updateWorld();
@@ -210,12 +219,10 @@ class Thread_Socket extends Thread
 	private void msgConnectionSucess() throws IOException{
 		waitPlayerUpdate = true;
 		Sender.updatePlayer();
-		Chat.add_to_msg_log("[SERVER] Connection sucess!");
 	}
 	private void msgConnectionFailed(){
 		Game.state.set_state("login");
 		LoginMenu.errString = "Wrong login or password";
-		Chat.add_to_msg_log("[SERVER] Failed by connection.");
 	}
 	
 	public void send(Message.Type type, String msg) throws IOException{

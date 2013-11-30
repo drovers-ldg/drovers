@@ -71,4 +71,8 @@ public class Client{
 		this.thread.sendPlayersOnline();
 	}
 
+	public void sendSquad() {
+		this.thread.sendSquad();
+	}
+
 }

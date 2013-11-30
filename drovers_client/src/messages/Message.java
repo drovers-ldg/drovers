@@ -6,7 +6,7 @@ import java.io.Serializable;
 
 public class Message implements Serializable{
 	
-private static final long serialVersionUID = 201311291119L;
+	private static final long serialVersionUID = 201311301523L;
 	
 	public enum Type {
 		// read Manual\MessageTypes.txt
@@ -48,9 +48,10 @@ private static final long serialVersionUID = 201311291119L;
 		
 		// AreaMaps loading
 		BATTLEAREA1,
-		BATTLEAREA2
+		BATTLEAREA2,
+		SQUPDATE,
 	};
-	
+		
 	public Type type = Type.DEFAULT;
 	public int prefix = -1;
 	public String data = null;
