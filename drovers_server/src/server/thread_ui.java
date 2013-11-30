@@ -1,12 +1,12 @@
 package server;
 
 import java.io.FileNotFoundException;
-
 import java.io.UnsupportedEncodingException;
 import java.sql.SQLException;
 import java.util.Scanner;
 import java.util.Set;
 
+import unit.Squad;
 import database.DBAccounts;
 import database.DBItems;
 
@@ -41,7 +41,7 @@ class Server_UI extends Thread{
 			System.out.println("========HELP=========");
 			System.out.println(">shutdown");
 			System.out.println(">debug [on|off]");
-			System.out.println(">add [account|item]");
+			System.out.println(">add [account|item|unit]");
 			System.out.println(">show [accounts|connections|items|battles]");
 			System.out.println("=====================");
 		}
@@ -86,6 +86,12 @@ class Server_UI extends Thread{
 				}
 				else{
 					System.out.println(">add item [itemType] [Item_name] [weight] [modelId]");
+				}
+			}
+			else if(command.matches("^add squads$")){
+				Set<Integer> keys = DBAccounts.map.keySet();
+				for(Integer key: keys){
+					new Squad(key);
 				}
 			}
 		}

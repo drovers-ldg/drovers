@@ -8,13 +8,13 @@ import java.util.HashMap;
 
 import unit.Unit;
 
-class DBUnits{
+public class DBUnits{
 	protected static Statement statement;
 	protected static ResultSet result;
 	public static HashMap<Integer, Unit> map;
 		
 	// SQL
-	protected final static String sqlInsertUnit = "INSERT INTO units (player_id, name, body_id, code_id) VALUES (?, ?, ?, ?)";
+	protected final static String sqlInsertUnit = "INSERT INTO units (player_id, bodyType, code_id) VALUES (?, ?, ?)";
 	protected final static String sqlDeleteUnit = "DELETE FROM units WHERE id = ?";
 	protected final static String sqlMoveUnitMap = "UPDATE units SET mapX = ?, mapY = ? WHERE id = ?";
 	
@@ -33,13 +33,9 @@ class DBUnits{
 		while(result.next()){
 			map.put(result.getInt("id"), new Unit(result.getInt("id"),
 												  result.getInt("player_id"),
-												  result.getString("name"),
-												  result.getInt("mapX"),
-												  result.getInt("mapY"),
 												  result.getInt("areaX"),
 												  result.getInt("areaY"),
-												  result.getInt("body_id"),
-												  result.getInt("code_id")));
+												  result.getString("bodyType")));
 		}
 		System.out.println("DB.Units loaded. Fields: " + map.size());
 	}
@@ -51,18 +47,17 @@ class DBUnits{
 			result.close();
 	}
 	
-	public static void addUnit(int playerId, String name, int mapId, int bodyId, int codeId) throws SQLException{
+	public static void addUnit(int playerId, String bodyType) throws SQLException{
 		PreparedStatement statement = DataBase.connectionUnits.prepareStatement(sqlInsertUnit);
 		// player_id
 		statement.setInt(1, playerId);
-		statement.setString(2, name);
-		statement.setInt(3, bodyId);
-		statement.setInt(4, codeId);
+		statement.setString(2, bodyType);
+		statement.setInt(3, map.size()+1);
 		statement.execute();
 		
 		// Add to memory
 		// ID, playerId, name, mapX, mapY, areaX, areaY, bodyId, codeId
-		map.put(map.size()+1, new Unit(map.size()+1, playerId, name, 0, 0, 0, 0, bodyId, codeId));
+		map.put(map.size()+1, new Unit(map.size()+1, playerId, 0, 0, bodyType));
 		System.out.println("Unit created;\n");
 	}
 	
@@ -79,8 +74,7 @@ class DBUnits{
 			System.out.println("id: " + item.id 
 					+ "\taccount_id: " + item.playerId 
 					+ "\tname:" + item.name 
-					+ "\tmap:" + item.mapX + "." + item.mapY + "." + item.areaX + "." + item.areaY
-					+ "\tbody_id: " + item.bodyId 
+					+ "\tmap:" + "." + item.areaX + "." + item.areaY 
 					+ "\tcode_id: " + item.codeId);
 		}
 	}

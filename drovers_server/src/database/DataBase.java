@@ -18,7 +18,7 @@ public class DataBase{
 	public static DBAccounts accounts;
 	public static DBUnits units;
 	public static DBItems items;
-	
+	public static DBSquads squads;
 	// Setup
 	public static String mysqlAddress;
 	public static String mysqlPort;
@@ -53,6 +53,7 @@ public class DataBase{
 		accounts = new DBAccounts();
 		units = new DBUnits();
 		items = new DBItems();
+		squads = new DBSquads();
 	}
 	
 	protected void readConfig() throws FileNotFoundException{
