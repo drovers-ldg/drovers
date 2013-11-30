@@ -29,7 +29,6 @@ public class AreaMapMenu{
 			case "4":
 				// RIGHT <--from
 				World.areaMap1.draw(g);
-
 				break;
 			default:
 		}

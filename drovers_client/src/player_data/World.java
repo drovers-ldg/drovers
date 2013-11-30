@@ -178,14 +178,57 @@ public class World{
 				State.state = "areaMap";
 				break;
 			case "2": // DOWN
-				
+				map = new int[areaMap1.size_x][areaMap1.size_y*2];
+				for(int i = 0; i < areaMap1.size_x; ++i){
+					for(int j = 0; j < areaMap1.size_y; ++j){
+						map[i][j] = areaMap1.map[i][j];
+					}
+				}
+				for(int i = 0; i < areaMap1.size_x; ++i){
+					for(int j = areaMap1.size_x, z = 0; j < (areaMap1.size_y*2); ++j, ++z){
+						map[i][j] = areaMap2.map[i][z];
+					}
+				}
+				areaMap1.map = map;
+				areaMap1.size_x = areaMap1.size_x;
+				areaMap1.size_y = areaMap1.size_y*2;
 				State.state = "areaMap";
 				break;
 			case "3":
+				map = new int[areaMap1.size_x*2][areaMap1.size_y];
 				
+				for(int i = 0; i < areaMap1.size_x; ++i){
+					for(int j = 0; j < areaMap1.size_y; ++j){
+						map[i][j] = areaMap2.map[i][j];
+					}
+				}
+				for(int i = areaMap1.size_x, z = 0; i < (areaMap1.size_x*2); ++i, ++z){
+					for(int j = 0; j < areaMap1.size_y; ++j){
+						map[i][j] = areaMap1.map[z][j];
+					}
+				}
+				areaMap1.map = map;
+				areaMap1.size_x = areaMap1.size_x*2;
+				areaMap1.size_y = areaMap1.size_y;
 				State.state = "areaMap";
 				break;
 			case "4":
+				map = new int[areaMap1.size_x*2][areaMap1.size_y];
+				
+				for(int i = 0; i < areaMap1.size_x; ++i){
+					for(int j = 0; j < areaMap1.size_y; ++j){
+						map[i][j] = areaMap1.map[i][j];
+					}
+				}
+				for(int i = areaMap1.size_x, z = 0; i < (areaMap1.size_x*2); ++i, ++z){
+					for(int j = 0; j < areaMap1.size_y; ++j){
+						map[i][j] = areaMap2.map[z][j];
+					}
+				}
+				areaMap1.map = map;
+				areaMap1.size_x = areaMap1.size_x*2;
+				areaMap1.size_y = areaMap1.size_y;
+				State.state = "areaMap";
 				
 				State.state = "areaMap";
 				break;
