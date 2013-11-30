@@ -1,10 +1,6 @@
 package unit;
 
-import java.io.Serializable;
-
-public class Unit implements Serializable{
-	private static final long serialVersionUID = 201311301514L;
-	
+public class Unit{
 	// Personal
 	transient public int id;
 	transient public int playerId;

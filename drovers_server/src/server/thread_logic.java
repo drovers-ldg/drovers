@@ -140,8 +140,13 @@ class Thread_Logic extends Thread
 				sendArea(tmp.client_id, 2);
 			}
 			else if(tmp.type.equals(Message.Type.SQUPDATE)){
+				// Hard Squad Update
 				System.out.println("Sending squad data is begin");
 				sendSQ(tmp.client_id);
+			}
+			else if(tmp.type.equals(Message.Type.AREAUPDATEUNITS)){
+				// Soft Update
+				Logic.SQAttack.updateLocalUnits(tmp.client_id);
 			}
 		}
 		Server.msg_buffer.clear();
@@ -200,7 +205,7 @@ class Thread_Logic extends Thread
 		Server.client_list.get(clientId).sendMap(type);
 	}
 	
-	private static void sendSQ(int clientId) {
+	private static void sendSQ(int clientId) throws IOException {
 		Server.client_list.get(clientId).sendSquad();
 	}
 }

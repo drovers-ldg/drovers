@@ -27,7 +27,10 @@ class Thread_Socket extends Thread
 	protected static boolean waitWorldUpdate;
 	protected static boolean waitPlayerUpdate;
 	protected static boolean waitSQUpdate;
+	
+	// Squad update
 	protected static boolean waitUnitsUpdate;
+	protected static boolean waitUnitsSoftUpdate;
 	
 	Thread_Socket() throws IOException
 	{
@@ -45,8 +48,23 @@ class Thread_Socket extends Thread
 		
 			while(Game.is_runing)
 			{
-				if(waitUnitsUpdate){
-					World.squad = (Squad)in.readObject();
+				if(waitUnitsSoftUpdate){
+					World.squad.unit1.areaX = in.readInt();
+					World.squad.unit1.areaY = in.readInt();
+					World.squad.unit1.hp = in.readInt();
+					World.squad.unit2.areaX = in.readInt();
+					World.squad.unit2.areaY = in.readInt();
+					World.squad.unit2.hp = in.readInt();
+					World.squad.unit3.areaX = in.readInt();
+					World.squad.unit3.areaY = in.readInt();
+					World.squad.unit3.hp = in.readInt();
+					waitUnitsSoftUpdate = false;
+					Chat.add_to_msg_log("[Server] Squad update");
+				}
+				else if(waitUnitsUpdate){
+					Squad squad = new Squad();
+					squad.readExternal(in);
+					World.squad = squad;
 					waitUnitsUpdate = false;
 					Chat.add_to_msg_log("[Server] Squad sucessly loaded");
 				}
@@ -145,6 +163,7 @@ class Thread_Socket extends Thread
 		World.worldMap = worldMap;
 		waitWorldUpdate = false;
 		Game.state.set_state("char");
+		Sender.sendSQUpdate();
 		Chat.add_to_msg_log("[SERVER] Connection to \""+ Game.address  + "\" sucess.");
 	}
 	
@@ -204,6 +223,9 @@ class Thread_Socket extends Thread
 			AreaMapMenu.topology = msg.data;
 			waitMap1Update = true;
 			Sender.UpdateArea1();
+		}
+		else if(msg.type.equals(Message.Type.AREAUPDATEUNITS)){
+			waitUnitsSoftUpdate = true;
 		}
 	}
 	private void msgDefault(String data){

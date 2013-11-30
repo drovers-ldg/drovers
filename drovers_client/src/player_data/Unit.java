@@ -1,10 +1,6 @@
 package player_data;
 
-import java.io.Serializable;
-
-public class Unit implements Serializable{
-	private static final long serialVersionUID = 201311301514L;
-	
+public class Unit{
 	public String name;
 	// GPS
 	public int areaX;

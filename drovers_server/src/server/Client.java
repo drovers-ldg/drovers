@@ -71,8 +71,12 @@ public class Client{
 		this.thread.sendPlayersOnline();
 	}
 
-	public void sendSquad() {
+	public void sendSquad() throws IOException {
 		this.thread.sendSquad();
+	}
+
+	public void sendSquadSoftUpdate() throws IOException {
+		this.thread.sendSquadSoftUpdate();
 	}
 
 }

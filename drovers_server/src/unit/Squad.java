@@ -1,17 +1,19 @@
 package unit;
 
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 import java.sql.SQLException;
 
 import database.DBSquads;
 import database.DBUnits;
 
-public class Squad implements Serializable{
+public class Squad implements Externalizable{
 	private static final long serialVersionUID = 201311301514L;
 	
-	transient public int id;
-	transient public int accountId;
+	public int id;
+	public int accountId;
 	
 	public Unit unit1; 
 	public Unit unit2;
@@ -42,8 +44,43 @@ public class Squad implements Serializable{
 		DBUnits.addUnit(playerId, "art");
 		DBSquads.addSquad(this);
 	}
+
+	@Override
+	public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
+		// void
+	}
+
+	@Override
+	public void writeExternal(ObjectOutput out) throws IOException {
+		writeUnit(unit1, out);
+		writeUnit(unit2, out);
+		writeUnit(unit3, out);
+		out.flush();
+	}
 	
-	public void send(ObjectOutputStream out){
-		this.send(out);
+	public void softUpdate(ObjectOutput out) throws IOException {
+		updateLocal(unit1, out);
+		updateLocal(unit2, out);
+		updateLocal(unit3, out);
+		out.flush();
+	}
+	
+	private void writeUnit(Unit unit, ObjectOutput out) throws IOException{
+		out.writeUTF(unit.name);
+		out.writeInt(unit.areaX);
+		out.writeInt(unit.areaY);
+		out.writeInt(unit.hp);
+		out.writeInt(unit.hpMax);
+		out.writeInt(unit.speed);
+		out.writeInt(unit.armor);
+		out.writeInt(unit.damage);
+		out.writeInt(unit.attackSpeed);
+		out.writeUTF(unit.type);
+	}
+	
+	private void updateLocal(Unit unit, ObjectOutput out) throws IOException{
+		out.writeInt(unit.areaX);
+		out.writeInt(unit.areaY);
+		out.writeInt(unit.hp);
 	}
 }
