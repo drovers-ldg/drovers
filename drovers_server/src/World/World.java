@@ -12,8 +12,9 @@ public class World {
 	public static HashMap<String, AreaMap> areaMaps;
 	public static WorldMap worldMap;
 	
-	public World() throws FileNotFoundException, UnsupportedEncodingException{	
-		generateWorld();
+	public World() throws FileNotFoundException, UnsupportedEncodingException{
+		//Uncoment to generate new world map
+		//generateWorld();
 		
 		worldMap = new WorldMap();
 		areaMaps = new HashMap<String, AreaMap>();

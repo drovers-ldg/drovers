@@ -13,7 +13,8 @@ public class DBAccounts {
 	
 	//SQL
 	protected final static String sqlInsertAccount = "INSERT INTO accounts (account_name, account_password, player_name) VALUES (?, ?, ?)";
-
+	protected final static String sqlMove = "UPDATE accounts SET map_x = ?, map_y = ? WHERE id = ?";
+	
 	DBAccounts() throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException{
 		map = new HashMap<Integer, Account>();
 		readTable();
@@ -97,5 +98,13 @@ public class DBAccounts {
 			System.out.println("Account added;\n");
 			return true;
 		}
+	}
+	
+	public static void moveUnits(int mapX, int mapY, int accountId) throws SQLException{
+		PreparedStatement statement = DataBase.connectionAccounts.prepareStatement(sqlMove);
+		statement.setInt(1, mapX);
+		statement.setInt(2, mapY);
+		statement.setInt(3, accountId);
+		statement.execute();
 	}
 }

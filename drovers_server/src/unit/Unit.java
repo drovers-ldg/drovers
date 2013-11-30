@@ -7,10 +7,10 @@ public class Unit{
 	public String name;
 	
 	// GPS
-	public int mapId;
-	public int x;
-	public int y;
-	public int z;
+	public int mapX;
+	public int mapY;
+	public int areaX;
+	public int areaY;
 	
 	// Devices
 	public int bodyId;
@@ -18,14 +18,14 @@ public class Unit{
 	// Code
 	public int codeId;
 	
-	public Unit(int id, int playerId, String name, int mapId, int x, int y, int z, int bodyId, int codeId){
+	public Unit(int id, int playerId, String name, int mapX, int mapY, int areaX, int areaY, int bodyId, int codeId){
 		this.id = id;
 		this.playerId = playerId;
 		this.name = name;
-		this.mapId = mapId;
-		this.x = x;
-		this.y = y;
-		this.z = z;
+		this.mapX = mapX;
+		this.mapY = mapY;
+		this.areaX = areaX;
+		this.areaY = areaY;
 		this.bodyId = bodyId;
 		this.codeId = codeId;
 	}
