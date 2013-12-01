@@ -5,7 +5,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
-
 import unit.Squad;
 
 public class DBSquads{
@@ -76,6 +75,11 @@ public class DBSquads{
 		System.out.println("Squad created;\n");
 	}
 	
+	public static void shwoAllSquads(){
+		for(Squad item: map.values()){
+			System.out.println("id: " + item.id + " accId: " + item.accountId + " U1: " + item.unit1.id + " U2: "+ item.unit2.id + " U3: " + item.unit3.id);
+		} 
+	}
 	public static void deleteSquad(int playerId){
 		
 	}

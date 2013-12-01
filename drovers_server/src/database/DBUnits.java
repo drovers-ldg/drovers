@@ -72,10 +72,18 @@ public class DBUnits{
 	public static void showAllUnits(){
 		for(Unit item: map.values()){
 			System.out.println("id: " + item.id 
-					+ "\taccount_id: " + item.playerId 
-					+ "\tname:" + item.name 
-					+ "\tmap:" + "." + item.areaX + "." + item.areaY 
-					+ "\tcode_id: " + item.codeId);
+							+ "\taccount_id: " + item.playerId 
+							+ "\tname:" + item.name 
+							+ "\tmap:" + "." + item.areaX + "." + item.areaY 
+							+ "\tcode_id: " + item.codeId
+							+ "\ttype: " + item.type
+							+ "\tname: " + item.name
+							+ "\thp: " + item.hp
+							+ "\thpMax: " + item.hpMax 
+							+ "\tarmor: " + item.armor
+							+ "\tspeed: " + item.speed
+							+ "\tAS: " + item.attackSpeed
+							+ "\tDmg: " + item.damage + "\n");
 		}
 	}
 	

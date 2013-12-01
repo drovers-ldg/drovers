@@ -13,7 +13,7 @@ import messages.MessageDouble;
 import player_data.Area_Map;
 import player_data.Player;
 import player_data.PlayersOnline;
-import player_data.Squad;
+import player_data.Unit;
 import player_data.World;
 import player_data.WorldMap;
 
@@ -48,25 +48,15 @@ class Thread_Socket extends Thread
 		
 			while(Game.is_runing)
 			{
-				if(waitUnitsSoftUpdate){
-					World.squad.unit1.areaX = in.readInt();
-					World.squad.unit1.areaY = in.readInt();
-					World.squad.unit1.hp = in.readInt();
-					World.squad.unit2.areaX = in.readInt();
-					World.squad.unit2.areaY = in.readInt();
-					World.squad.unit2.hp = in.readInt();
-					World.squad.unit3.areaX = in.readInt();
-					World.squad.unit3.areaY = in.readInt();
-					World.squad.unit3.hp = in.readInt();
-					waitUnitsSoftUpdate = false;
-					Chat.add_to_msg_log("[Server] Squad update");
-				}
-				else if(waitUnitsUpdate){
-					Squad squad = new Squad();
-					squad.readExternal(in);
-					World.squad = squad;
+				if(waitUnitsUpdate){
 					waitUnitsUpdate = false;
+					World.squad.unit1.readExternal(in);
 					Chat.add_to_msg_log("[Server] Squad sucessly loaded");
+				}
+				else if(waitPlayerUpdate){
+					Player player = new Player();
+					player.readExternal(in);
+					processMsg(player);
 				}
 				else if(waitSQUpdate){
 					World.playersOnline.setSize(in.readInt());
@@ -74,11 +64,6 @@ class Thread_Socket extends Thread
 						World.playersOnline.set(i, new PlayersOnline(in.readInt(), in.readInt(), in.readUTF()));
 					}
 					waitSQUpdate = false;
-				}
-				else if(waitPlayerUpdate){
-					Player player = new Player();
-					player.readExternal(in);
-					processMsg(player);
 				}
 				else if(waitMap1Update){
 					Area_Map map = new Area_Map();
@@ -146,6 +131,7 @@ class Thread_Socket extends Thread
 		
 		waitUnitsUpdate = true;
 		Sender.updateSquad();
+		Chat.add_to_msg_log("[GM]: UPDATE SQ");
 	}
 
 	private void loadMap1(Area_Map map) throws IOException {
@@ -163,7 +149,6 @@ class Thread_Socket extends Thread
 		World.worldMap = worldMap;
 		waitWorldUpdate = false;
 		Game.state.set_state("char");
-		Sender.sendSQUpdate();
 		Chat.add_to_msg_log("[SERVER] Connection to \""+ Game.address  + "\" sucess.");
 	}
 	

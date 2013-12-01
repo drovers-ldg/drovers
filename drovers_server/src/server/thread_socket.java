@@ -122,12 +122,13 @@ class Thread_Socket extends Thread
 	}
 	
 	public void sendSquad() throws IOException{
-		DBSquads.map.get(this.accountId).writeExternal(out);
-		System.out.println("Send SQUAD to " + this.accountId);
+		DBSquads.map.get(this.accountId).unit1.writeExternal(out);
+		//DBSquads.map.get(this.accountId).unit2.writeExternal(out);
+		//DBSquads.map.get(this.accountId).unit3.writeExternal(out);
+		out.flush();
 	}
 	
 	public void sendSquadSoftUpdate() throws IOException{
 		DBSquads.map.get(this.accountId).softUpdate(out);
-		System.out.println("Send SQUAD (Soft) to " + this.accountId);
 	}
 }

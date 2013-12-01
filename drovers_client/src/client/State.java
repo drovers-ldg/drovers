@@ -118,7 +118,8 @@ public class State
 		// draw info
 		g.setColor(Color.white);
 		g.drawString("Window: " + state, 0, 50);
-		g.drawString("FPS: " + Long.toString(Game.FPS), 0, 60);
+		//g.drawString("FPS: " + Long.toString(Game.FPS), 0, 60);
+		g.drawString("SQ is Loaded: " + World.squad.isLoades, 0, 60);
 		g.drawString("Msg: " + Game.server_msg, 0, 70);
 		//g.drawString("Ping: " + Game.Ping, 0, 80);
 		g.drawString("Online: " + World.playersOnline.size(), 0, 80);

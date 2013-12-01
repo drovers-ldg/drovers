@@ -141,7 +141,6 @@ class Thread_Logic extends Thread
 			}
 			else if(tmp.type.equals(Message.Type.SQUPDATE)){
 				// Hard Squad Update
-				System.out.println("Sending squad data is begin");
 				sendSQ(tmp.client_id);
 			}
 			else if(tmp.type.equals(Message.Type.AREAUPDATEUNITS)){

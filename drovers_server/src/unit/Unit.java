@@ -1,20 +1,23 @@
 package unit;
 
-public class Unit{
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
+
+public class Unit implements Externalizable{
+	private static final long serialVersionUID = 201312012207L;
 	// Personal
-	transient public int id;
-	transient public int playerId;
+	public int id;
+	public int playerId;
 	public String name;
 	
 	// GPS
 	public int areaX;
 	public int areaY;
 	
-	// Devices
-	// public int bodyId;
-	
 	// Code
-	transient public int codeId;
+	public int codeId;
 	
 	// Combat data
 	public int hp;
@@ -69,5 +72,25 @@ public class Unit{
 				this.damage = 35;
 				break;
 		}
+	}
+
+	@Override
+	public void readExternal(ObjectInput arg0) throws IOException, ClassNotFoundException {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public void writeExternal(ObjectOutput out) throws IOException {
+		out.writeUTF(this.name);
+		System.out.println(this.name);
+		out.writeUTF(this.type);
+		System.out.println(this.type);
+		out.writeInt(this.areaX);
+		System.out.println(this.areaX);
+		out.writeInt(this.areaY);
+		System.out.println(this.areaY);
+		out.writeInt(this.hp);
+		System.out.println(this.hp);
+		out.flush();
 	}
 }

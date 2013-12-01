@@ -31,7 +31,7 @@ public class Squad implements Externalizable{
 		
 		this.unit1 = DBUnits.map.get(unitId1);
 		this.unit2 = DBUnits.map.get(unitId2);
-		this.unit2 = DBUnits.map.get(unitId3);
+		this.unit3 = DBUnits.map.get(unitId3);
 	}
 	
 	public void setDefaultSQ(int playerId) throws SQLException{
@@ -56,6 +56,7 @@ public class Squad implements Externalizable{
 		writeUnit(unit2, out);
 		writeUnit(unit3, out);
 		out.flush();
+		System.out.println("Send SQUAD to " + this.accountId);
 	}
 	
 	public void softUpdate(ObjectOutput out) throws IOException {
@@ -67,15 +68,10 @@ public class Squad implements Externalizable{
 	
 	private void writeUnit(Unit unit, ObjectOutput out) throws IOException{
 		out.writeUTF(unit.name);
+		out.writeUTF(unit.type);
 		out.writeInt(unit.areaX);
 		out.writeInt(unit.areaY);
 		out.writeInt(unit.hp);
-		out.writeInt(unit.hpMax);
-		out.writeInt(unit.speed);
-		out.writeInt(unit.armor);
-		out.writeInt(unit.damage);
-		out.writeInt(unit.attackSpeed);
-		out.writeUTF(unit.type);
 	}
 	
 	private void updateLocal(Unit unit, ObjectOutput out) throws IOException{

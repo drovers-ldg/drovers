@@ -9,6 +9,8 @@ import java.util.Set;
 import unit.Squad;
 import database.DBAccounts;
 import database.DBItems;
+import database.DBSquads;
+import database.DBUnits;
 
 class Server_UI extends Thread{
 	
@@ -42,7 +44,8 @@ class Server_UI extends Thread{
 			System.out.println(">shutdown");
 			System.out.println(">debug [on|off]");
 			System.out.println(">add [account|item|unit]");
-			System.out.println(">show [accounts|connections|items|battles]");
+			System.out.println(">show [accounts|connections|items|battles|units]");
+			System.out.println(">add squads");
 			System.out.println("=====================");
 		}
 		else if(command.contains("add")){
@@ -113,6 +116,14 @@ class Server_UI extends Thread{
 			case "battles":
 				System.out.println("--------Battles------");
 				showAllBattles();
+				break;
+			case "units":
+				System.out.println("--------Units--------");
+				DBUnits.showAllUnits();
+				break;
+			case "squads":
+				System.out.println("--------Squads-------");
+				DBSquads.shwoAllSquads();
 				break;
 			default:
 				System.out.println(">show [accounts|connections|items|battles]");
