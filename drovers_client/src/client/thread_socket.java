@@ -5,7 +5,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
-
 import GUI.AreaMapMenu;
 import GUI.LoginMenu;
 import messages.Message;
@@ -49,9 +48,9 @@ class Thread_Socket extends Thread
 			while(Game.is_runing)
 			{
 				if(waitUnitsUpdate){
-					waitUnitsUpdate = false;
-					World.squad.unit1.readExternal(in);
-					Chat.add_to_msg_log("[Server] Squad sucessly loaded");
+					Unit unit = new Unit();
+					unit.readExternal(in);
+					processMsg(unit);
 				}
 				else if(waitPlayerUpdate){
 					Player player = new Player();
@@ -59,8 +58,11 @@ class Thread_Socket extends Thread
 					processMsg(player);
 				}
 				else if(waitSQUpdate){
-					World.playersOnline.setSize(in.readInt());
-					for(int i = 0; i < World.playersOnline.size(); ++i){
+					int count = in.readInt();
+					Chat.add_to_msg_log("[SQ Update] " + count);
+					World.playersOnline.clear();
+					World.playersOnline.setSize(count);
+					for(int i = 0; i < count; ++i){
 						World.playersOnline.set(i, new PlayersOnline(in.readInt(), in.readInt(), in.readUTF()));
 					}
 					waitSQUpdate = false;
@@ -140,7 +142,13 @@ class Thread_Socket extends Thread
 		waitMap2Update = true;
 		Sender.UpdateArea2();
 	}
-
+	
+	private void processMsg(Unit unit){
+		World.squad.unit1 = unit;
+		Chat.add_to_msg_log("[Server] Squad sucessly loaded");
+		waitUnitsUpdate = false;
+	}
+	
 	public void processMsg(MessageDouble msg){
 		msgChat(msg.data, msg.data2);
 	}
@@ -200,19 +208,20 @@ class Thread_Socket extends Thread
 			Player.mapY++;
 			Player.mapX++;
 		}
-		else if(msg.type.equals(Message.Type.UPDATESQUADS)){
-			waitSQUpdate = true;
-			Sender.sendSQUpdate();
-		}
 		else if(msg.type.equals(Message.Type.BATTLEAREA1)){
 			AreaMapMenu.topology = msg.data;
 			waitMap1Update = true;
 			Sender.UpdateArea1();
 		}
+		else if(msg.type.equals(Message.Type.UPDATESQUADS)){
+			waitSQUpdate = true;
+			Sender.sendSQUpdate();
+		}
 		else if(msg.type.equals(Message.Type.AREAUPDATEUNITS)){
 			waitUnitsSoftUpdate = true;
 		}
 	}
+	
 	private void msgDefault(String data){
 		Game.server_msg = data;
 	}
@@ -231,7 +240,6 @@ class Thread_Socket extends Thread
 		Game.state.set_state("login");
 		LoginMenu.errString = "Wrong login or password";
 	}
-	
 	public void send(Message.Type type, String msg) throws IOException{
 		new Message(type, msg).send(out);
 	}

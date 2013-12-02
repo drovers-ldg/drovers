@@ -63,9 +63,11 @@ class Thread_Socket extends Thread
 	}
 	public void send(Message.Type type, String msg) throws IOException{
 		new Message(type, msg).send(out);
+		out.flush();
 	}
 	public void send(String player, String data) throws IOException{
 		new MessageDouble(player, data).send(out);
+		out.flush();
 	}
 	public void sendMap(int type) throws IOException{
 		synchronized(DBAccounts.map){
@@ -81,30 +83,35 @@ class Thread_Socket extends Thread
 					int mapY = Server.battlesList.get(battleId).mapY2;
 					World.areaMaps.get(WorldMap.map[mapX][mapY].areaName).writeExternal(out);
 				}
+				out.flush();
 			}
 		}
 	}
 
 	public void sendWorld() throws IOException {
 		World.worldMap.writeExternal(out);
+		out.flush();
 	}
 	
 	public void sendPlayer() throws IOException {
 		synchronized(DBAccounts.map){
 			DBAccounts.map.get(Server.client_list.get(client_id).get_account_id()).writeExternal(out);
+			out.flush();
 		}
 	}
 
 	public void sendPlayersOnlineRequest()  throws IOException{
 		new Message(Message.Type.UPDATESQUADS).send(out);
+		out.flush();
 	}
 	
 	public void sendPlayersOnline() throws IOException {
 		synchronized(DBAccounts.map){
+			// Тут баг из-за размерности
 			int onlineCount = 0;
 			Set<Integer> client_list = Server.client_list.keySet();
 			Set<Integer> send_list = new HashSet<Integer>();
-			
+		
 			for(Integer index: client_list){
 				if(Server.client_list.get(index).get_connection() && index != client_id){
 					onlineCount++;
@@ -112,6 +119,7 @@ class Thread_Socket extends Thread
 				}
 			}
 			out.writeInt(onlineCount);
+			System.out.println("Online count: " + onlineCount);
 			for(Integer index: send_list){
 				out.writeInt(DBAccounts.map.get(Server.client_list.get(index).get_account_id()).mapX);
 				out.writeInt(DBAccounts.map.get(Server.client_list.get(index).get_account_id()).mapY);
@@ -123,12 +131,11 @@ class Thread_Socket extends Thread
 	
 	public void sendSquad() throws IOException{
 		DBSquads.map.get(this.accountId).unit1.writeExternal(out);
-		//DBSquads.map.get(this.accountId).unit2.writeExternal(out);
-		//DBSquads.map.get(this.accountId).unit3.writeExternal(out);
 		out.flush();
 	}
 	
 	public void sendSquadSoftUpdate() throws IOException{
 		DBSquads.map.get(this.accountId).softUpdate(out);
+		out.flush();
 	}
 }

@@ -108,6 +108,10 @@ public class SQAttack{
 	public static void attackDownRight(int clientId) throws IOException {
 		Server.client_list.get(clientId).send("[SERVER]", "Пока нельзя атаковать по диагонали.");
 	}
+
+	public static void loadLocalUnits(int clientId) throws IOException {
+		Server.client_list.get(clientId).sendSquad();
+	}
 	
 	public static void updateLocalUnits(int clientId) throws IOException{
 		Server.client_list.get(clientId).sendSquadSoftUpdate();

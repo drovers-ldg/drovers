@@ -140,11 +140,9 @@ class Thread_Logic extends Thread
 				sendArea(tmp.client_id, 2);
 			}
 			else if(tmp.type.equals(Message.Type.SQUPDATE)){
-				// Hard Squad Update
-				sendSQ(tmp.client_id);
+				Logic.SQAttack.loadLocalUnits(tmp.client_id);
 			}
 			else if(tmp.type.equals(Message.Type.AREAUPDATEUNITS)){
-				// Soft Update
 				Logic.SQAttack.updateLocalUnits(tmp.client_id);
 			}
 		}
@@ -202,9 +200,5 @@ class Thread_Logic extends Thread
 	
 	private static void sendArea(int clientId, int type) throws IOException{
 		Server.client_list.get(clientId).sendMap(type);
-	}
-	
-	private static void sendSQ(int clientId) throws IOException {
-		Server.client_list.get(clientId).sendSquad();
 	}
 }

@@ -35,13 +35,14 @@ public class BattleThread extends Thread{
 		catch (IOException e) {
 			e.printStackTrace();
 		}
-		finally{	
-			this.interrupt();
+		finally{
+			this.finalize();
 		}
 	}
 	
 	protected void finalize(){
 		exitPlayers();
+		this.interrupt();
 	}
 	
 	public synchronized void addPlayers(){

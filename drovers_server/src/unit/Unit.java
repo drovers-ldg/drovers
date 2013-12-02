@@ -91,6 +91,7 @@ public class Unit implements Externalizable{
 		System.out.println(this.areaY);
 		out.writeInt(this.hp);
 		System.out.println(this.hp);
+		System.out.println("Sending " + this.id + " done");
 		out.flush();
 	}
 }

@@ -69,11 +69,11 @@ public class Unit implements Externalizable{
 		this.type = in.readUTF();
 		Chat.add_to_msg_log(type);
 		this.areaX = in.readInt();
-		Chat.add_to_msg_log(String.valueOf(areaX));
+		Chat.add_to_msg_log("" + areaX);
 		this.areaY = in.readInt();
-		Chat.add_to_msg_log(String.valueOf(areaY));
+		Chat.add_to_msg_log("" + areaY);
 		this.hp = in.readInt();
-		Chat.add_to_msg_log(String.valueOf(hp));
+		Chat.add_to_msg_log("" + hp);
 		this.paramsUpdate();
 		Chat.add_to_msg_log("Recived: " + this.name + " " + this.type);
 	}
